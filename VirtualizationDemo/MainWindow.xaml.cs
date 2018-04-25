@@ -18,5 +18,9 @@ namespace Walterlv.Demo
                 item.IsSelected = true;
             }
         }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
     }
 }
