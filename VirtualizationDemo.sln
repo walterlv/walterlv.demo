@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualizationDemo", "VirtualizationDemo\VirtualizationDemo.csproj", "{616B1F5D-7A25-48B3-9AD3-9FB9EA6C4AEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{616B1F5D-7A25-48B3-9AD3-9FB9EA6C4AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616B1F5D-7A25-48B3-9AD3-9FB9EA6C4AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616B1F5D-7A25-48B3-9AD3-9FB9EA6C4AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616B1F5D-7A25-48B3-9AD3-9FB9EA6C4AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94F354BE-9545-4CCB-BDB8-538635BFC82E}
+	EndGlobalSection
+EndGlobal
