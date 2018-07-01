@@ -1,10 +1,10 @@
-﻿<Window x:Class="WindowDemo.Wpf.MainWindow"
+﻿<Window x:Class="Walterlv.Demo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WindowDemo.Wpf"
         xmlns:wpf="clr-namespace:Microsoft.Toolkit.Win32.UI.Controls.WPF;assembly=Microsoft.Toolkit.Win32.UI.Controls"
+        xmlns:demo="clr-namespace:Walterlv.Demo"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <FrameworkElement.Resources>
@@ -23,7 +23,7 @@
             <Setter Property="Padding" Value="8 0" />
         </Style>
     </FrameworkElement.Resources>
-    <Grid>
+    <Grid x:Name="RootPanel">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition />
@@ -42,8 +42,9 @@
             <Button Grid.Column="2" Content="" />
             <Button Grid.Column="4" Content="" Click="GoButton_Click" />
             <Button Grid.Column="5" Content="" />
-            <TextBox x:Name="UrlTextBox" Grid.Column="3" Text="https://www.bing.com" />
+            <TextBox x:Name="UrlTextBox" Grid.Column="3" Text="https://walterlv.github.io" />
         </Grid>
-        <wpf:WebView x:Name="WebView" Grid.Row="1" />
+        <!--<wpf:WebView x:Name="WebView" Grid.Row="1" />-->
+        <demo:LoadingViewContainer Grid.RowSpan="2" x:Name="LoadingView" BorderBrush="Teal" BorderThickness="8" />
     </Grid>
 </Window>

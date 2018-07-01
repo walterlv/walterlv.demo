@@ -1,51 +1,50 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using static Walterlv.Demo.Win32.UnmanagedMethods;
 
-namespace Walterlv.Demo
+namespace Walterlv.Demo.Win32
 {
     public class Win32Window : IDisposable
     {
         public void Show()
         {
-            var wndProcDelegate = new WndProc(WndProc);
-            var defaultCursor = LoadCursor(
-                IntPtr.Zero, new IntPtr((int) Cursor.IDC_ARROW));
-            var wndClassEx = new WNDCLASSEX
+            var wndProcDelegate = new UnmanagedMethods.WndProc(WndProc);
+            var defaultCursor = UnmanagedMethods.LoadCursor(
+                IntPtr.Zero, new IntPtr((int) UnmanagedMethods.Cursor.IDC_ARROW));
+            var wndClassEx = new UnmanagedMethods.WNDCLASSEX
             {
-                cbSize = Marshal.SizeOf<WNDCLASSEX>(),
+                cbSize = Marshal.SizeOf<UnmanagedMethods.WNDCLASSEX>(),
                 style = 0,
                 lpfnWndProc = wndProcDelegate,
-                hInstance = GetModuleHandle(null),
+                hInstance = UnmanagedMethods.GetModuleHandle(null),
                 hCursor = defaultCursor,
                 hbrBackground = IntPtr.Zero,
                 lpszClassName = "WalterlvSplashWindow"
             };
-            var atom = RegisterClassEx(ref wndClassEx);
-            var hwnd = CreateWindowEx(
+            var atom = UnmanagedMethods.RegisterClassEx(ref wndClassEx);
+            var hwnd = UnmanagedMethods.CreateWindowEx(
                 0,
                 atom,
                 null,
-                (int) (WindowStyles.WS_OVERLAPPEDWINDOW | WindowStyles.WS_EX_DLGMODALFRAME),
-                CW_USEDEFAULT,
-                CW_USEDEFAULT,
-                CW_USEDEFAULT,
-                CW_USEDEFAULT,
+                (int) (UnmanagedMethods.WindowStyles.WS_OVERLAPPEDWINDOW | UnmanagedMethods.WindowStyles.WS_EX_DLGMODALFRAME),
+                UnmanagedMethods.CW_USEDEFAULT,
+                UnmanagedMethods.CW_USEDEFAULT,
+                UnmanagedMethods.CW_USEDEFAULT,
+                UnmanagedMethods.CW_USEDEFAULT,
                 IntPtr.Zero,
                 IntPtr.Zero,
                 IntPtr.Zero,
                 IntPtr.Zero);
-            ShowWindow(hwnd, ShowWindowCommand.Restore);
+            UnmanagedMethods.ShowWindow(hwnd, UnmanagedMethods.ShowWindowCommand.Restore);
         }
 
         public void Loop(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                GetMessage(out var msg, IntPtr.Zero, 0, 0);
-                TranslateMessage(ref msg);
-                DispatchMessage(ref msg);
+                UnmanagedMethods.GetMessage(out var msg, IntPtr.Zero, 0, 0);
+                UnmanagedMethods.TranslateMessage(ref msg);
+                UnmanagedMethods.DispatchMessage(ref msg);
             }
         }
 
@@ -81,7 +80,7 @@ namespace Walterlv.Demo
             //        PostQuitMessage(0);
             //        break;
             //}
-            return DefWindowProc(hWnd, msg, wParam, lParam);
+            return UnmanagedMethods.DefWindowProc(hWnd, msg, wParam, lParam);
         }
 
         public void Dispose()

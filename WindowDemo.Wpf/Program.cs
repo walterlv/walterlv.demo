@@ -6,7 +6,6 @@ using System.Security;
 using System.Threading;
 using MS.Win32;
 using Walterlv.Demo.Win32;
-using WindowDemo.Wpf;
 
 namespace Walterlv.Demo
 {

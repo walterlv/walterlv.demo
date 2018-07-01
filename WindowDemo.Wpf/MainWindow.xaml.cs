@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Microsoft.Toolkit.Win32.UI.Controls.WPF;
 
-namespace WindowDemo.Wpf
+namespace Walterlv.Demo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -27,8 +20,32 @@ namespace WindowDemo.Wpf
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
-            var url = UrlTextBox.Text;
-            WebView.Navigate(url);
+            LoadingView.IsLoading = true;
+            var watch = new Stopwatch();
+            watch.Start();
+
+            try
+            {
+                var url = UrlTextBox.Text;
+                var WebView = RootPanel.Children.OfType<WebView>().FirstOrDefault();
+                if (WebView == null)
+                {
+                    WebView = new WebView();
+                    Grid.SetRow(WebView, 1);
+                    RootPanel.Children.Add(WebView);
+                }
+                WebView.Navigate(url);
+            }
+            finally
+            {
+                watch.Stop();
+                var waitMore = TimeSpan.FromSeconds(4) - watch.Elapsed;
+                if (waitMore > TimeSpan.Zero)
+                {
+                    Thread.Sleep(waitMore);
+                }
+                LoadingView.IsLoading = false;
+            }
         }
     }
 }

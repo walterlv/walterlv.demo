@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Walterlv.Demo.Win32;
 
 namespace Walterlv.Demo
 {
