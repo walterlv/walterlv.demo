@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Threading;
 
-namespace WindowDemo
+namespace Walterlv.Demo
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var window = new Win32Window();
+            window.Show();
         }
     }
 }
