@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <local:CachePanel x:Name="CachePanel">
+        </local:CachePanel>
+        <TextBlock x:Name="LogTextBlock" IsHitTestVisible="False" />
     </Grid>
 </Window>

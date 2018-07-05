@@ -1,28 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Walterlv.Demo.TreePerformance
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            ContentRendered += OnContentRendered;
+        }
+
+        private void OnContentRendered(object sender, EventArgs e)
+        {
+            ContentRendered -= OnContentRendered;
+            RunCachePanelPerformanceTest();
+        }
+
+        private void RunCachePanelPerformanceTest()
+        {
+            const int count = 1000;
+            LogElapse(() =>
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    CachePanel.Children.Add(new Button());
+                }
+            }, "添加元素");
+        }
+
+        private void LogElapse(Action action, string text)
+        {
+            var watch = new Stopwatch();
+            watch.Start();
+            try
+            {
+                action();
+            }
+            finally
+            {
+                watch.Stop();
+                Log($"{text} {watch.Elapsed}");
+            }
+        }
+
+        private void Log(string text)
+        {
+            LogTextBlock.Text += $"{text}{Environment.NewLine}";
         }
     }
 }
