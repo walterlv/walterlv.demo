@@ -45,8 +45,18 @@ namespace Walterlv.Demo.TreePerformance
                 }
 
                 // 接受 null 作为当前显示项，表示当前不显示内容。
+                if (_currentChild != null)
+                {
+                    RemoveVisualChild(_currentChild);
+                }
+
                 _currentChild = value;
-                InvalidateMeasure();
+                if (value != null)
+                {
+                    AddVisualChild(value);
+                }
+
+                InvalidateArrange();
             }
         }
 

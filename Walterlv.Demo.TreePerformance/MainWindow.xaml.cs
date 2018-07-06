@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace Walterlv.Demo.TreePerformance
 {
@@ -13,6 +14,8 @@ namespace Walterlv.Demo.TreePerformance
             ContentRendered += OnContentRendered;
         }
 
+        private readonly Random _random = new Random();
+
         private void OnContentRendered(object sender, EventArgs e)
         {
             ContentRendered -= OnContentRendered;
@@ -21,14 +24,46 @@ namespace Walterlv.Demo.TreePerformance
 
         private void RunCachePanelPerformanceTest()
         {
-            const int count = 1000;
+            var childCount = 50;
+            var contentCount = 1000;
+
+            var grids = new UniformGrid[childCount];
+            for (var i = 0; i < childCount; i++)
+            {
+                grids[i] = new UniformGrid();
+            }
+
+            var buttons = new Button[childCount, contentCount];
+            for (var i = 0; i < childCount; i++)
+            {
+                for (var j = 0; j < contentCount; j++)
+                {
+                    buttons[i, j] = new Button();
+                }
+            }
+
             LogElapse(() =>
             {
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < childCount; i++)
                 {
-                    CachePanel.Children.Add(new Button());
+                    var grid = grids[i];
+                    for (var j = 0; j < contentCount; j++)
+                    {
+                        grid.Children.Add(buttons[i, j]);
+                    }
+
+                    CachePanel.Children.Add(grid);
                 }
             }, "添加元素");
+        }
+
+        private void SwitchButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogElapse(() =>
+            {
+                var index = _random.Next(50);
+                CachePanel.CurrentChild = CachePanel.Children[index];
+            }, "切换孩子");
         }
 
         private void LogElapse(Action action, string text)
