@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.100.1000" />
+  </ItemGroup>
+
+  <!--<Target Name="IncludeSourceCodes" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <Compile Include="**\*.cs" Exclude="bin\**\*.cs;obj\**\*.cs;" />
+    </ItemGroup>
+  </Target>-->
+
+</Project>
+
+
