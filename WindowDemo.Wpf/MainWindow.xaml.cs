@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Toolkit.Win32.UI.Controls.WPF;
@@ -18,7 +18,7 @@ namespace Walterlv.Demo
             InitializeComponent();
         }
 
-        private void GoButton_Click(object sender, RoutedEventArgs e)
+        private async void GoButton_Click(object sender, RoutedEventArgs e)
         {
             LoadingView.IsLoading = true;
             var watch = new Stopwatch();
@@ -27,10 +27,10 @@ namespace Walterlv.Demo
             try
             {
                 var url = UrlTextBox.Text;
-                var WebView = RootPanel.Children.OfType<WebView>().FirstOrDefault();
+                var WebView = RootPanel.Children.OfType<WebBrowser>().FirstOrDefault();
                 if (WebView == null)
                 {
-                    WebView = new WebView();
+                    WebView = new WebBrowser();
                     Grid.SetRow(WebView, 1);
                     RootPanel.Children.Add(WebView);
                 }
@@ -42,7 +42,8 @@ namespace Walterlv.Demo
                 var waitMore = TimeSpan.FromSeconds(4) - watch.Elapsed;
                 if (waitMore > TimeSpan.Zero)
                 {
-                    Thread.Sleep(waitMore);
+                    await Task.Delay(waitMore);
+                    //Thread.Sleep(waitMore);
                 }
                 LoadingView.IsLoading = false;
             }

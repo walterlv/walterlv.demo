@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Walterlv.Demo.Runtime;
 using Walterlv.Demo.Win32;
@@ -43,10 +44,27 @@ namespace Walterlv.Demo
 
         private async Task ShowLoading()
         {
+            var tag = Tag?.ToString();
             var dispatcher = await LoadingDispatcherOperation;
             await dispatcher.InvokeAsync(() =>
             {
-                _loadingWindow = new Window { Topmost = true };
+                _loadingWindow = new Window
+                {
+                    Content = tag,
+                    //BorderBrush = Brushes.DodgerBlue,
+                    //BorderThickness = new Thickness(8),
+                    //Background = Brushes.Teal,
+                    //WindowStyle = WindowStyle.None,
+                    //ResizeMode = ResizeMode.NoResize,
+                    //Content = new TextBlock
+                    //{
+                    //    Text = "walterlv.github.io",
+                    //    HorizontalAlignment = HorizontalAlignment.Center,
+                    //    VerticalAlignment = VerticalAlignment.Center,
+                    //    Foreground = Brushes.White,
+                    //    FontSize = 24,
+                    //}
+                };
                 _loadingWindow.SourceInitialized += LoadingWindow_SourceInitialized;
                 _loadingWindow.Show();
             });

@@ -44,7 +44,8 @@
             <Button Grid.Column="5" Content="" />
             <TextBox x:Name="UrlTextBox" Grid.Column="3" Text="https://walterlv.github.io" />
         </Grid>
+        <demo:LoadingViewContainer Grid.RowSpan="2" x:Name="LoadingView" Tag="0" BorderBrush="Teal" BorderThickness="8" />
         <!--<wpf:WebView x:Name="WebView" Grid.Row="1" />-->
-        <demo:LoadingViewContainer Grid.RowSpan="2" x:Name="LoadingView" BorderBrush="Teal" BorderThickness="8" />
+        <WebBrowser x:Name="WebView" Grid.Row="1" />
     </Grid>
 </Window>
