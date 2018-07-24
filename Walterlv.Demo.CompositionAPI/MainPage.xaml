@@ -5,10 +5,21 @@
     xmlns:local="using:Walterlv.Demo.CompositionAPI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <controls:NavigationView x:Name="WalterlvDemoView">
+            <controls:NavigationView.MenuItems>
+                <ListViewItem Content="Home" />
+                <ListViewItem Content="Demo" />
+                <ListViewItem Content="About" />
+                <ListViewItem Content="https://walterlv.github.io/" />
+            </controls:NavigationView.MenuItems>
+        </controls:NavigationView>
+        <Canvas Width="300" Background="Teal">
+            <Ellipse Fill="Tomato" Width="400" Height="200" />
+        </Canvas>
     </Grid>
 </Page>
