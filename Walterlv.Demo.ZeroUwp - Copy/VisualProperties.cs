@@ -6,7 +6,7 @@ using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Core;
 
-namespace Walterlv.Demo.CompositionAPI
+namespace Walterlv.Demo.ZeroUwp
 {
     class VisualProperties : IFrameworkView
     {

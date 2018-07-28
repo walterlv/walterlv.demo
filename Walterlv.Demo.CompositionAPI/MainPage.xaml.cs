@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +29,33 @@ namespace Walterlv.Demo.CompositionAPI
         public MainPage()
         {
             this.InitializeComponent();
+            Loaded += OnLoaded;
+
+            Window.Current.SetTitleBar(TitleBar);
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = Colors.Khaki;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+
+
+
+            var applicationView = CoreApplication.GetCurrentView();
+            applicationView.TitleBar.ExtendViewIntoTitleBar = true;
+        }
+
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var applicationView = CoreApplication.CreateNewView();
+            int newViewId = 0;
+            await applicationView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Frame frame = new Frame();
+                frame.Navigate(typeof(ThePageInNewView), null);
+                Window.Current.Content = frame;
+                Window.Current.Activate();
+                newViewId = ApplicationView.GetForCurrentView().Id;
+            });
+            var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
         }
     }
 }
