@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Walterlv.PackageDemo.A
+namespace Walterlv.ProjectDemo.C
 {
     class Program
     {

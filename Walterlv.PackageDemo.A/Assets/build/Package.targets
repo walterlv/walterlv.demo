@@ -1,0 +1,9 @@
+﻿<Project>
+
+  <Target Name="ForceWalterlvDemoPrivateAssets" BeforeTargets="CollectPackageReferences">
+    <ItemGroup>
+      <PackageReference Update="Walterlv.PackageDemo.A" PrivateAssets="All" />
+    </ItemGroup>
+  </Target>
+
+</Project>

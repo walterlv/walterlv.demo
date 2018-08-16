@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Assets\build\Package.targets" Pack="True" PackagePath="build\$(PackageId).targets" />
+    <PackageReference Include="Walterlv.PackageDemo.A" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
