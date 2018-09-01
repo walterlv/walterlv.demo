@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Demo.CrossProcess", "Walterlv.Demo.CrossProcess\Walterlv.Demo.CrossProcess.csproj", "{5F1AE956-298F-4283-82FF-1F567B88078E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LacihaFabeBemrur", "LacihaFabeBemrur\LacihaFabeBemrur.csproj", "{B57BDB71-8CCB-4C01-84F4-E40725563BD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Demo.RemoteObjects", "Walterlv.Demo.RemoteObjects\Walterlv.Demo.RemoteObjects.csproj", "{8FA9B3E4-9F95-4C8F-8FCC-43C1A92199F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{5F1AE956-298F-4283-82FF-1F567B88078E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1AE956-298F-4283-82FF-1F567B88078E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1AE956-298F-4283-82FF-1F567B88078E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B57BDB71-8CCB-4C01-84F4-E40725563BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B57BDB71-8CCB-4C01-84F4-E40725563BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B57BDB71-8CCB-4C01-84F4-E40725563BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B57BDB71-8CCB-4C01-84F4-E40725563BD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA9B3E4-9F95-4C8F-8FCC-43C1A92199F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA9B3E4-9F95-4C8F-8FCC-43C1A92199F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA9B3E4-9F95-4C8F-8FCC-43C1A92199F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA9B3E4-9F95-4C8F-8FCC-43C1A92199F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
