@@ -22,13 +22,13 @@ namespace Walterlv.Demo.RemoteObjects
     }
 
     [Serializable]
-    public class FastachalreMerweserewhai<TSource, TEventArgs> : MarshalByRefObject
+    public class RemoteEventHandler<TSource, TEventArgs> : MarshalByRefObject
     where TSource : MarshalByRefObject where TEventArgs : EventArgs
     {
         public TSource _lindexi;
         public EventHandler<TEventArgs> _handler;
 
-        public FastachalreMerweserewhai(
+        public RemoteEventHandler(
             MarshalByRefObject source,
             EventHandler<TEventArgs> handler)
         {
