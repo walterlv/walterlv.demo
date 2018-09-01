@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using CommandLine;
 using Walterlv.Demo.RemoteObjects;
@@ -34,7 +36,7 @@ namespace Walterlv.Demo.CrossProcess
 
             var thread = new Thread(() =>
             {
-                var lindexi = new Lindexi();
+                var lindexi = new RemoteLindexi();
                 Console.WriteLine("林德熙创建完成");
                 RemotingServices.Marshal(lindexi, "order");
                 Console.WriteLine("林德熙已远端化");
@@ -56,8 +58,17 @@ namespace Walterlv.Demo.CrossProcess
 
         private static IChannel CreatChannel()
         {
-            var tcpServerChannel = new IpcChannel("lindexi_server");
-            return tcpServerChannel;
+            var serverProvider = new BinaryServerFormatterSinkProvider();
+            var clientProvider = new BinaryClientFormatterSinkProvider();
+            serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
+            IDictionary props = new Hashtable();
+            props["portName"] = "lindexi_server";
+
+            var channel = new IpcChannel(props, clientProvider, serverProvider);
+            //var channel = new IpcChannel("lindexi_server");
+            //props["port"] = 17134;
+            //var channel = new TcpChannel(props, clientProvider, serverProvider);
+            return channel;
         }
     }
 }

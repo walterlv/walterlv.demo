@@ -31,21 +31,29 @@ namespace LacihaFabeBemrur
             Loaded += OnLoaded;
         }
 
-        private Lindexi _remoteLindexi;
+        private ILindexi _remoteLindexi;
 
-        private Lindexi RemoteLindexi
+        private ILindexi RemoteLindexi
         {
             get
             {
                 if (_remoteLindexi == null)
                 {
-                    _remoteLindexi = (Lindexi) Activator.GetObject(
-                        typeof(Lindexi),
+                    var lindexi = (RemoteLindexi)Activator.GetObject(
+                        typeof(RemoteLindexi),
                         "ipc://lindexi_server/order");
+                    _remoteLindexi = new NativeLindexi(lindexi);
+
+                    _remoteLindexi.CaseOrdered += RemoteLindexiOnCaseOrdered;
                 }
 
                 return _remoteLindexi;
             }
+        }
+
+        private void RemoteLindexiOnCaseOrdered(object sender, EventArgs e)
+        {
+            LoggerTextBlock.Dispatcher.InvokeAsync(() => { LoggerTextBlock.Text += "菜已收到"; });
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
