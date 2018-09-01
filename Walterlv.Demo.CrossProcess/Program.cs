@@ -1,4 +1,4 @@
-﻿using System;
+﻿using CommandLine;
 
 namespace Walterlv.Demo.CrossProcess
 {
@@ -6,7 +6,13 @@ namespace Walterlv.Demo.CrossProcess
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed<Options>(Run);
+        }
+
+        private static void Run(Options option)
+        {
+
         }
     }
 }
