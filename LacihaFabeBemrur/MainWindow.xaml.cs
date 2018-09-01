@@ -31,29 +31,33 @@ namespace LacihaFabeBemrur
             Loaded += OnLoaded;
         }
 
-        private ILindexi _remoteLindexi;
+        private Lindexi _lindexi;
+        private FastachalreMerweserewhai _proxy;
 
-        private ILindexi RemoteLindexi
+        private Lindexi Lindexi
         {
             get
             {
-                if (_remoteLindexi == null)
+                if (_lindexi == null)
                 {
-                    var lindexi = (RemoteLindexi)Activator.GetObject(
-                        typeof(RemoteLindexi),
+                    var lindexi = (Lindexi)Activator.GetObject(
+                        typeof(Lindexi),
                         "ipc://lindexi_server/order");
-                    _remoteLindexi = new NativeLindexi(lindexi);
-
-                    _remoteLindexi.CaseOrdered += RemoteLindexiOnCaseOrdered;
+                    _proxy = new FastachalreMerweserewhai(lindexi, RemoteLindexiOnCaseOrdered);
+                    _lindexi = lindexi;
                 }
 
-                return _remoteLindexi;
+                return _lindexi;
             }
         }
 
         private void RemoteLindexiOnCaseOrdered(object sender, EventArgs e)
         {
-            LoggerTextBlock.Dispatcher.InvokeAsync(() => { LoggerTextBlock.Text += "菜已收到"; });
+            LoggerTextBlock.Dispatcher.InvokeAsync(() =>
+            {
+                LoggerTextBlock.Text += "菜已收到";
+                LoggerTextBlock.Text += Environment.NewLine;
+            });
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -63,13 +67,13 @@ namespace LacihaFabeBemrur
             };
             Process.Start(info);
 
-            //var tcpClientChannel = new IpcChannel("lindexi_client");
-            //ChannelServices.RegisterChannel(tcpClientChannel, false);
+            var tcpClientChannel = new IpcChannel("lindexi_client");
+            ChannelServices.RegisterChannel(tcpClientChannel, false);
         }
 
         private void Order_Click(object sender, RoutedEventArgs e)
         {
-            var result = RemoteLindexi.OrderDinner("腐竹排骨");
+            var result = Lindexi.OrderDinner("腐竹排骨");
             LoggerTextBlock.Text += $"{result}{Environment.NewLine}";
         }
     }

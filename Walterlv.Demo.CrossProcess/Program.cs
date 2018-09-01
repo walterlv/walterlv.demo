@@ -36,7 +36,7 @@ namespace Walterlv.Demo.CrossProcess
 
             var thread = new Thread(() =>
             {
-                var lindexi = new RemoteLindexi();
+                var lindexi = new Lindexi();
                 Console.WriteLine("林德熙创建完成");
                 RemotingServices.Marshal(lindexi, "order");
                 Console.WriteLine("林德熙已远端化");
