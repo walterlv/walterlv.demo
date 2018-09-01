@@ -22,15 +22,19 @@ namespace Walterlv.Demo.RemoteObjects
     }
 
     [Serializable]
-    public class FastachalreMerweserewhai : MarshalByRefObject
+    public class FastachalreMerweserewhai<TSource, TEventArgs> : MarshalByRefObject
+    where TSource : MarshalByRefObject where TEventArgs : EventArgs
     {
-        public EventHandler _handler;
-        public Lindexi _lindexi;
+        public TSource _lindexi;
+        public EventHandler<TEventArgs> _handler;
 
-        public FastachalreMerweserewhai(MarshalByRefObject source, EventHandler handler)
+        public FastachalreMerweserewhai(
+            MarshalByRefObject source,
+            EventHandler<TEventArgs> handler)
         {
-            _lindexi = (Lindexi) source;
-            _lindexi.CaseOrdered += LindexiOnCaseOrdered;
+            _lindexi = (TSource) source;
+            Lindexi lindexi = (Lindexi) source;
+            lindexi.CaseOrdered += LindexiOnCaseOrdered;
             _handler = handler;
         }
 

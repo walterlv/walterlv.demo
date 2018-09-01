@@ -32,7 +32,7 @@ namespace LacihaFabeBemrur
         }
 
         private Lindexi _lindexi;
-        private FastachalreMerweserewhai _proxy;
+        private FastachalreMerweserewhai<Lindexi, EventArgs> _proxy;
 
         private Lindexi Lindexi
         {
@@ -43,7 +43,8 @@ namespace LacihaFabeBemrur
                     var lindexi = (Lindexi)Activator.GetObject(
                         typeof(Lindexi),
                         "ipc://lindexi_server/order");
-                    _proxy = new FastachalreMerweserewhai(lindexi, RemoteLindexiOnCaseOrdered);
+                    _proxy = new FastachalreMerweserewhai<Lindexi, EventArgs>(
+                        lindexi, RemoteLindexiOnCaseOrdered);
                     _lindexi = lindexi;
                 }
 
