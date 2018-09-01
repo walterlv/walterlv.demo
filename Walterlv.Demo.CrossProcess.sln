@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Demo.CrossProcess", "Walterlv.Demo.CrossProcess\Walterlv.Demo.CrossProcess.csproj", "{5F1AE956-298F-4283-82FF-1F567B88078E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F1AE956-298F-4283-82FF-1F567B88078E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F1AE956-298F-4283-82FF-1F567B88078E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F1AE956-298F-4283-82FF-1F567B88078E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F1AE956-298F-4283-82FF-1F567B88078E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBDFD09B-0D19-4021-A6C0-B4E84F520712}
+	EndGlobalSection
+EndGlobal
