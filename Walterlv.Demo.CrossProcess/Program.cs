@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Threading;
 using CommandLine;
@@ -55,7 +56,7 @@ namespace Walterlv.Demo.CrossProcess
 
         private static IChannel CreatChannel()
         {
-            var tcpServerChannel = new TcpServerChannel(50632);
+            var tcpServerChannel = new IpcChannel("lindexi_server");
             return tcpServerChannel;
         }
     }

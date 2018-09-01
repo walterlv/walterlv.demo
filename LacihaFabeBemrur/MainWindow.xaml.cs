@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace LacihaFabeBemrur
                 {
                     _remoteLindexi = (Lindexi) Activator.GetObject(
                         typeof(Lindexi),
-                        "tcp://127.0.0.1:50632/order");
+                        "ipc://lindexi_server/order");
                 }
 
                 return _remoteLindexi;
@@ -54,8 +55,8 @@ namespace LacihaFabeBemrur
             };
             Process.Start(info);
 
-            var tcpClientChannel = new TcpClientChannel();
-            ChannelServices.RegisterChannel(tcpClientChannel, false);
+            //var tcpClientChannel = new IpcChannel("lindexi_client");
+            //ChannelServices.RegisterChannel(tcpClientChannel, false);
         }
 
         private void Order_Click(object sender, RoutedEventArgs e)
