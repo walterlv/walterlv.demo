@@ -7,7 +7,8 @@
         xmlns:ww="clr-namespace:Walterlv.Windows;assembly=Walterlv.Windows"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        FontSize="48" Foreground="Tomato" FontFamily="Monaco">
+        FontSize="48" Foreground="Tomato" FontFamily="Monaco"
+        Background="Black">
     <FrameworkElement.Resources>
         <Style TargetType="Button">
             <Setter Property="Template">
@@ -23,6 +24,7 @@
         </Style>
     </FrameworkElement.Resources>
     <Grid>
-        <ww:AsyncBox />
+        <ww:AsyncBox LoadingViewType="local:LoadingView" />
+        <local:LoadingView />
     </Grid>
 </Window>
