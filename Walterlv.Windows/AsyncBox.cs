@@ -134,8 +134,8 @@ namespace Walterlv.Windows
                 };
                 return loadingView;
             });
-            AddVisualChild(_hostVisual);
             AddVisualChild(_contentPresenter);
+            AddVisualChild(_hostVisual);
 
             await LayoutAsync();
             await Dispatcher.Yield(DispatcherPriority.Background);

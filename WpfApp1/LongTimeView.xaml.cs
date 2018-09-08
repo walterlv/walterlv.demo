@@ -13,7 +13,7 @@ namespace WpfApp1
 
         protected override Size MeasureOverride(Size constraint)
         {
-            Thread.Sleep(3000);
+            Thread.Sleep(500);
             return base.MeasureOverride(constraint);
         }
 
