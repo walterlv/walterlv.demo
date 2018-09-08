@@ -57,6 +57,9 @@
     <Page Include="LoadingView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LongTimeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,6 +70,9 @@
     </Compile>
     <Compile Include="LoadingView.xaml.cs">
       <DependentUpon>LoadingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LongTimeView.xaml.cs">
+      <DependentUpon>LongTimeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

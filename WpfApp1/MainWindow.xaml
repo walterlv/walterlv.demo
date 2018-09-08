@@ -24,7 +24,9 @@
         </Style>
     </FrameworkElement.Resources>
     <Grid>
-        <ww:AsyncBox LoadingViewType="local:LoadingView" />
-        <local:LoadingView />
+        <ww:AsyncBox LoadingViewType="local:LoadingView">
+            <local:LongTimeView />
+        </ww:AsyncBox>
+        <local:LoadingView HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="16" />
     </Grid>
 </Window>
