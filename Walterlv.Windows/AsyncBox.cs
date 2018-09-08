@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -23,12 +24,20 @@ namespace Walterlv.Windows
 
         [CanBeNull]
         private UIElement _child;
+
         [NotNull]
         private readonly HostVisual _hostVisual;
+
         [CanBeNull]
         private AsyncUISource _targetSource;
+
         [CanBeNull]
         private UIElement _loadingView;
+
+        [NotNull]
+        private ContentPresenter _contentPresenter;
+
+        private bool _isChildReadyToLoad;
 
         [CanBeNull]
         private Type _loadingViewType;
@@ -36,6 +45,7 @@ namespace Walterlv.Windows
         public AsyncBox()
         {
             _hostVisual = new HostVisual();
+            _contentPresenter = new ContentPresenter();
             Loaded += OnLoaded;
         }
 
@@ -114,32 +124,17 @@ namespace Walterlv.Windows
                 return loadingView;
             });
             AddVisualChild(_hostVisual);
+            AddVisualChild(_contentPresenter);
+
             await LayoutAsync();
+
+            _isChildReadyToLoad = true;
+            ActivateChild();
         }
 
-        protected override int VisualChildrenCount
+        private void ActivateChild()
         {
-            get
-            {
-                var count = 0;
 
-                if (_loadingView != null)
-                {
-                    count++;
-                }
-
-                return count;
-            }
-        }
-
-        protected override Visual GetVisualChild(int index)
-        {
-            if (_loadingView != null)
-            {
-                return _hostVisual;
-            }
-
-            return null;
         }
 
         private async Task LayoutAsync()
@@ -153,6 +148,21 @@ namespace Walterlv.Windows
                     _loadingView.Arrange(new Rect(RenderSize));
                 }
             });
+        }
+
+        protected override int VisualChildrenCount => _loadingView != null ? 2 : 0;
+
+        protected override Visual GetVisualChild(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return _hostVisual;
+                case 1:
+                    return _contentPresenter;
+                default:
+                    return null;
+            }
         }
 
         protected override Size MeasureOverride(Size availableSize)
