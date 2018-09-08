@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Windows", "Walterlv.Windows\Walterlv.Windows.csproj", "{4DAF8089-2054-4C88-9AFE-2D262A0E9303}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.Windows", "Walterlv.Windows\Walterlv.Windows.csproj", "{4DAF8089-2054-4C88-9AFE-2D262A0E9303}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{C243D3EC-837B-467C-AF95-D879CC8E28B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Demo", "WpfApp1\Walterlv.Demo.csproj", "{C243D3EC-837B-467C-AF95-D879CC8E28B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

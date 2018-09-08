@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WpfApp1
+namespace Walterlv.Demo
 {
     public partial class LongTimeView : UserControl
     {

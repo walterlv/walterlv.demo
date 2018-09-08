@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Threading;
+﻿using System.Windows;
 
-namespace WpfApp1
+namespace Walterlv.Demo
 {
     public partial class MainWindow : Window
     {
