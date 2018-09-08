@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -57,7 +58,17 @@ namespace Walterlv.Windows
             {
                 if (Equals(_child, value)) return;
 
+                if (value != null)
+                {
+                    RemoveLogicalChild(value);
+                }
+
                 _child = value;
+
+                if (_isChildReadyToLoad)
+                {
+                    ActivateChild();
+                }
             }
         }
 
@@ -134,7 +145,13 @@ namespace Walterlv.Windows
 
         private void ActivateChild()
         {
-
+            var child = Child;
+            if (child != null)
+            {
+                _contentPresenter.Content = child;
+                AddLogicalChild(child);
+                InvalidateMeasure();
+            }
         }
 
         private async Task LayoutAsync()
@@ -157,22 +174,45 @@ namespace Walterlv.Windows
             switch (index)
             {
                 case 0:
-                    return _hostVisual;
-                case 1:
                     return _contentPresenter;
+                case 1:
+                    return _hostVisual;
                 default:
                     return null;
             }
         }
 
+        protected override IEnumerator LogicalChildren
+        {
+            get
+            {
+                if (_isChildReadyToLoad)
+                {
+                    yield return _contentPresenter;
+                }
+            }
+        }
+
         protected override Size MeasureOverride(Size availableSize)
         {
+            if (_isChildReadyToLoad)
+            {
+                _contentPresenter.Measure(availableSize);
+                return _contentPresenter.DesiredSize;
+            }
+
             var size = base.MeasureOverride(availableSize);
             return size;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
+            if (_isChildReadyToLoad)
+            {
+                _contentPresenter.Arrange(new Rect(finalSize));
+                return _contentPresenter.RenderSize;
+            }
+
             var size = base.ArrangeOverride(finalSize);
             LayoutAsync().ConfigureAwait(false);
             return size;

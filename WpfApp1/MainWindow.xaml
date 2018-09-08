@@ -10,7 +10,7 @@
         FontSize="48" Foreground="Tomato" FontFamily="Monaco"
         Background="Black">
     <FrameworkElement.Resources>
-        <Style TargetType="Button">
+        <!--<Style TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -21,7 +21,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </FrameworkElement.Resources>
     <Grid>
         <ww:AsyncBox LoadingViewType="local:LoadingView">
