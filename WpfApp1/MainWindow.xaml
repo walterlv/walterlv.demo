@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:ww="clr-namespace:Walterlv.Windows;assembly=Walterlv.Windows"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        FontSize="48" Foreground="Tomato" FontFamily="Monaco">
+    <FrameworkElement.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                           <ContentPresenter /> 
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </FrameworkElement.Resources>
     <Grid>
         <ww:AsyncBox />
     </Grid>
