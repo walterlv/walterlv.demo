@@ -9,30 +9,7 @@
         Title="MainWindow" Height="450" Width="800"
         FontSize="48" Foreground="Tomato" FontFamily="Monaco"
         Background="Black">
-    <FrameworkElement.Resources>
-        <!--<Style TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                           <ContentPresenter /> 
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
-        <Storyboard x:Key="Storyboard.Layout">
-            <DoubleAnimation Storyboard.TargetName="RootPanel" Storyboard.TargetProperty="Width"
-                             To="200" Duration="0:0:1" RepeatBehavior="Forever" AutoReverse="True" />
-        </Storyboard>
-    </FrameworkElement.Resources>
-    <Grid x:Name="RootPanel" Width="500" HorizontalAlignment="Left">
-        <FrameworkElement.Triggers>
-            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                <BeginStoryboard Storyboard="{StaticResource Storyboard.Layout}" />
-            </EventTrigger>
-        </FrameworkElement.Triggers>
+    <Grid x:Name="RootPanel">
         <ww:AsyncBox LoadingViewType="local:LoadingView">
             <local:LongTimeView />
         </ww:AsyncBox>
