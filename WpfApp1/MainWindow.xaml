@@ -27,6 +27,6 @@
         <ww:AsyncBox LoadingViewType="local:LoadingView">
             <local:LongTimeView />
         </ww:AsyncBox>
-        <local:LoadingView HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="16" />
+        <!--<local:LoadingView HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="16" />-->
     </Grid>
 </Window>

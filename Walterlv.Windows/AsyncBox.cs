@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Walterlv.Annotations;
 using Walterlv.Demo;
@@ -21,12 +23,19 @@ namespace Walterlv.Windows
 
         [CanBeNull]
         private UIElement _child;
+        [NotNull]
+        private readonly HostVisual _hostVisual;
+        [CanBeNull]
+        private AsyncUISource _targetSource;
+        [CanBeNull]
+        private UIElement _loadingView;
 
         [CanBeNull]
         private Type _loadingViewType;
 
         public AsyncBox()
         {
+            _hostVisual = new HostVisual();
             Loaded += OnLoaded;
         }
 
@@ -95,12 +104,68 @@ namespace Walterlv.Windows
             if (DesignerProperties.GetIsInDesignMode(this)) return;
 
             var dispatcher = await GetAsyncDispatcherAsync();
-            var view = await dispatcher.InvokeAsync(CreateLoadingView);
+            _loadingView = await dispatcher.InvokeAsync(() =>
+            {
+                var loadingView = CreateLoadingView();
+                _targetSource = new AsyncUISource(_hostVisual)
+                {
+                    RootVisual = loadingView
+                };
+                return loadingView;
+            });
+            AddVisualChild(_hostVisual);
+            await LayoutAsync();
+        }
+
+        protected override int VisualChildrenCount
+        {
+            get
+            {
+                var count = 0;
+
+                if (_loadingView != null)
+                {
+                    count++;
+                }
+
+                return count;
+            }
+        }
+
+        protected override Visual GetVisualChild(int index)
+        {
+            if (_loadingView != null)
+            {
+                return _hostVisual;
+            }
+
+            return null;
+        }
+
+        private async Task LayoutAsync()
+        {
+            var dispatcher = await GetAsyncDispatcherAsync();
+            await dispatcher.InvokeAsync(() =>
+            {
+                if (_loadingView != null)
+                {
+                    _loadingView.Measure(RenderSize);
+                    _loadingView.Arrange(new Rect(RenderSize));
+                }
+            });
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            return base.MeasureOverride(availableSize);
+            var size = base.MeasureOverride(availableSize);
+            return size;
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            var size = base.ArrangeOverride(finalSize);
+            LayoutAsync().ConfigureAwait(false);
+            return size;
         }
     }
 }
