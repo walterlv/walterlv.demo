@@ -36,7 +36,7 @@ namespace Walterlv.Windows
         private UIElement _loadingView;
 
         [NotNull]
-        private ContentPresenter _contentPresenter;
+        private readonly ContentPresenter _contentPresenter;
 
         private bool _isChildReadyToLoad;
 
@@ -138,6 +138,7 @@ namespace Walterlv.Windows
             AddVisualChild(_contentPresenter);
 
             await LayoutAsync();
+            await Dispatcher.Yield(DispatcherPriority.Background);
 
             _isChildReadyToLoad = true;
             ActivateChild();
@@ -210,7 +211,9 @@ namespace Walterlv.Windows
             if (_isChildReadyToLoad)
             {
                 _contentPresenter.Arrange(new Rect(finalSize));
-                return _contentPresenter.RenderSize;
+                var renderSize = _contentPresenter.RenderSize;
+                LayoutAsync().ConfigureAwait(false);
+                return renderSize;
             }
 
             var size = base.ArrangeOverride(finalSize);
