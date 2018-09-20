@@ -6,7 +6,8 @@ namespace Walterlv.Demo.Patterns
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Fantastic fantastic = (IFantastic) null;
+            Console.WriteLine(fantastic);
         }
     }
 }
