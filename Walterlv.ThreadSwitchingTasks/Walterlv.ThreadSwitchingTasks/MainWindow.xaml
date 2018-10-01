@@ -1,0 +1,28 @@
+﻿<Window x:Class="Walterlv.ThreadSwitchingTasks.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.ThreadSwitchingTasks"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+    <ListView Name="listCategory" Visibility="Visible" BorderThickness="0" HorizontalAlignment="Left"
+              Margin="114,70,0,0" Width="207" RenderTransformOrigin="0.5,0.5" Height="180" VerticalAlignment="Top">
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <!-- If you use a StackPanel, your items will be in a single line. --> 
+                <!--<StackPanel Orientation="Horizontal" />-->
+                <!-- If you use a WrapPanel, your items will be wrapped into multiple lines. --> 
+                <WrapPanel Orientation="Horizontal" />
+                <!-- Or you can change it to other available panels to layout the items in a specified type. -->
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <CheckBox Content="{Binding tag}" IsChecked="{Binding Checked}" />
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+    </Grid>
+</Window>
