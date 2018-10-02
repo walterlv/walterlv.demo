@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Text;
+using System.Globalization;
 
 namespace Walterlv.GitDemo
 {
@@ -8,29 +7,17 @@ namespace Walterlv.GitDemo
     {
         static void Main(string[] args)
         {
+            var titleCase = new CultureInfo("en-us").TextInfo.ToTitleCase("knowledge management is on the way");
+            Console.WriteLine(titleCase);
 
-            Console.WriteLine();
-        }
+            Console.WriteLine("walterlv 的自动 git 命令");
 
-        private static string RunCommand(string executablePath, string arguments,
-            string workingDirectory)
-        {
-            var info = new ProcessStartInfo("git", "status")
-            {
-                CreateNoWindow = false,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WorkingDirectory = workingDirectory,
-            };
-            var builder = new StringBuilder();
-            var process = new Process
-            {
-                StartInfo = info,
-            };
-            process.OutputDataReceived += (sender, args) => builder.Append(args.Data);
-            process.Start();
-            process.WaitForExit();
-            return builder.ToString();
+            var git = new CommandRunner("git", @"D:\Developments\Blogs\walterlv.github.io");
+            var status = git.Run("status");
+
+            Console.WriteLine(status);
+            Console.WriteLine("按 Enter 退出程序……");
+            Console.ReadLine();
         }
     }
 }
