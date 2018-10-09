@@ -5,7 +5,7 @@
     <TargetFramework>net472</TargetFramework>
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <RootNamespace>Walterlv.Demo</RootNamespace>
-    <StartupObject>Walterlv.Demo.Program</StartupObject>
+    <StartupObject>Walterlv.Demo.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <!-- App.xaml -->
     <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="MSBuild:Compile" />
 
@@ -23,13 +24,6 @@
     <Page Include="**\*.xaml" Exclude="App.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
 
-    <!-- Resources -->
-    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <Compile Update="Properties\Resources.Designer.cs" AutoGen="True" DependentUpon="Resources.resx" DesignTime="True" />
-
-    <!-- Settings -->
-    <None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
-    <Compile Update="Properties\Settings.Designer.cs" AutoGen="True" DependentUpon="Settings.settings" />
   </ItemGroup>
 
 </Project>
