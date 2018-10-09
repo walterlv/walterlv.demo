@@ -16,14 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-
-    <!-- App.xaml -->
     <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="MSBuild:Compile" />
-
-    <!-- XAML elements -->
     <Page Include="**\*.xaml" Exclude="App.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
-
   </ItemGroup>
 
 </Project>
