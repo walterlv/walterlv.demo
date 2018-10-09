@@ -2,11 +2,11 @@
 
 namespace Walterlv.Demo
 {
-    internal class Program
+    internal class NewProgram
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hello Walterlv!");
+            Console.WriteLine("Hello! New walterlv.");
             Console.Read();
         }
     }
