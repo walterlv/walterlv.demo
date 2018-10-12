@@ -7,15 +7,17 @@
              mc:Ignorable="d" x:Name="WalterlvControl"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+        <Button x:Key="ControlProxy" Tag="{Binding Source={x:Reference WalterlvControl}}" />
         <local:BindingProxy x:Key="ElementNameProxy" Data="{Binding ElementName=WalterlvControl}" />
+        <local:BindingProxy x:Key="ReferenceProxy" Data="{Binding Source={x:Reference WalterlvControl}}" />
         <local:BindingProxy x:Key="AncestorProxy" Data="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" />
         <DataTemplate x:Key="DataTemplate" DataType="{x:Type local:DemoItem}">
             <Grid Background="LightGray" Margin="1 1 1 0" MinHeight="40">
                 <Grid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{Binding Mode=OneWay}" />
-                        <MenuItem Header="{Binding Source={StaticResource ElementNameProxy}, Mode=OneWay}" />
-                        <MenuItem Header="{Binding Source={StaticResource ElementNameProxy}, Path=Data.DemoText, Mode=OneWay}" />
+                        <MenuItem Header="{Binding Source={StaticResource ReferenceProxy}, Mode=OneWay}" />
+                        <MenuItem Header="{Binding Source={StaticResource ReferenceProxy}, Path=Data.DemoText, Mode=OneWay}" />
                     </ContextMenu>
                 </Grid.ContextMenu>
                 <TextBlock>
