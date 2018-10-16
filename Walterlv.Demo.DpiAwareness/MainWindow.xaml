@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Border BorderThickness="8" BorderBrush="#1570a6" Background="#f3f6f8">
+            <TextBlock FontFamily="Microsoft YaHei" FontSize="24"
+                       VerticalAlignment="Center" TextAlignment="Center">
+                <Run Text="吕毅的博客" />
+                <LineBreak />
+                <Run Text="https://walterlv.com/" />
+            </TextBlock>
+        </Border>
     </Grid>
 </Window>
