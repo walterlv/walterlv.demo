@@ -7,6 +7,10 @@ namespace Walterlv.Windows.Association
         static void Main(string[] args)
         {
             Console.WriteLine($"Hello {string.Join(" ", args)}!");
+
+            var fileAssociation = new FileAssociation("Walterlv.Foo.1");
+            fileAssociation.Create();
+
             Console.ReadLine();
         }
     }
