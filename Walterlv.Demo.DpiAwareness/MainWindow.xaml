@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Walterlv.Demo.DpiAwareness"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Windows DPI Demo" Width="400" Height="240">
     <Grid>
         <Border BorderThickness="8" BorderBrush="#1570a6" Background="#f3f6f8">
             <TextBlock FontFamily="Microsoft YaHei" FontSize="24"
