@@ -6,14 +6,20 @@
         xmlns:local="clr-namespace:Walterlv.Demo.DpiAwareness"
         mc:Ignorable="d"
         Title="Windows DPI Demo" Width="400" Height="240">
-    <Grid>
-        <Border BorderThickness="8" BorderBrush="#1570a6" Background="#f3f6f8">
-            <TextBlock FontFamily="Microsoft YaHei" FontSize="24"
-                       VerticalAlignment="Center" TextAlignment="Center">
+    <Border BorderThickness="8" BorderBrush="#1570a6" Background="#f3f6f8">
+        <Grid>
+            <TextBlock FontFamily="Microsoft YaHei" FontSize="24" Margin="16">
                 <Run Text="吕毅的博客" />
                 <LineBreak />
                 <Run Text="https://walterlv.com/" />
             </TextBlock>
-        </Border>
-    </Grid>
+            <TextBlock FontFamily="Microsoft YaHei Light" FontSize="24" VerticalAlignment="Bottom" Margin="16">
+                <Run Text="System DPI:" />
+                <Run x:Name="SystemDpiInfoRun" Text="0" />
+                <LineBreak />
+                <Run Text="Monitor DPI:" />
+                <Run x:Name="MonitorDpiInfoRun" Text="0" />
+            </TextBlock>
+        </Grid>
+    </Border>
 </Window>
