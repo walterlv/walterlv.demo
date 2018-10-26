@@ -6,7 +6,14 @@
         xmlns:local="clr-namespace:Walterlv.Styles"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Width="400" Height="32">
+        <!--<Rectangle x:Name="Tracker" Height="2" Fill="Gray" />
+        <Rectangle x:Name="Thumb" Width="8" Height="32" Margin="-4 -16" Fill="DarkGray" HorizontalAlignment="Left" VerticalAlignment="Center"
+                   MouseDown="Thumb_MouseDown" MouseMove="Thumb_MouseMove" MouseUp="Thumb_MouseUp" LostMouseCapture="Thumb_LostMouseCapture">
+            <UIElement.RenderTransform>
+                <TranslateTransform x:Name="ThumbTranslation" />
+            </UIElement.RenderTransform>
+        </Rectangle>-->
+        <Button />
     </Grid>
 </Window>
