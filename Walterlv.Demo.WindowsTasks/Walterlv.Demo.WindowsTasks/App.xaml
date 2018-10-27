@@ -5,15 +5,18 @@
              StartupUri="MainWindow.xaml">
     <JumpList.JumpList>
         <JumpList ShowRecentCategory="True"
-                  ShowFrequentCategory="True">
+                  ShowFrequentCategory="True" JumpItemsRejected="JumpList_OnJumpItemsRejected" JumpItemsRemovedByUser="JumpList_OnJumpItemsRemovedByUser">
             <JumpTask Title="启动新窗口"
                       Description="启动一个新的空窗口" />
             <JumpTask Title="修改 walterlv 的个性化设置"
                       Description="打开个性化设置页面并定位到 walterlv 的设置"
                       IconResourcePath="C:\Windows\System32\wmploc.dll"
                       IconResourceIndex="17"
-                      Arguments="--account" />
-            <JumpPath Path="C:\Users\lvyi\Desktop\2019-02-19-default-theme-not-selected.gif" />
+                      Arguments="--account"  CustomCategory=""/>
+            <JumpPath CustomCategory="最近的文件"
+                      Path="C:\Users\lvyi\AppData\Roaming\Seewo\EasiNote5\Data\Configs.fkv" />
+            <JumpPath CustomCategory="已固定"
+                      Path="C:\Users\lvyi\Desktop\2019-02-19-default-theme-not-selected.gif" />
         </JumpList>
     </JumpList.JumpList>
     <Application.Resources>
