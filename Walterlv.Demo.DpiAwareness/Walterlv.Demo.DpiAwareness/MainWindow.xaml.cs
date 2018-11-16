@@ -19,7 +19,7 @@ namespace Walterlv.Demo.DpiAwareness
         {
             while (true)
             {
-                var hwnd = ((HwndSource)HwndSource.FromVisual(this)).Handle;
+                var hwnd = ((HwndSource) HwndSource.FromVisual(this)).Handle;
                 var dpi = GetDpiForWindow(hwnd);
                 MonitorDpiInfoRun.Text = dpi.ToString();
                 await Task.Delay(1000);
