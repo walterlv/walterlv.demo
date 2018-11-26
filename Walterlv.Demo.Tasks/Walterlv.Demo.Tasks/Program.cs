@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Walterlv.Demo.Tasks
@@ -14,29 +14,30 @@ namespace Walterlv.Demo.Tasks
         {
             Console.Title = "walterlv task demo";
 
-            var scheduler = TaskScheduler.Default;
-            ThreadPool.SetMinThreads(8, 32);
-
-            var task = Enumerable.Range(0, 32).Select(i => Task.Run(() => LongTimeTask(i))).ToList();
-            await Task.WhenAll(task);
-
+            for (var i = 8; i < 9; i++)
+            {
+                //Console.Write($"执行 {i.ToString(CultureInfo.InvariantCulture).PadLeft(2, ' ')} 个");
+                var elapsed = await TimeTest(15);
+                Console.WriteLine($"耗时: {elapsed}");
+            }
 
             Console.Read();
         }
 
-        private static void LongTimeTask(int index)
+        private static async Task<TimeSpan> TimeTest(int count)
         {
-            var threadId = Thread.CurrentThread.ManagedThreadId.ToString().PadLeft(2, ' ');
-            var line = index.ToString().PadLeft(2, ' ');
-            Console.WriteLine($"[{line}] [{threadId}] [{DateTime.Now:ss.fff}] 异步任务已开始……");
+            var stopwatch = Stopwatch.StartNew();
 
-            // 这一句才是关键，等待。其他代码只是为了输出。
-            var client = new WebClient();
-            client.DownloadFile("https://qd.myapp.com/myapp/qqteam/pcqq/QQ9.0.8_1.exe", $@"C:\Users\lvyi\Desktop\测试{index}.x");
+            var task = Enumerable.Range(0, count).Select(i => Task.Run(() => LongTimeTask(i).Result)).ToList();
+            await Task.WhenAll(task);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"[{line}] [{threadId}] [{DateTime.Now:ss.fff}] 异步任务已结束……");
-            Console.ForegroundColor = ConsoleColor.White;
+            stopwatch.Stop();
+            return stopwatch.Elapsed;
+        }
+
+        private static async Task<int> LongTimeTask(int index)
+        {
+            return await Task.Run(() => 1);
         }
     }
 
