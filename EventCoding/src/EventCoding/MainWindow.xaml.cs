@@ -40,10 +40,13 @@ namespace Walterlv.EventCoding
             return Task.Run(() => GenerateCodes(length, count));
         }
 
-        private static string GenerateCodes(int length = 4, int count = 200)
+        private static string GenerateCodes(bool hasLetter = true, int length = 4, int count = 200)
         {
+            var jnvi = hasLetter ? 16 : 10;
+            var format = hasLetter ? "X" : "D";
+
             var random = new Random();
-            var max = (int)Math.Pow(16, length);
+            var max = (int)Math.Pow(jnvi, length);
             var codes = new int[count];
 
             for (var i = 0; i < count; i++)
@@ -56,7 +59,7 @@ namespace Walterlv.EventCoding
                 codes[i] = number;
             }
 
-            return string.Join(Environment.NewLine, codes.Select(x => x.ToString("X").PadLeft(4, '0')));
+            return string.Join(Environment.NewLine, codes.Select(x => x.ToString(format).PadLeft(4, '0')));
         }
     }
 }

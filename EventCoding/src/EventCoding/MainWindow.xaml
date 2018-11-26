@@ -4,9 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Walterlv.EventCoding"
+        xmlns:themes="clr-namespace:Walterlv.Themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800"
+        Style="{StaticResource Style.Window.Universal}">
+    <themes:UniversalWindowStyle.TitleBar>
+        <themes:UniversalTitleBar ForegroundColor="Black" InactiveForegroundColor="#7a7a7a"
+                                  ButtonHoverForeground="Black" ButtonHoverBackground="#cfcfcf"
+                                  ButtonPressedForeground="Black" ButtonPressedBackground="#a9a9aa" />
+    </themes:UniversalWindowStyle.TitleBar>
+    <Grid Margin="0 31 0 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />

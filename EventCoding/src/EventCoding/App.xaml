@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Walterlv.EventCoding"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+         <ResourceDictionary Source="Themes/Window.Universal.xaml" />
     </Application.Resources>
 </Application>
