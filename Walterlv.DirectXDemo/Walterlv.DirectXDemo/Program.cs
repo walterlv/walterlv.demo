@@ -1,12 +1,19 @@
-﻿namespace Walterlv.DirectXDemo
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+
+namespace Walterlv.DirectXDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var renderer = new D3DRenderer();
-            renderer.InitializeDeviceResources();
-            renderer.Run();
+            var file = new FileInfo(@"C:\Users\lvyi\AppData\Roaming\Seewo\EasiNote5\Data\17417510003\Configs.fkv");
+            while (true)
+            {
+                Console.WriteLine($"{file.Exists} - {File.Exists(file.FullName)}");
+                await Task.Delay(1000);
+            }
         }
     }
 }
