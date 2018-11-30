@@ -5,6 +5,8 @@ using System.Windows;
 
 namespace Walterlv.EventCoding
 {
+    using System.Runtime.InteropServices;
+
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -15,7 +17,22 @@ namespace Walterlv.EventCoding
         private async void RandomButton_Click(object sender, RoutedEventArgs e)
         {
             var output = await GenerateCodesAsync();
-            this.OutputTextBox.Text = output;
+            OutputTextBox.Text = output;
+        }
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            for (var i = 0; i < 5; i++)
+            {
+                try
+                {
+                    Clipboard.SetText(OutputTextBox.Text);
+                    break;
+                }
+                catch (COMException)
+                {
+                }
+            }
         }
 
         private static Task<string> GenerateCodesAsync(int length = 4, int count = 200)

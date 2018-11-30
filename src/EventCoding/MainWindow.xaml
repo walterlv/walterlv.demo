@@ -15,7 +15,14 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="1" Padding="16 4" Margin="4" Content="生成" Click="RandomButton_Click" />
-        <TextBox x:Name="OutputTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="2">
+            <TextBox MinWidth="72" Height="32" />
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="2" Orientation="Horizontal">
+            <Button Margin="2" Padding="16 4" Content="生成" Click="RandomButton_Click" />
+            <Button Margin="2" Padding="16 4" Content="复制" Click="CopyButton_Click" />
+        </StackPanel>
+        <TextBox x:Name="OutputTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                 FontSize="14" FontFamily="Consolas" VerticalScrollBarVisibility="Visible" />
     </Grid>
 </Window>
