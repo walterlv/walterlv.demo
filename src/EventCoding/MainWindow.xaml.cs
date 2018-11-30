@@ -18,18 +18,18 @@ namespace Walterlv.EventCoding
             this.OutputTextBox.Text = output;
         }
 
-        private Task<string> GenerateCodesAsync(int length = 4, int count = 200)
+        private static Task<string> GenerateCodesAsync(int length = 4, int count = 200)
         {
             return Task.Run(() => GenerateCodes(length, count));
         }
 
-        private string GenerateCodes(int length = 4, int count = 200)
+        private static string GenerateCodes(int length = 4, int count = 200)
         {
             var random = new Random();
             var max = (int)Math.Pow(16, length);
             var codes = new int[count];
 
-            for (var i = 0; i < 200; i++)
+            for (var i = 0; i < count; i++)
             {
                 var number = random.Next(0, max);
                 while (codes.Contains(number))
