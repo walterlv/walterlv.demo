@@ -54,6 +54,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="RandomIdentifier.cs" />
     <Compile Include="SelectedItemsBinder.cs" />
     <Page Include="ItemHost.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Walterlv.Demo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Demo of walterlv" Height="450" Width="800">
 
     <Window.DataContext>
         <local:MainViewModel />
@@ -18,18 +18,19 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button Content="全选" Click="ButtonBase_OnClick" />
         </StackPanel>
-        <ListView Grid.Row="1" ItemsSource="{Binding Items}" BorderThickness="0" Background="Transparent"
+        <ListBox Grid.Row="1" ItemsSource="{Binding Items}" BorderThickness="0" Background="Transparent"
                   VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.ScrollUnit="Pixel"
-                  VirtualizingPanel.VirtualizationMode="Recycling">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
+                  VirtualizingPanel.VirtualizationMode="Recycling"
+                  SelectionMode="Extended" SelectionChanged="Selector_OnSelectionChanged">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                     <Setter Property="Foreground" Value="White" />
                     <Setter Property="Background" Value="#4c8cf5" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
+                            <ControlTemplate TargetType="ListBoxItem">
                                 <Border Background="{TemplateBinding Background}" Height="40" Margin="0 0 0 1">
                                     <ContentPresenter Margin="12 4" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                 </Border>
@@ -42,13 +43,13 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
                 <DataTemplate DataType="local:ItemViewModel">
                     <TextBlock Text="{Binding Value}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
 

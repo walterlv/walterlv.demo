@@ -22,5 +22,7 @@ namespace Walterlv.Demo
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
+
+        
     }
 }
