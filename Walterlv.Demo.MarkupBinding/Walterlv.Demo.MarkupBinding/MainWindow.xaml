@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Walterlv.Demo.MarkupBinding"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         FontSize="32" FontFamily="Microsoft YaHei Light">
+    <FrameworkElement.Resources>
+        <system:String x:Key="Walterlv.String">walterlv.com</system:String>
+    </FrameworkElement.Resources>
     <UniformGrid Rows="1">
         <TextBox x:Name="SourceTextBox" Text="walterlv.com" />
-        <Button Content="{local:Walterlv Value={Binding Text, Source={x:Reference SourceTextBox}}}" />
+        <Button Content="{local:Walterlv Value={DynamicResource Walterlv.String}}" />
     </UniformGrid>
 </Window>

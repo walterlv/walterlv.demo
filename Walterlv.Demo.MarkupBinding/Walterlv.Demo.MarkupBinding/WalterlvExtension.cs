@@ -62,6 +62,10 @@ namespace Walterlv.Demo.MarkupBinding
             {
                 BindingOperations.SetBinding(this, _attachedProperty, binding);
             }
+            else if (value.GetType().Name == "ResourceReferenceExpression")
+            {
+                var converter = new ResourceReferenceExpressionConverter();
+            }
             else
             {
                 SetValue(_attachedProperty, value);
