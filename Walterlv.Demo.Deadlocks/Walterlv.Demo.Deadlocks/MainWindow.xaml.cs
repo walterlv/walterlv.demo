@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Walterlv.Demo.Deadlocks
 {
@@ -27,16 +16,25 @@ namespace Walterlv.Demo.Deadlocks
             Loaded += OnLoaded;
         }
 
+        private readonly AutoResetEvent _resetEvent = new AutoResetEvent(true);
+        private int _count;
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             ThreadPool.SetMinThreads(100, 100);
+
+            // 全部在后台线程，不会死锁。
             for (var i = 0; i < 100; i++)
             {
-                DoAsync();
+                Task.Run(() => DoAsync());
             }
-        }
 
-        private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
+            // 主线程执行与后台线程并发竞争，也不会死锁。
+            //for (var i = 0; i < 100; i++)
+            //{
+            //    DoAsync();
+            //}
+        }
 
         private void Do()
         {
@@ -44,6 +42,8 @@ namespace Walterlv.Demo.Deadlocks
 
             try
             {
+                // 这个 ++ 在安全的线程上下文中，所以不需要使用 Interlocked.Increment(ref _count);
+                _count++;
                 DoCore();
             }
             finally
@@ -54,7 +54,7 @@ namespace Walterlv.Demo.Deadlocks
 
         private void DoCore()
         {
-
+            Console.WriteLine($"[{_count.ToString().PadLeft(3, ' ')}] walterlv is a 逗比");
         }
 
         private async Task DoAsync()
@@ -63,6 +63,7 @@ namespace Walterlv.Demo.Deadlocks
 
             try
             {
+                _count++;
                 await DoCoreAsync();
             }
             finally
@@ -73,21 +74,9 @@ namespace Walterlv.Demo.Deadlocks
 
         private async Task DoCoreAsync()
         {
-            await Task.Run(() => { });
-        }
-    }
-
-    class Walterlv
-    {
-        public Walterlv()
-        {
-            // 等待一段时间，是为了给我么的测试程序一个准确的时机。
-            Thread.Sleep(100);
-
-            // Invoke 到主线程执行，里面什么都不做是为了证明绝不是里面代码带来的影响。
-            Application.Current.Dispatcher.Invoke(() =>
+            await Task.Run(async () =>
             {
-
+                Console.WriteLine($"[{_count.ToString().PadLeft(3, ' ')}] walterlv is a 逗比");
             });
         }
     }
