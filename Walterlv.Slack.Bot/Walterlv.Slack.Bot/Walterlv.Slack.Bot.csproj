@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>Walterlv.Demo</AssemblyName>
+    <RootNamespace>Walterlv.Demo</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
