@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BAC8B8B4-D98F-4B30-9320-5A0C5B79E0BF}</ProjectGuid>
-    <OutputType>library</OutputType>
-    <RootNamespace>Walterlv.Demo.Building</RootNamespace>
-    <AssemblyName>Walterlv.Demo.Building</AssemblyName>
+    <ProjectGuid>{1A660200-3309-4210-BBFE-1718E1627EC1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WpfApp1</RootNamespace>
+    <AssemblyName>WpfApp1</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -15,6 +15,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -48,19 +50,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Resources\Shadow.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dictionary1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControl1.xaml">
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Demo.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -88,17 +90,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Shadow\Shadow.slack.png" />
+    <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
-  <!-- <Target Name="WalterlvDemo" BeforeTargets="BeforeBuild">
-    <Message Text="Walterlv Demo Target" />
-    <ItemGroup>
-      <Page Remove="Dictionary1.xaml" />
-      <Page Include="Dictionary2.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-  </Target> -->
+  <ItemGroup>
+    <ProjectReference Include="..\Walterlv.Demo.Building\Walterlv.Demo.Building.csproj">
+      <Project>{bac8b8b4-d98f-4b30-9320-5a0c5b79e0bf}</Project>
+      <Name>Walterlv.Demo.Building</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
