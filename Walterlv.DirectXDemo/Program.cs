@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace Walterlv.DirectXDemo
+﻿namespace Walterlv.DirectXDemo
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var renderer = new D3DRenderer();
+            renderer.InitializeDeviceResources();
+            renderer.Run();
         }
     }
 }
