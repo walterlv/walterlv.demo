@@ -8,16 +8,16 @@ namespace Walterlv.Demo.MarkupBinding
 {
     public class WalterlvExtension : MarkupExtension
     {
+        public WalterlvExtension()
+        {
+            _valueExchanger = new ClrBindingExchanger(this, ValueProperty, OnValueChanged);
+        }
+
         private readonly ClrBindingExchanger _valueExchanger;
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.RegisterAttached(
             "Value", typeof(object), typeof(WalterlvExtension),
             new PropertyMetadata(null, ClrBindingExchanger.ValueChangeCallback));
-
-        public WalterlvExtension()
-        {
-            _valueExchanger = new ClrBindingExchanger(this, ValueProperty, OnValueChanged);
-        }
 
         [Bindable(true)]
         public object Value
@@ -28,7 +28,7 @@ namespace Walterlv.Demo.MarkupBinding
 
         private void OnValueChanged(object oldValue, object newValue)
         {
-
+            // 在这里可以处理 Value 属性值改变的变更通知。
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
