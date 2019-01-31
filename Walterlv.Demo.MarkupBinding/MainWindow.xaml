@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Walterlv.Demo.MarkupBinding"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="450" Width="800"
+        FontSize="32" FontFamily="Microsoft YaHei Light">
+    <UniformGrid Rows="1">
+        <TextBox Text="walterlv.com" />
+        <Button Content="x" />
+    </UniformGrid>
 </Window>
