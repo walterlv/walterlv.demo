@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800"
         FontSize="32" FontFamily="Microsoft YaHei Light">
     <UniformGrid Rows="1">
-        <TextBox Text="walterlv.com" />
-        <Button Content="x" />
+        <TextBox x:Name="SourceTextBox" Text="walterlv.com" />
+        <Button Content="{local:Walterlv Value={Binding Text, Source={x:Reference SourceTextBox}}}" />
     </UniformGrid>
 </Window>
