@@ -10,24 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Walterlv.WindowShadow
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CloudWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CloudWindow : Window
     {
-        public MainWindow()
+        public CloudWindow()
         {
             InitializeComponent();
-        }
-
-        private void ButtonBase_Click(object sender, RoutedEventArgs e)
-        {
-            new CloudWindow().Show();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
