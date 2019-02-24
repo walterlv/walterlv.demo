@@ -23,6 +23,7 @@ namespace Walterlv.WindowShadow
         public MainWindow()
         {
             InitializeComponent();
+            DebugTextBlock.Text = string.Join(Environment.NewLine, Environment.GetCommandLineArgs().Skip(1));
         }
 
         private void ButtonBase_Click(object sender, RoutedEventArgs e)

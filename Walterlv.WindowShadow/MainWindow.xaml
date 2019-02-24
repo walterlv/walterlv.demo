@@ -14,5 +14,6 @@
                 Opacity="0.0" Click="ButtonBase_Click"/>
         <Button Width="35" Height="28" HorizontalAlignment="Right" VerticalAlignment="Top"
                 Opacity="0.0" Click="CloseButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" />
+        <TextBlock x:Name="DebugTextBlock" Text="fasdf" FontSize="32" TextWrapping="WrapWithOverflow" Margin="202,171,316,140" />
     </Grid>
 </Window>
