@@ -11,7 +11,7 @@
             <RowDefinition Height="9*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Label Content="Hello .NET Core!" HorizontalAlignment="Center" VerticalAlignment="Center"
+        <Label Content="Hello walterlv!" HorizontalAlignment="Center" VerticalAlignment="Center"
                FontSize="40"/>
         <Button Content="Exit" Grid.Row="1" FontSize="20" Click="ButtonExit_Click"/>
     </Grid>
