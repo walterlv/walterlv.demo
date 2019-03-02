@@ -8,6 +8,7 @@ namespace Walterlv
         static void Main(string[] args)
         {
             var commandLine = CommandLine.Parse(args);
+            var option = commandLine.As<Option>();
 
             Console.ReadLine();
         }

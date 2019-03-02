@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Walterlv.CommandLine": {
+      "commandName": "Project",
+      "commandLineArgs": "--cloud -m Edit"
+    }
+  }
+}
