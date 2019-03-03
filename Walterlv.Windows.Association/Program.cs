@@ -6,7 +6,8 @@ namespace Walterlv.Windows.Association
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine($"Hello {string.Join(" ", args)}!");
+            Console.ReadLine();
         }
     }
 }
