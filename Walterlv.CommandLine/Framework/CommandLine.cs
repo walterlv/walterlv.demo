@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Web;
 using Walterlv.Framework.StateMachine;
 
 namespace Walterlv.Framework
@@ -26,7 +27,8 @@ namespace Walterlv.Framework
         {
             if (!string.IsNullOrWhiteSpace(urlProtocol) && args.Length > 0 && args[0].StartsWith($"{urlProtocol}://"))
             {
-                // 如果传入的参数是协议参数，那么进行协议参数解析。
+                // 如果传入的参数是协议参数，那么进行协议参数解析，并转换成命令行参数风格。
+                // 由于 URL 解析不是主流程，所以这里暂时不考虑性能问题。
                 args = ConvertUrlToArgs(args[0]);
             }
 
@@ -35,9 +37,27 @@ namespace Walterlv.Framework
             return new CommandLine(parsedArgs);
         }
 
+        /// <summary>
+        /// 将 URL 转换成符合命令行格式的参数列表。
+        /// </summary>
+        /// <param name="url">来源于 Web 的 URL。</param>
+        /// <returns>符合命令行格式的参数列表。</returns>
         private static string[] ConvertUrlToArgs(string url)
         {
-            return new[] {url};
+            url = HttpUtility.UrlDecode(url);
+            var start = url?.IndexOf('?') ?? -1;
+            if (start >= 0 && url != null)
+            {
+                var arguments = url.Substring(start + 1);
+                var args = from keyValueString in arguments.Split(new[] {'&'}, StringSplitOptions.RemoveEmptyEntries)
+                    let keyValue = keyValueString.Split(new[] {'='})
+                    let key = $"--{keyValue[0]}"
+                    let value = keyValue[1]
+                    select new[] {key, value};
+                return args.SelectMany(x => x).ToArray();
+            }
+
+            return new string[0];
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
