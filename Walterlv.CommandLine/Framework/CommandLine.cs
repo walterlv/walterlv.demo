@@ -92,7 +92,7 @@ namespace Walterlv.Framework
                 }
             }
 
-            return default;
+            return parser.Commit();
         }
 
         public static CommandLine Parse(string[] args, string urlProtocol = null)
