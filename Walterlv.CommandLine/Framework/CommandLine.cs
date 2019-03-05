@@ -6,7 +6,7 @@ using Walterlv.Framework.StateMachine;
 
 namespace Walterlv.Framework
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    [DebuggerDisplay("CommandLine: {DebuggerDisplay,nq}")]
     [DebuggerTypeProxy(typeof(CommandLineDebugView))]
     public class CommandLine
     {
