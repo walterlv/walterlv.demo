@@ -16,7 +16,84 @@ namespace Walterlv.Framework
         private CommandLine(Dictionary<string, IReadOnlyList<string>> optionArgs)
             => _optionArgs = optionArgs ?? throw new ArgumentNullException(nameof(optionArgs));
 
-        public T As<T>(ICommandLineOptionParser<T> parser) => parser.Parse(_optionArgs);
+        /// <summary>
+        /// 使用指定的命令行参数解析器 <paramref name="parser"/> 解析出参数 <typeparamref name="T"/> 的一个新实例。
+        /// </summary>
+        /// <typeparam name="T">解析出来的参数实例。</typeparam>
+        /// <param name="parser">用于解析 <typeparamref name="T"/> 的解析器实例，此类型通常会在编译期间自动生成。</param>
+        /// <returns>命令行参数的新实例。</returns>
+        public T As<T>(ICommandLineOptionParser<T> parser)
+        {
+            foreach (var optionValue in _optionArgs)
+            {
+                var option = optionValue.Key;
+                var values = optionValue.Value;
+                if (string.IsNullOrWhiteSpace(option))
+                {
+                    // 没有选项，只有值。
+                    for (var i = 0; i < values.Count; i++)
+                    {
+                        var value = values[i];
+                        parser.SetValue(i, value);
+                    }
+                }
+                else if (option.Length == 2 && option[0] == '-')
+                {
+                    // 短名称。
+                    var shortName = option[1];
+                    if (values.Count == 0)
+                    {
+                        parser.SetValue(shortName, true);
+                    }
+                    else if (values.Count == 1)
+                    {
+                        if (bool.TryParse(values[0], out var @bool))
+                        {
+                            parser.SetValue(shortName, @bool);
+                        }
+                        else
+                        {
+                            parser.SetValue(shortName, values[0]);
+                        }
+                    }
+                    else
+                    {
+                        parser.SetValue(shortName, values);
+                    }
+                }
+                else if (option.Length > 2 && option[0] == '-' && option[1] == '-')
+                {
+                    // 长名称。
+                    var longName = option.Substring(2);
+                    if (values.Count == 0)
+                    {
+                        parser.SetValue(longName, true);
+                    }
+                    else if (values.Count == 1)
+                    {
+                        if (bool.TryParse(values[0], out var @bool))
+                        {
+                            parser.SetValue(longName, @bool);
+                        }
+                        else
+                        {
+                            parser.SetValue(longName, values[0]);
+                        }
+                    }
+                    else
+                    {
+                        parser.SetValue(longName, values);
+                    }
+                }
+                else
+                {
+                    // 参数格式不正确或不支持。
+                    throw new NotSupportedException($"{option} option is not supported.");
+                }
+            }
+
+            return default;
+        }
 
         public static CommandLine Parse(string[] args, string urlProtocol = null)
         {
