@@ -14,14 +14,9 @@ namespace Walterlv.Framework
         private readonly Dictionary<string, IReadOnlyList<string>> _optionArgs;
 
         private CommandLine(Dictionary<string, IReadOnlyList<string>> optionArgs)
-        {
-            _optionArgs = optionArgs ?? throw new ArgumentNullException(nameof(optionArgs));
-        }
+            => _optionArgs = optionArgs ?? throw new ArgumentNullException(nameof(optionArgs));
 
-        public T As<T>()
-        {
-            return default;
-        }
+        public T As<T>(ICommandLineOptionParser<T> parser) => parser.Parse(_optionArgs);
 
         public static CommandLine Parse(string[] args, string urlProtocol = null)
         {
