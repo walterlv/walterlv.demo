@@ -16,6 +16,19 @@ namespace Walterlv.Framework
         private CommandLine(Dictionary<string, IReadOnlyList<string>> optionArgs)
             => _optionArgs = optionArgs ?? throw new ArgumentNullException(nameof(optionArgs));
 
+        public T As<T>()
+        {
+            var optionType = typeof(T);
+            var parserType = optionType.Assembly.GetType($"{optionType.FullName}Parser", false, false);
+            if (parserType == null)
+            {
+                throw new NotSupportedException("暂不支持在运行时根据特性解析命令行参数。");
+            }
+
+            var parser = (ICommandLineOptionParser<T>) Activator.CreateInstance(parserType);
+            return As(parser);
+        }
+
         /// <summary>
         /// 使用指定的命令行参数解析器 <paramref name="parser"/> 解析出参数 <typeparamref name="T"/> 的一个新实例。
         /// </summary>
@@ -88,7 +101,7 @@ namespace Walterlv.Framework
                 else
                 {
                     // 参数格式不正确或不支持。
-                    throw new NotSupportedException($"{option} option is not supported.");
+                    throw new NotSupportedException($"不支持命令行选项：{option}。");
                 }
             }
 
