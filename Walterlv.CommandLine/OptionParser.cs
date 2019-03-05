@@ -12,10 +12,6 @@ namespace Walterlv
         private bool _isSilence;
         private bool _isIwb;
 
-        public void SetValue(int index, bool value)
-        {
-        }
-
         public void SetValue(int index, string value)
         {
             switch (index)
@@ -24,10 +20,6 @@ namespace Walterlv
                     _filePath = value;
                     break;
             }
-        }
-
-        public void SetValue(int index, IEnumerable<string> values)
-        {
         }
 
         public void SetValue(char shortName, bool value)
