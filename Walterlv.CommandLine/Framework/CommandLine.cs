@@ -24,9 +24,20 @@ namespace Walterlv.Framework
 
         public static CommandLine Parse(string[] args, string urlProtocol = null)
         {
+            if (!string.IsNullOrWhiteSpace(urlProtocol) && args.Length > 0 && args[0].StartsWith($"{urlProtocol}://"))
+            {
+                // 如果传入的参数是协议参数，那么进行协议参数解析。
+                args = ConvertUrlToArgs(args[0]);
+            }
+
             var stateMachine = new CommandLineStateMachine(args);
             var parsedArgs = stateMachine.Run();
             return new CommandLine(parsedArgs);
+        }
+
+        private static string[] ConvertUrlToArgs(string url)
+        {
+            return new[] {url};
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
