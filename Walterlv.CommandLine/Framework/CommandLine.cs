@@ -69,10 +69,7 @@ namespace Walterlv.Framework
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly CommandLine _owner;
 
-            public CommandLineDebugView(CommandLine owner)
-            {
-                _owner = owner;
-            }
+            public CommandLineDebugView(CommandLine owner) => _owner = owner;
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             private string[] Options => _owner._optionArgs
