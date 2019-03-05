@@ -30,10 +30,8 @@ namespace Walterlv.Framework
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return ""; }
-        }
+        private string DebuggerDisplay => string.Join(' ', _optionArgs
+            .Select(pair => $"{pair.Key}{(pair.Key == null ? "" : " ")}{string.Join(' ', pair.Value)}"));
 
         private class CommandLineDebugView
         {
