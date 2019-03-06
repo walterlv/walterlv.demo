@@ -43,6 +43,9 @@ namespace Walterlv
                 case 'm':
                     _startupMode = value;
                     break;
+                case 'p':
+                    _placement = value;
+                    break;
             }
         }
 
