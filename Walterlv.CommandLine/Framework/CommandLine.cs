@@ -173,11 +173,11 @@ namespace Walterlv.Framework
             var chars = option.ToCharArray();
             if (char.IsUpper(chars[0]))
             {
-                return option;
+                return $"-{option}";
             }
 
             chars[0] = char.ToUpper(chars[0], CultureInfo.InvariantCulture);
-            return new string(chars);
+            return $"-{new string(chars)}";
         }
 
         /// <summary>
