@@ -9,7 +9,7 @@ namespace Walterlv.Framework.StateMachine
         private readonly IReadOnlyList<string> _commandLineArgs;
         private Action<string, IReadOnlyList<string>> _optionCollectedAction;
         private string _currentOption;
-        private List<string> _currentValues = new List<string>();
+        private List<string> _currentValues;
 
         public CommandLineStateMachine(IReadOnlyList<string> args)
         {
