@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using CommandLine;
 
 namespace Walterlv.CommandLine.Benchmark
 {
@@ -93,6 +94,12 @@ namespace Walterlv.CommandLine.Benchmark
         {
             var commandLine = Framework.CommandLine.Parse(UrlArgs, urlProtocol: "walterlv");
             commandLine.As<Options>();
+        }
+
+        [Benchmark]
+        public void CommandLineParser()
+        {
+            Parser.Default.ParseArguments<CommandLineOptions>(LinuxStyleArgs).WithParsed(options => { });
         }
     }
 }
