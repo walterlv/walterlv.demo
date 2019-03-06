@@ -13,10 +13,4 @@ namespace Walterlv
             Console.ReadLine();
         }
     }
-
-    internal enum StartupMode
-    {
-        Edit,
-        Display,
-    }
 }
