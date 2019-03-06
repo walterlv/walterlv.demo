@@ -54,13 +54,13 @@ namespace Walterlv
         {
             switch (longName)
             {
-                case "cloud":
+                case "Cloud":
                     _isFromCloud = value;
                     break;
-                case "silence":
+                case "Silence":
                     _isSilence = value;
                     break;
-                case "iwb":
+                case "Iwb":
                     _isIwb = value;
                     break;
             }
@@ -70,13 +70,13 @@ namespace Walterlv
         {
             switch (longName)
             {
-                case "file":
+                case "File":
                     _filePath = value;
                     break;
-                case "mode":
+                case "Mode":
                     _startupMode = value;
                     break;
-                case "placement":
+                case "Placement":
                     _placement = value;
                     break;
                 case "StartupSession":
