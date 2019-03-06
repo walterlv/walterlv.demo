@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Web;
 using Walterlv.Framework.StateMachine;
+using Walterlv.Framework.Utils;
 
 namespace Walterlv.Framework
 {
@@ -132,6 +133,11 @@ namespace Walterlv.Framework
 
         public static CommandLine Parse(string[] args, string urlProtocol = null)
         {
+            if (args.Length == 0)
+            {
+                return new CommandLine(new Dictionary<string, IReadOnlyList<string>>(0, ArgumentOptionComparer.Instance));
+            }
+
             if (!string.IsNullOrWhiteSpace(urlProtocol) && args.Length > 0 && args[0].StartsWith($"{urlProtocol}://"))
             {
                 // 如果传入的参数是协议参数，那么进行协议参数解析，并转换成命令行参数风格。

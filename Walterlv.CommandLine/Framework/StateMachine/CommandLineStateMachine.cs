@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Walterlv.Framework.Utils;
 
 namespace Walterlv.Framework.StateMachine
 {
@@ -72,17 +73,6 @@ namespace Walterlv.Framework.StateMachine
         void ICommandLineStateMachine.Commit()
         {
             _optionCollectedAction(_currentOption, _currentValues);
-        }
-
-        private class ArgumentOptionComparer : IEqualityComparer<string>
-        {
-            internal static readonly IEqualityComparer<string> Instance = new ArgumentOptionComparer();
-
-            bool IEqualityComparer<string>.Equals(string x, string y)
-                => string.Equals(x, y, StringComparison.InvariantCulture);
-
-            int IEqualityComparer<string>.GetHashCode(string option)
-                => option?.GetHashCode() ?? 0;
         }
     }
 }
