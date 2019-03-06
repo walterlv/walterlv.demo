@@ -19,7 +19,11 @@ namespace Walterlv
                 Console.CursorLeft = 0;
                 Console.WriteLine($"{i} - {stopwatch.Elapsed.Ticks} ticks & {stopwatch.Elapsed.TotalMilliseconds} ms");
             }
-            Console.ReadLine();
+
+            if (Debugger.IsAttached && !Console.IsInputRedirected)
+            {
+                Console.ReadLine();
+            }
         }
     }
 }

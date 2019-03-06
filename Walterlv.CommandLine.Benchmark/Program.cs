@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BenchmarkDotNet.Running;
 
 namespace Walterlv.CommandLine.Benchmark
@@ -8,7 +9,11 @@ namespace Walterlv.CommandLine.Benchmark
         static void Main(string[] args)
         {
             BenchmarkRunner.Run<CommandLineParserTest>();
-            Console.ReadLine();
+
+            if (Debugger.IsAttached && !Console.IsInputRedirected)
+            {
+                Console.ReadLine();
+            }
         }
     }
 }
