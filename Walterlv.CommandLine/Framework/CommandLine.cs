@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using Walterlv.Framework.StateMachine;
 
@@ -44,6 +46,7 @@ namespace Walterlv.Framework
                 if (string.IsNullOrWhiteSpace(option))
                 {
                     // 没有选项，只有值。
+                    // 包括此 if 分支之外的任何情况下，值都需要保持传入时的大小写。
                     for (var i = 0; i < values.Count; i++)
                     {
                         var value = values[i];
@@ -53,6 +56,10 @@ namespace Walterlv.Framework
                 else if (option.Length == 2 && option[0] == '-')
                 {
                     // 短名称。
+                    // 短名称的种类：
+                    //  -n
+                    //  -N
+                    // 短名称是大小写敏感的，不同大小写表示不同的含义。
                     var shortName = option[1];
                     if (values.Count == 0)
                     {
@@ -74,10 +81,24 @@ namespace Walterlv.Framework
                         parser.SetValue(shortName, values);
                     }
                 }
-                else if (option.Length > 2 && option[0] == '-' && option[1] == '-')
+                else if (option.Length > 2 && option[0] == '-')
                 {
                     // 长名称。
-                    var longName = option.Substring(2);
+                    // 长名称的种类：
+                    //  -LongName
+                    //  --long-name
+                    // 以上示例的两种是等价的，但无论哪种，都至少需要三个字符。
+                    // 长名称是大小写敏感的，大小写不同的参数将不会被识别。
+
+                    // 格式化长名称，如果不是 -LongName 型，就都转换成 -LongName 型。
+                    if (option[1] == '-')
+                    {
+                        // --long-name 型
+                        option = FormatCoreLongName(option);
+                    }
+
+                    var longName = option.Substring(1);
+
                     if (values.Count == 0)
                     {
                         parser.SetValue(longName, true);
@@ -136,14 +157,27 @@ namespace Walterlv.Framework
                 var arguments = url.Substring(start + 1);
                 var args = from keyValueString in arguments.Split(new[] {'&'}, StringSplitOptions.RemoveEmptyEntries)
                     let keyValue = keyValueString.Split(new[] {'='})
-                    let key = $"--{keyValue[0]}"
-                    let value = keyValue[1]
-                    select new[] {key, value};
+                    select new[] {FormatShellLongName(keyValue[0]), keyValue[1]};
                 return args.SelectMany(x => x).ToArray();
             }
 
             return new string[0];
         }
+
+        /// <summary>
+        /// 将 longName 这种名称转换为 -LongName 这种名称。
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string FormatShellLongName(string option)
+            => $"-{CultureInfo.InvariantCulture.TextInfo.ToTitleCase(option)}";
+
+        /// <summary>
+        /// 将 --long-name 这种名称转换为 -LongName 这种名称。
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string FormatCoreLongName(string option) =>
+            '-' + string.Concat(option.Split(new[] {'-'}, StringSplitOptions.RemoveEmptyEntries).Select(x =>
+                CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x)));
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay => string.Join(' ', _optionArgs

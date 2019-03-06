@@ -2,7 +2,7 @@
   "profiles": {
     "Debug Command": {
       "commandName": "Project",
-      "commandLineArgs": "--cloud -m Edit"
+      "commandLineArgs": "-Cloud -m Edit"
     },
     "Debug URL": {
       "commandName": "Project",
