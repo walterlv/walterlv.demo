@@ -20,7 +20,7 @@ namespace Walterlv.CommandLine.Benchmark
 
         private static readonly string[] CommandLineUrl =
         {
-            @"walterlv://open/?file=C:\Users\lvyi\Desktop\%E9%87%8D%E5%91%BD%E5%90%8D%E8%AF%95%E9%AA%8C.enbx&cloud=true&iwb=true&placement=Outside&startupSession=89EA9D26-6464-4E71-BD04-AA6516063D83",
+            @"walterlv://open/?file=C:\Users\lvyi\Desktop\%E9%87%8D%E5%91%BD%E5%90%8D%E8%AF%95%E9%AA%8C.enbx&cloud=true&iwb=true&silence=true&placement=Outside&startupSession=89EA9D26-6464-4E71-BD04-AA6516063D83",
         };
 
         [Benchmark(Baseline = true)]

@@ -6,7 +6,7 @@
     },
     "Debug URL": {
       "commandName": "Project",
-      "commandLineArgs": "walterlv://open/?mode=edit&cloud=true&%E4%B8%AD%E6%96%87=%E6%AD%A3%E5%B8%B8%20%E7%9A%84%E7%A9%BA%E6%A0%BC"
+      "commandLineArgs": "walterlv://open/?file=C:\\Users\\lvyi\\Desktop\\%E9%87%8D%E5%91%BD%E5%90%8D%E8%AF%95%E9%AA%8C.enbx&cloud=true&iwb=true&silence=true&placement=Outside&startupSession=89EA9D26-6464-4E71-BD04-AA6516063D83"
     }
   }
 }
