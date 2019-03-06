@@ -180,8 +180,8 @@ namespace Walterlv.Framework
                 CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x)));
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => string.Join(' ', _optionArgs
-            .Select(pair => $"{pair.Key}{(pair.Key == null ? "" : " ")}{string.Join(' ', pair.Value)}"));
+        private string DebuggerDisplay => string.Join(" ", _optionArgs
+            .Select(pair => $"{pair.Key}{(pair.Key == null ? "" : " ")}{string.Join(" ", pair.Value)}"));
 
         private class CommandLineDebugView
         {
@@ -192,7 +192,7 @@ namespace Walterlv.Framework
 
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             private string[] Options => _owner._optionArgs
-                .Select(pair => $"{pair.Key}{(pair.Key == null ? "" : " ")}{string.Join(' ', pair.Value)}")
+                .Select(pair => $"{pair.Key}{(pair.Key == null ? "" : " ")}{string.Join(" ", pair.Value)}")
                 .ToArray();
         }
     }
