@@ -20,7 +20,7 @@ namespace Walterlv.Framework.StateMachine
         {
             // 准备初始参数。
             ICommandLineStateMachine stateMachine = this;
-            var parsedArgs = new Dictionary<string, IReadOnlyList<string>>();
+            var parsedArgs = new Dictionary<string, IReadOnlyList<string>>(0, ArgumentOptionComparer.Instance);
             IReadOnlyList<ICommandLineArgReader> readers = new List<ICommandLineArgReader>
             {
                 new OptionReader(),
@@ -72,6 +72,17 @@ namespace Walterlv.Framework.StateMachine
         void ICommandLineStateMachine.Commit()
         {
             _optionCollectedAction(_currentOption, _currentValues);
+        }
+
+        private class ArgumentOptionComparer : IEqualityComparer<string>
+        {
+            internal static readonly IEqualityComparer<string> Instance = new ArgumentOptionComparer();
+
+            bool IEqualityComparer<string>.Equals(string x, string y)
+                => string.Equals(x, y, StringComparison.InvariantCulture);
+
+            int IEqualityComparer<string>.GetHashCode(string option)
+                => option?.GetHashCode() ?? 0;
         }
     }
 }
