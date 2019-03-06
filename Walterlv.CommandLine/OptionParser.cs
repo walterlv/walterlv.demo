@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Walterlv.Framework;
 
 namespace Walterlv
 {
-    internal class OptionParser : ICommandLineOptionParser<Option>
+    public class OptionsParser : ICommandLineOptionParser<Options>
     {
         private bool _isFromCloud;
         private string _filePath;
         private string _startupMode;
         private bool _isSilence;
         private bool _isIwb;
+        private string _placement;
+        private string _startupSession;
 
         public void SetValue(int index, string value)
         {
@@ -75,6 +76,12 @@ namespace Walterlv
                 case "mode":
                     _startupMode = value;
                     break;
+                case "placement":
+                    _placement = value;
+                    break;
+                case "StartupSession":
+                    _startupSession = value;
+                    break;
             }
         }
 
@@ -82,10 +89,9 @@ namespace Walterlv
         {
         }
 
-        public Option Commit()
+        public Options Commit()
         {
-            var startupMode = (StartupMode) Enum.Parse(typeof(StartupMode), _startupMode, true);
-            return new Option(_filePath, _isFromCloud, startupMode, _isSilence, _isIwb);
+            return new Options(_filePath, _isFromCloud, _startupMode, _isSilence, _isIwb, _placement, _startupSession);
         }
     }
 }
