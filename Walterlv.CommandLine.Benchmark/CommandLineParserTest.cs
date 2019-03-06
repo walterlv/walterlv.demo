@@ -4,6 +4,8 @@ namespace Walterlv.CommandLine.Benchmark
 {
     public class CommandLineParserTest
     {
+        private static readonly string[] NoArgs = new string[0];
+
         private static readonly string[] WindowsStyleArgs =
         {
             @"C:\Users\lvyi\Desktop\重命名试验.enbx",
@@ -36,6 +38,20 @@ namespace Walterlv.CommandLine.Benchmark
         {
             @"walterlv://open/?file=C:\Users\lvyi\Desktop\%E9%87%8D%E5%91%BD%E5%90%8D%E8%AF%95%E9%AA%8C.enbx&cloud=true&iwb=true&silence=true&placement=Outside&startupSession=89EA9D26-6464-4E71-BD04-AA6516063D83",
         };
+
+        [Benchmark]
+        public void ParseNoArgs()
+        {
+            var commandLine = Framework.CommandLine.Parse(NoArgs, urlProtocol: "walterlv");
+            commandLine.As<Options>(new OptionsParser());
+        }
+
+        [Benchmark]
+        public void ParseNoArgsAuto()
+        {
+            var commandLine = Framework.CommandLine.Parse(NoArgs, urlProtocol: "walterlv");
+            commandLine.As<Options>();
+        }
 
         [Benchmark(Baseline = true)]
         public void ParseWindows()
