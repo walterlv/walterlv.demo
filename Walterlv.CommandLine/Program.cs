@@ -12,8 +12,10 @@ namespace Walterlv
             for (var i = 0; i < 100; i++)
             {
                 stopwatch.Restart();
+
                 var commandLine = CommandLine.Parse(args, urlProtocol: "walterlv");
                 var option = commandLine.As<Options>(new OptionsParser());
+
                 stopwatch.Stop();
                 Console.Write(option.ToString()[0]);
                 Console.CursorLeft = 0;
