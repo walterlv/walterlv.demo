@@ -47,7 +47,7 @@ namespace Walterlv.Framework.StateMachine
             // 当状态机运行触发选项生成时，将此选项更新到集合中。
             void OnOptionCollected(string option, IReadOnlyList<string> values)
             {
-                if (values.Any())
+                if (values.Count > 0)
                 {
                     parsedArgs[option ?? ""] = values;
                 }
