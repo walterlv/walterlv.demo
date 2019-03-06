@@ -41,13 +41,13 @@ namespace Walterlv
         /// <summary>
         /// 表示当前窗口启动时应该安放的位置。此属性可能为 null，但绝不会是空字符串或空白字符串。
         /// </summary>
-        [Option('p', "Placement"), DefaultValue(false)]
+        [Option('p', "Placement")]
         public string Placement { get; }
 
         /// <summary>
         /// 表示一个启动会话 Id，用于在多个进程间同步一些信息。此属性可能为 null，但绝不会是空字符串或空白字符串。
         /// </summary>
-        [Option("StartupSession"), DefaultValue(false)]
+        [Option("StartupSession")]
         public string StartupSession { get; }
 
         /// <summary>
