@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Web;
 using Walterlv.Framework.StateMachine;
 
@@ -186,16 +187,27 @@ namespace Walterlv.Framework
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string FormatCoreLongName(string option)
         {
-            var chars = option.ToCharArray();
-            for (var i = 0; i < chars.Length - 1; i++)
+            var builder = new StringBuilder();
+            builder.Append('-');
+            var isWordFirstLetter = true;
+            foreach (var current in option.Skip(2))
             {
-                if (chars[i] is '-')
+                if (current is '-')
                 {
-                    chars[i + 1] = char.ToUpper(chars[i + 1], CultureInfo.InvariantCulture);
+                    isWordFirstLetter = true;
+                }
+                else if (isWordFirstLetter)
+                {
+                    isWordFirstLetter = false;
+                    builder.Append(char.ToUpper(current, CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    builder.Append(current);
                 }
             }
 
-            return new string(chars);
+            return builder.ToString();
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
