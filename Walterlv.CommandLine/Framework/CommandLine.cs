@@ -167,17 +167,36 @@ namespace Walterlv.Framework
         /// <summary>
         /// 将 longName 这种名称转换为 -LongName 这种名称。
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string FormatShellLongName(string option)
-            => $"-{CultureInfo.InvariantCulture.TextInfo.ToTitleCase(option)}";
+        {
+            var chars = option.ToCharArray();
+            if (char.IsUpper(chars[0]))
+            {
+                return option;
+            }
+
+            chars[0] = char.ToUpper(chars[0], CultureInfo.InvariantCulture);
+            return new string(chars);
+        }
 
         /// <summary>
         /// 将 --long-name 这种名称转换为 -LongName 这种名称。
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static string FormatCoreLongName(string option) =>
-            '-' + string.Concat(option.Split(new[] {'-'}, StringSplitOptions.RemoveEmptyEntries).Select(x =>
-                CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x)));
+        private static string FormatCoreLongName(string option)
+        {
+            var chars = option.ToCharArray();
+            for (var i = 0; i < chars.Length - 1; i++)
+            {
+                if (chars[i] is '-')
+                {
+                    chars[i + 1] = char.ToUpper(chars[i + 1], CultureInfo.InvariantCulture);
+                }
+            }
+
+            return new string(chars);
+        }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay => string.Join(" ", _optionArgs
