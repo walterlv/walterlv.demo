@@ -4,6 +4,10 @@
       "commandName": "Project",
       "commandLineArgs": "\"C:\\Users\\lvyi\\Desktop\\重命名试验.enbx\" -Cloud -Iwb -m Display -s -p Outside -StartupSession 89EA9D26-6464-4E71-BD04-AA6516063D83"
     },
+    "Debug /CmdStyle": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\lvyi\\Desktop\\重命名试验.enbx\" /Cloud /Iwb /m Display /s /p Outside /StartupSession 89EA9D26-6464-4E71-BD04-AA6516063D83"
+    },
     "debug --linux-style": {
       "commandName": "Project",
       "commandLineArgs": "\"C:\\Users\\lvyi\\Desktop\\重命名试验.enbx\" --cloud --iwb -m Display -s -p Outside --startup-session 89EA9D26-6464-4E71-BD04-AA6516063D83"

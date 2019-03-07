@@ -21,6 +21,20 @@ namespace Walterlv.CommandLine.Benchmark
             "89EA9D26-6464-4E71-BD04-AA6516063D83",
         };
 
+        internal static readonly string[] CmdStyleArgs =
+        {
+            @"C:\Users\lvyi\Desktop\重命名试验.enbx",
+            "/Cloud",
+            "/Iwb",
+            "/m",
+            "Display",
+            "/s",
+            "/p",
+            "Outside",
+            "/StartupSession",
+            "89EA9D26-6464-4E71-BD04-AA6516063D83",
+        };
+
         private static readonly string[] LinuxStyleArgs =
         {
             @"C:\Users\lvyi\Desktop\重命名试验.enbx",
@@ -65,6 +79,20 @@ namespace Walterlv.CommandLine.Benchmark
         public void ParseWindowsAuto()
         {
             var commandLine = Cvte.Cli.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
+            commandLine.As<Options>();
+        }
+
+        [Benchmark]
+        public void ParseCmd()
+        {
+            var commandLine = Cvte.Cli.CommandLine.Parse(CmdStyleArgs, urlProtocol: "walterlv");
+            commandLine.As<Options>(new OptionsParser());
+        }
+
+        [Benchmark]
+        public void ParseCmdAuto()
+        {
+            var commandLine = Cvte.Cli.CommandLine.Parse(CmdStyleArgs, urlProtocol: "walterlv");
             commandLine.As<Options>();
         }
 
