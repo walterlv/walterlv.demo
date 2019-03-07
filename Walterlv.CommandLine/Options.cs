@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Walterlv.Framework;
+using Cvte.Cli;
 
 namespace Walterlv
 {

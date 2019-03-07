@@ -43,56 +43,56 @@ namespace Walterlv.CommandLine.Benchmark
         [Benchmark]
         public void ParseNoArgs()
         {
-            var commandLine = Framework.CommandLine.Parse(NoArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(NoArgs, urlProtocol: "walterlv");
             commandLine.As<Options>(new OptionsParser());
         }
 
         [Benchmark]
         public void ParseNoArgsAuto()
         {
-            var commandLine = Framework.CommandLine.Parse(NoArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(NoArgs, urlProtocol: "walterlv");
             commandLine.As<Options>();
         }
 
         [Benchmark(Baseline = true)]
         public void ParseWindows()
         {
-            var commandLine = Framework.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
             commandLine.As<Options>(new OptionsParser());
         }
 
         [Benchmark]
         public void ParseWindowsAuto()
         {
-            var commandLine = Framework.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
             commandLine.As<Options>();
         }
 
         [Benchmark]
         public void ParseLinux()
         {
-            var commandLine = Framework.CommandLine.Parse(LinuxStyleArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(LinuxStyleArgs, urlProtocol: "walterlv");
             commandLine.As<Options>(new OptionsParser());
         }
 
         [Benchmark]
         public void ParseLinuxAuto()
         {
-            var commandLine = Framework.CommandLine.Parse(LinuxStyleArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(LinuxStyleArgs, urlProtocol: "walterlv");
             commandLine.As<Options>();
         }
 
         [Benchmark]
         public void ParseUrl()
         {
-            var commandLine = Framework.CommandLine.Parse(UrlArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(UrlArgs, urlProtocol: "walterlv");
             commandLine.As<Options>(new OptionsParser());
         }
 
         [Benchmark]
         public void ParseUrlAuto()
         {
-            var commandLine = Framework.CommandLine.Parse(UrlArgs, urlProtocol: "walterlv");
+            var commandLine = Cvte.Cli.CommandLine.Parse(UrlArgs, urlProtocol: "walterlv");
             commandLine.As<Options>();
         }
 

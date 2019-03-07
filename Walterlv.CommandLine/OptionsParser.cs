@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Walterlv.Framework;
+using Cvte.Cli;
 
 namespace Walterlv
 {
@@ -49,7 +49,7 @@ namespace Walterlv
             }
         }
 
-        public void SetValue(char shortName, IEnumerable<string> values)
+        public void SetValue(char shortName, IReadOnlyList<string> values)
         {
         }
 
@@ -88,7 +88,7 @@ namespace Walterlv
             }
         }
 
-        public void SetValue(string longName, IEnumerable<string> values)
+        public void SetValue(string longName, IReadOnlyList<string> values)
         {
         }
 

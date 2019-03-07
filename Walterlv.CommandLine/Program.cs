@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Walterlv.Framework;
+using Cvte.Cli;
 
 namespace Walterlv
 {
