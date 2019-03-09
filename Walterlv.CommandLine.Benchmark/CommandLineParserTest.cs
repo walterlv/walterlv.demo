@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using CommandLine;
+using Cvte.Cli;
 
 namespace Walterlv.CommandLine.Benchmark
 {
@@ -94,6 +95,13 @@ namespace Walterlv.CommandLine.Benchmark
         {
             var commandLine = Cvte.Cli.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
             commandLine.As<RuntimeImmutableOptions>();
+        }
+
+        [Benchmark]
+        public void HandleWindowsRuntime()
+        {
+            var commandLine = Cvte.Cli.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
+            commandLine.Handle<EditOptions, PrintOptions>(options => { }, options => { });
         }
 
         [Benchmark]
