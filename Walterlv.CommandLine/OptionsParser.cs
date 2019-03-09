@@ -13,6 +13,8 @@ namespace Walterlv
         private string _placement;
         private string _startupSession;
 
+        public string Verb => null;
+
         public void SetValue(int index, string value)
         {
             switch (index)
