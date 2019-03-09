@@ -83,6 +83,20 @@ namespace Walterlv.CommandLine.Benchmark
         }
 
         [Benchmark]
+        public void ParseWindowsRuntime()
+        {
+            var commandLine = Cvte.Cli.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
+            commandLine.As<RuntimeOptions>();
+        }
+
+        [Benchmark]
+        public void ParseWindowsImmutableRuntime()
+        {
+            var commandLine = Cvte.Cli.CommandLine.Parse(WindowsStyleArgs, urlProtocol: "walterlv");
+            commandLine.As<RuntimeImmutableOptions>();
+        }
+
+        [Benchmark]
         public void ParseCmd()
         {
             var commandLine = Cvte.Cli.CommandLine.Parse(CmdStyleArgs, urlProtocol: "walterlv");
@@ -127,7 +141,7 @@ namespace Walterlv.CommandLine.Benchmark
         [Benchmark]
         public void CommandLineParser()
         {
-            Parser.Default.ParseArguments<CommandLineOptions>(LinuxStyleArgs).WithParsed(options => { });
+            Parser.Default.ParseArguments<ComparedOptions>(LinuxStyleArgs).WithParsed(options => { });
         }
     }
 }
