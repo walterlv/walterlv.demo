@@ -11,6 +11,7 @@ namespace Walterlv.Demo.TreePerformance
         public MainWindow()
         {
             InitializeComponent();
+            CachePanel.ChildrenCacheStrategy = new WeightCountLimitCache();
             ContentRendered += OnContentRendered;
         }
 

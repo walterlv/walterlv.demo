@@ -12,10 +12,11 @@ namespace Walterlv.Demo.TreePerformance
     public class CachePanel : FrameworkElement, IAddChild
     {
         private UIElement _currentChild;
+        private IObjectCache _childrenCacheStrategy = new NeverCache();
 
         public CachePanel()
         {
-            Children = new YaihaiFayni(OnAdded, OnRemoved);
+            Children = new LogicElementCollection(OnAdded, OnRemoved);
         }
 
         private void OnAdded(UIElement child)
@@ -47,16 +48,46 @@ namespace Walterlv.Demo.TreePerformance
                 // 接受 null 作为当前显示项，表示当前不显示内容。
                 if (_currentChild != null)
                 {
-                    RemoveVisualChild(_currentChild);
+                    ChildrenCacheStrategy.Unuse(_currentChild);
                 }
 
                 _currentChild = value;
                 if (value != null)
                 {
-                    AddVisualChild(value);
+                    ChildrenCacheStrategy.Use(value);
+                    var parent = VisualTreeHelper.GetParent(value);
+                    if (!Equals(parent, this))
+                    {
+                        AddVisualChild(value);
+                    }
                 }
 
                 InvalidateArrange();
+            }
+        }
+
+        public IObjectCache ChildrenCacheStrategy
+        {
+            get => _childrenCacheStrategy;
+            set
+            {
+                if (value is null) throw new ArgumentNullException(nameof(value));
+                if (ReferenceEquals(_childrenCacheStrategy, value)) return;
+
+                _childrenCacheStrategy.OutOfDated -= OnChildOutOfDated;
+                _childrenCacheStrategy = value;
+                value.OutOfDated += OnChildOutOfDated;
+            }
+        }
+
+        private void OnChildOutOfDated(object sender, ObjectEventArgs e)
+        {
+            var value = e.Object as UIElement
+                        ?? throw new InvalidOperationException($"当实现 {nameof(IObjectCache)} 时，必须传入 Use 过的元素之一。");
+            var parent = VisualTreeHelper.GetParent(value);
+            if (Equals(parent, this))
+            {
+                RemoveVisualChild(value);
             }
         }
 

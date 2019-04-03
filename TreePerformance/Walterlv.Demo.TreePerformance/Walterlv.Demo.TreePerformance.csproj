@@ -53,7 +53,11 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="YaihaiFayni.cs" />
+    <Compile Include="IObjectCache.cs" />
+    <Compile Include="NeverCache.cs" />
+    <Compile Include="ObjectEventArgs.cs" />
+    <Compile Include="WeightCountLimitCache.cs" />
+    <Compile Include="LogicElementCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
