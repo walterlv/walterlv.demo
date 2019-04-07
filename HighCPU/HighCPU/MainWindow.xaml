@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock x:Name="Block" Height="30"/>
+            <Button x:Name="Button" Content="CPUHigh起来" Click="ButtonBase_OnClick" Margin="10" />
+        </StackPanel>
     </Grid>
 </Window>
