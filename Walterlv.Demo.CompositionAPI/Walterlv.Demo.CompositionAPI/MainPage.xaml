@@ -10,27 +10,33 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <controls:NavigationView x:Name="WalterlvDemoView" Margin="0 -43 0 0">
+        <controls:NavigationView x:Name="WalterlvDemoView">
             <controls:NavigationView.MenuItems>
-                <ListViewItem Content="Home" />
-                <ListViewItem Content="Demo" />
-                <ListViewItem Content="About" />
-                <ListViewItem Content="https://walterlv.github.io/" />
+                <ListViewItem Margin="-16 0" Padding="0">
+                    <StackPanel Orientation="Horizontal" Padding="0">
+                        <SymbolIcon Width="48" />
+                        <TextBlock Text="Home" />
+                    </StackPanel>
+                </ListViewItem>
+                <ListViewItem Margin="-16 0" Padding="0">
+                    <StackPanel Orientation="Horizontal" Padding="0">
+                        <SymbolIcon Width="48" />
+                        <TextBlock Text="Demo" />
+                    </StackPanel>
+                </ListViewItem>
+                <ListViewItem Margin="-16 0" Padding="0">
+                    <StackPanel Orientation="Horizontal" Padding="0">
+                        <SymbolIcon Width="48" />
+                        <TextBlock Text="About" />
+                    </StackPanel>
+                </ListViewItem>
+                <ListViewItem Margin="-16 0" Padding="0">
+                    <StackPanel Orientation="Horizontal" Padding="0">
+                        <SymbolIcon Width="48" />
+                        <TextBlock Text="https://walterlv.github.io/" />
+                    </StackPanel>
+                </ListViewItem>
             </controls:NavigationView.MenuItems>
         </controls:NavigationView>
-        <Border x:Name="TitleBar" Height="64" Margin="48 32 0 0"
-                VerticalAlignment="Top" Background="Teal"/>
-        <Border Height="64" Margin="200 0"
-                VerticalAlignment="Top" Background="DeepSkyBlue" />
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
     </Grid>
 </Page>

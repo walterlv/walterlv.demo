@@ -31,7 +31,7 @@ namespace Walterlv.Demo.CompositionAPI
             this.InitializeComponent();
             Loaded += OnLoaded;
 
-            Window.Current.SetTitleBar(TitleBar);
+            //Window.Current.SetTitleBar(TitleBar);
 
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.BackgroundColor = Colors.Khaki;

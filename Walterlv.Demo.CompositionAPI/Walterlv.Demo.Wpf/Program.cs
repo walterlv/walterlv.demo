@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace Walterlv.Demo.Wpf
 {
@@ -6,6 +8,12 @@ namespace Walterlv.Demo.Wpf
     {
         static void Main(string[] args)
         {
+            Console.Title = "Walterlv.Demo";
+
+            var dataObject = new DataObject();
+            Clipboard.SetDataObject(dataObject);
+
+            Console.Read();
         }
     }
 }

@@ -3,7 +3,9 @@ using System.Numerics;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.Composition;
+using Windows.UI.Composition.Interactions;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace Walterlv.Demo.ZeroUwp
 {
@@ -22,27 +24,43 @@ namespace Walterlv.Demo.ZeroUwp
         public void SetWindow(CoreWindow window)
         {
             _window = window;
-            _window.PointerMoved += OnPointerMoved;
 
-            var compositor = new Compositor();
-            _root = compositor.CreateContainerVisual();
-            var compositionTarget = compositor.CreateTargetForCurrentView();
+            _compositor = new Compositor();
+            _root = _compositor.CreateContainerVisual();
+            var compositionTarget = _compositor.CreateTargetForCurrentView();
             compositionTarget.Root = _root;
 
-            var child = compositor.CreateSpriteVisual();
+            var child = _compositor.CreateSpriteVisual();
             child.Size = new Vector2(100f, 100f);
-            child.Brush = compositor.CreateColorBrush(Color.FromArgb(0xFF, 0x00, 0x80, 0xFF));
+            child.Brush = _compositor.CreateHostBackdropBrush();
             _root.Children.InsertAtTop(child);
+
+            InteractionTrackerSetup(_compositor, _root);
         }
 
         /// <summary>
-        /// 当指针设备在窗口内划过时执行。此时我们来做交互。
+        /// 当指针设备在窗口内按下时执行。此时我们来做交互。
         /// </summary>
-        private void OnPointerMoved(CoreWindow sender, PointerEventArgs args)
+        private void InteractionTrackerSetup(Compositor compositor, Visual hitTestRoot)
         {
-            var visual = _root.Children.First();
-            var position = args.CurrentPoint.Position;
-            visual.Offset = new Vector3((float) (position.X - 50f), (float) (position.Y - 50f), 0f);
+            // #1 Create InteractionTracker object
+            var tracker = InteractionTracker.Create(compositor);
+
+            // #2 Set Min and Max positions
+            tracker.MinPosition = new Vector3(-1000f);
+            tracker.MaxPosition = new Vector3(1000f);
+
+            // #3 Setup the VisualInteractionSourc
+            var source = VisualInteractionSource.Create(hitTestRoot);
+
+            // #4 Set the properties for the VisualInteractionSource
+            source.ManipulationRedirectionMode =
+                VisualInteractionSourceRedirectionMode.CapableTouchpadOnly;
+            source.PositionXSourceMode = InteractionSourceMode.EnabledWithInertia;
+            source.PositionYSourceMode = InteractionSourceMode.EnabledWithInertia;
+
+            // #5 Add the VisualInteractionSource to InteractionTracker
+            tracker.InteractionSources.Add(source);
         }
 
         /// <summary>
@@ -70,5 +88,6 @@ namespace Walterlv.Demo.ZeroUwp
 
         private CoreWindow _window;
         private ContainerVisual _root;
+        private Compositor _compositor;
     }
 }

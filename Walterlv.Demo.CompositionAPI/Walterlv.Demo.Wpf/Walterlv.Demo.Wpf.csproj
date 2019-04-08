@@ -1,8 +1,8 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.41">
 
   <PropertyGroup>
-    <TargetFrameworks>net471;uap10.0.17134</TargetFrameworks>
-    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net471</TargetFrameworks>
+    <OutputType>Exe</OutputType>
     <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
 
