@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Channels.Tcp;
@@ -32,7 +33,7 @@ namespace LacihaFabeBemrur
         }
 
         private Lindexi _lindexi;
-        private RemoteEventHandler<Lindexi, EventArgs> _proxy;
+        private RemoteEventHandler<Lindexi, EventArgs> _handler;
 
         private Lindexi Lindexi
         {
@@ -43,8 +44,9 @@ namespace LacihaFabeBemrur
                     var lindexi = (Lindexi)Activator.GetObject(
                         typeof(Lindexi),
                         "ipc://lindexi_server/order");
-                    _proxy = new RemoteEventHandler<Lindexi, EventArgs>(
-                        lindexi, RemoteLindexiOnCaseOrdered);
+                    _handler = new RemoteEventHandler<Lindexi, EventArgs>(
+                        lindexi, nameof(Lindexi.CaseOrdered), RemoteLindexiOnCaseOrdered);
+
                     _lindexi = lindexi;
                 }
 
@@ -52,7 +54,7 @@ namespace LacihaFabeBemrur
             }
         }
 
-        private void RemoteLindexiOnCaseOrdered(object sender, EventArgs e)
+        public void RemoteLindexiOnCaseOrdered(object sender, EventArgs e)
         {
             LoggerTextBlock.Dispatcher.InvokeAsync(() =>
             {
