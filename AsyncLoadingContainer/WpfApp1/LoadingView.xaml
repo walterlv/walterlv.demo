@@ -10,9 +10,6 @@
             <DoubleAnimation Storyboard.TargetName="Target"
                              Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
                              From="0" To="1440" Duration="0:0:1.5" RepeatBehavior="Forever">
-                <!--<DoubleAnimation.EasingFunction>
-                    <PowerEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>-->
             </DoubleAnimation>
         </Storyboard>
     </FrameworkElement.Resources>

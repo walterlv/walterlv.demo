@@ -4,9 +4,9 @@
         xmlns:local="clr-namespace:Walterlv.Demo"
         xmlns:ww="clr-namespace:Walterlv.Windows;assembly=Walterlv.Windows"
         xmlns:demo="clr-namespace:Walterlv.Demo"
-        Title="MainWindow" Height="450" Width="800"
+        Title="walterlv.com" Height="300" Width="400" WindowStartupLocation="CenterScreen"
         Background="Black">
-    <Grid x:Name="RootPanel">
+    <Grid>
         <ww:AsyncBox LoadingViewType="demo:LoadingView">
             <demo:LongTimeView />
         </ww:AsyncBox>

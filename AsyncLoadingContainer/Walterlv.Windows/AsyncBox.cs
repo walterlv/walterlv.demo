@@ -30,7 +30,7 @@ namespace Walterlv.Windows
         private readonly HostVisual _hostVisual;
 
         [CanBeNull]
-        private AsyncUISource _targetSource;
+        private VisualTargetPresentationSource _targetSource;
 
         [CanBeNull]
         private UIElement _loadingView;
@@ -128,7 +128,7 @@ namespace Walterlv.Windows
             _loadingView = await dispatcher.InvokeAsync(() =>
             {
                 var loadingView = CreateLoadingView();
-                _targetSource = new AsyncUISource(_hostVisual)
+                _targetSource = new VisualTargetPresentationSource(_hostVisual)
                 {
                     RootVisual = loadingView
                 };
