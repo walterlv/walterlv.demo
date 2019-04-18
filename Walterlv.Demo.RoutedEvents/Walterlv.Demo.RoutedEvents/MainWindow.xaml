@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Walterlv.Demo.RoutedEvents"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <UniformGrid x:Name="RootPanel" Rows="1"
+                 MouseDown="OnMouseDown" MouseMove="OnMouseMove" MouseUp="OnMouseUp">
+        <Ellipse Margin="48" Fill="#4989f4" />
+        <Rectangle Margin="64" Fill="#17a05d" AllowDrop="True" />
+    </UniformGrid>
 </Window>

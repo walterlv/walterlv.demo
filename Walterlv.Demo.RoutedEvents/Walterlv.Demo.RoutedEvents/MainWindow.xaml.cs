@@ -24,5 +24,25 @@ namespace Walterlv.Demo.RoutedEvents
         {
             InitializeComponent();
         }
+
+        private IInputElement _capturing;
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _capturing = (IInputElement) e.OriginalSource;
+            _capturing.CaptureMouse();
+            Console.WriteLine($"[Down] {e.Source.GetType().Name} | {e.OriginalSource.GetType().Name}");
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine($"[Move] {e.Source.GetType().Name} | {e.OriginalSource.GetType().Name}");
+        }
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine($"[ Up ] {e.Source.GetType().Name} | {e.OriginalSource.GetType().Name}");
+            _capturing?.ReleaseMouseCapture();
+        }
     }
 }
