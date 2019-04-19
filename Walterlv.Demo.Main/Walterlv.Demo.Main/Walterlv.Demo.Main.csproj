@@ -8,6 +8,13 @@
     <StartupObject>Walterlv.Demo.App</StartupObject>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(StartupObject)' == 'Walterlv.Demo.Program' ">
+    <DefineConstants>$(DefineConstants);OLD</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(StartupObject)' == 'Walterlv.Demo.NewProgram' ">
+    <DefineConstants>$(DefineConstants);NEW</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -19,6 +26,12 @@
     <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <Page Include="**\*.xaml" Exclude="App.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
+
+    <!-- 删掉两个 App.xaml.cs 文件，以便后面可以重新添加 -->
+    <Compile Remove="App.xaml.cs" />
+    <Compile Remove="App.new.xaml.cs" />
+    <Compile Include="$(AppCsPath)" DependentUpon="App.xaml" SubType="Designer" />
+
   </ItemGroup>
 
 </Project>
