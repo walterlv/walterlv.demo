@@ -1,9 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Management;
-using System.Runtime.InteropServices;
 
 namespace Walterlv.Debugging
 {
@@ -13,14 +10,13 @@ namespace Walterlv.Debugging
         {
             if (args.Any())
             {
-                // AttachDebugger();
-                Console.WriteLine("Child application");
+                Console.WriteLine("Walterlv child application");
                 Console.WriteLine(string.Join(Environment.NewLine, args));
                 Console.ReadLine();
             }
             else
             {
-                Console.WriteLine("Main application");
+                Console.WriteLine("Walterlv main application");
                 var process = new Process
                 {
                     StartInfo = new ProcessStartInfo(Process.GetCurrentProcess().MainModule.FileName, "--child"),
