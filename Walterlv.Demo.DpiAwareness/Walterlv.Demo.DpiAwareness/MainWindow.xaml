@@ -1,0 +1,25 @@
+﻿<Window x:Class="Walterlv.Demo.DpiAwareness.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.Demo.DpiAwareness"
+        mc:Ignorable="d"
+        Title="Windows DPI Demo" Width="400" Height="240">
+    <Border BorderThickness="8" BorderBrush="#1570a6" Background="#f3f6f8">
+        <Grid>
+            <TextBlock FontFamily="Microsoft YaHei" FontSize="24" Margin="16">
+                <Run Text="吕毅的博客" />
+                <LineBreak />
+                <Run Text="https://walterlv.com/" />
+            </TextBlock>
+            <TextBlock FontFamily="Microsoft YaHei Light" FontSize="24" VerticalAlignment="Bottom" Margin="16">
+                <Run Text="System DPI:" />
+                <Run x:Name="SystemDpiInfoRun" Text="0" />
+                <LineBreak />
+                <Run Text="Monitor DPI:" />
+                <Run x:Name="MonitorDpiInfoRun" Text="0" />
+            </TextBlock>
+        </Grid>
+    </Border>
+</Window>
