@@ -1,0 +1,21 @@
+﻿<Window x:Class="Walterlv.Demo.TreePerformance.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.Demo.TreePerformance"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <FrameworkElement.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="White" />
+        </Style>
+    </FrameworkElement.Resources>
+    <Grid>
+        <local:CachePanel x:Name="CachePanel">
+        </local:CachePanel>
+        <Button Content="切换" Click="SwitchButton_Click"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Padding="16 4" Margin="8" />
+        <TextBlock x:Name="LogTextBlock" IsHitTestVisible="False" />
+    </Grid>
+</Window>
