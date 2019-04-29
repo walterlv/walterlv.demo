@@ -1,0 +1,51 @@
+﻿<Window x:Class="Walterlv.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:Microsoft.Toolkit.Win32.UI.Controls.WPF;assembly=Microsoft.Toolkit.Win32.UI.Controls"
+        xmlns:demo="clr-namespace:Walterlv.Demo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <FrameworkElement.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Padding" Value="8 0" />
+        </Style>
+    </FrameworkElement.Resources>
+    <Grid x:Name="RootPanel">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="" />
+            <Button Grid.Column="1" Content="" />
+            <Button Grid.Column="2" Content="" />
+            <Button Grid.Column="4" Content="" Click="GoButton_Click" />
+            <Button Grid.Column="5" Content="" />
+            <TextBox x:Name="UrlTextBox" Grid.Column="3" Text="https://walterlv.github.io" />
+        </Grid>
+        <demo:LoadingViewContainer Grid.RowSpan="2" x:Name="LoadingView" Tag="0" BorderBrush="Teal" BorderThickness="8" />
+        <!--<wpf:WebView x:Name="WebView" Grid.Row="1" />-->
+        <WebBrowser x:Name="WebView" Grid.Row="1" />
+    </Grid>
+</Window>
