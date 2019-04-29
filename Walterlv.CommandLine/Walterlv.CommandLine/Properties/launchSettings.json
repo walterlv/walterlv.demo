@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "Debug -WindowsStyle": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\lvyi\\Desktop\\重命名试验.enbx\" -Cloud -Iwb -m Display -s -p Outside -StartupSession 89EA9D26-6464-4E71-BD04-AA6516063D83"
+    },
+    "Debug /CmdStyle": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\lvyi\\Desktop\\重命名试验.enbx\" /Cloud /Iwb /m Display /s /p Outside /StartupSession 89EA9D26-6464-4E71-BD04-AA6516063D83"
+    },
+    "debug --linux-style": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\lvyi\\Desktop\\重命名试验.enbx\" --cloud --iwb -m Display -s -p Outside --startup-session 89EA9D26-6464-4E71-BD04-AA6516063D83"
+    },
+    "Debug URL": {
+      "commandName": "Project",
+      "commandLineArgs": "walterlv://open/?file=C:\\Users\\lvyi\\Desktop\\%E9%87%8D%E5%91%BD%E5%90%8D%E8%AF%95%E9%AA%8C.enbx&cloud=true&iwb=true&silence=true&placement=Outside&startupSession=89EA9D26-6464-4E71-BD04-AA6516063D83"
+    },
+    "Debug Edit XXX": {
+      "commandName": "Project",
+      "commandLineArgs": "Edit XXX"
+    }
+  }
+}
