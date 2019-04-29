@@ -1,0 +1,28 @@
+﻿<Window x:Class="Walterlv.EventCoding.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.EventCoding"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="2">
+            <TextBox MinWidth="72" Height="32" />
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="2" Orientation="Horizontal">
+            <Button Margin="2" Padding="16 4" Content="生成" Click="RandomButton_Click" />
+            <Button Margin="2" Padding="16 4" Content="复制" Click="CopyButton_Click" />
+        </StackPanel>
+        <TextBox x:Name="OutputTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                 FontSize="14" FontFamily="Consolas" VerticalScrollBarVisibility="Visible" />
+    </Grid>
+</Window>
