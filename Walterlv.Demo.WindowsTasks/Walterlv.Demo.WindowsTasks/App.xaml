@@ -1,0 +1,22 @@
+﻿<Application x:Class="Walterlv.Demo.WindowsTasks.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Walterlv.Demo.WindowsTasks"
+             StartupUri="MainWindow.xaml">
+    <JumpList.JumpList>
+        <JumpList ShowRecentCategory="True"
+                  ShowFrequentCategory="True">
+            <JumpTask Title="启动新窗口"
+                      Description="启动一个新的空窗口" />
+            <JumpTask Title="修改 walterlv 的个性化设置"
+                      Description="打开个性化设置页面并定位到 walterlv 的设置"
+                      IconResourcePath="C:\Windows\System32\wmploc.dll"
+                      IconResourceIndex="17"
+                      Arguments="--account" />
+            <JumpPath Path="C:\Users\lvyi\Desktop\2019-02-19-default-theme-not-selected.gif" />
+        </JumpList>
+    </JumpList.JumpList>
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
