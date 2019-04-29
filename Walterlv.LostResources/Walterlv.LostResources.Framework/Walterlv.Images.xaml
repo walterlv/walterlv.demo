@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+
+    <BitmapImage x:Key="Image.Fluent.Depth" options:Freeze="True"
+                 UriSource="pack://application:,,,/Walterlv.LostResources;component/Assets/depth.png" />
+    <BitmapImage x:Key="Image.Fluent.Light" options:Freeze="True"
+                 UriSource="pack://application:,,,/Walterlv.LostResources;component/Assets/light.png" />
+    <BitmapImage x:Key="Image.Fluent.Material" options:Freeze="True"
+                 UriSource="pack://application:,,,/Walterlv.LostResources;component/Assets/material.png" />
+    <BitmapImage x:Key="Image.Fluent.Motion" options:Freeze="True"
+                 UriSource="pack://application:,,,/Walterlv.LostResources;component/Assets/motion.png" />
+    <BitmapImage x:Key="Image.Fluent.Scale" options:Freeze="True"
+                 UriSource="pack://application:,,,/Walterlv.LostResources;component/Assets/scale.png" />
+
+</ResourceDictionary>

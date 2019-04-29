@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28531.58
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.LostResources", "Walterlv.LostResources\Walterlv.LostResources.csproj", "{B75507A8-E495-42AA-8994-36D818521361}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.LostResources.Framework", "Walterlv.LostResources.Framework\Walterlv.LostResources.Framework.csproj", "{5E4AE69D-0DF1-4E26-803D-4B83C029C622}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B75507A8-E495-42AA-8994-36D818521361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75507A8-E495-42AA-8994-36D818521361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75507A8-E495-42AA-8994-36D818521361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75507A8-E495-42AA-8994-36D818521361}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E4AE69D-0DF1-4E26-803D-4B83C029C622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E4AE69D-0DF1-4E26-803D-4B83C029C622}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4AE69D-0DF1-4E26-803D-4B83C029C622}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E4AE69D-0DF1-4E26-803D-4B83C029C622}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE656D98-0347-4655-94D0-465AF698700D}
+	EndGlobalSection
+EndGlobal

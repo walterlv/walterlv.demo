@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Empty.xaml" />
+  </ItemGroup>
+
+  <Target Name="MoveDesign" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+      <Page Remove="Main.xaml" />
+      <Page Include="Empty.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <Link>Main.xaml</Link>
+      </Page>
+      <!--<Page Include="Main.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <Link>Empty.xaml</Link>
+      </Page>-->
+    </ItemGroup>
+  </Target>
+</Project>
