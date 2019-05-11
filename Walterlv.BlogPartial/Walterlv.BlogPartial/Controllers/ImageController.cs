@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,9 +19,21 @@ namespace Walterlv.BlogPartial.Controllers
             _cache = memoryCache;
         }
 
-        [Route("bulletin.png")]
+        [Route("bulletin/csdn.png")]
         [HttpGet]
-        public FileResult GetImage()
+        public FileResult GetImageToCsdn()
+        {
+            return GetImage("CSDN");
+        }
+
+        [Route("bulletin/blog.png")]
+        [HttpGet]
+        public FileResult GetImageToBlog()
+        {
+            return GetImage("blog.walterlv.com");
+        }
+
+        private FileResult GetImage(string from)
         {
             Count++;
 
