@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Walterlv.BlogPartial.Services;
+using Walterlv.BlogPartial.Services.Implements;
 
 namespace Walterlv.BlogPartial
 {
@@ -29,6 +31,7 @@ namespace Walterlv.BlogPartial
                 .AddNewtonsoftJson();
 
             services.AddMemoryCache();
+            services.AddSingleton<IVisitingCounter, VisitingCounter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
