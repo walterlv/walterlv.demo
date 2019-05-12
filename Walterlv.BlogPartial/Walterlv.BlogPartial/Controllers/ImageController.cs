@@ -41,7 +41,8 @@ namespace Walterlv.BlogPartial.Controllers
 
             // 输出摘要。
             Console.WriteLine($@"==== [{DateTime.Now}] ====
-IP={ip}, UserAgent={userAgent}");
+IP: {ip}
+UserAgent: {userAgent}");
             _counter.PrintSummary();
 
             // 返回图片。
