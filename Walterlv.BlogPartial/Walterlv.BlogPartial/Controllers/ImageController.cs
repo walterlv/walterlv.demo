@@ -21,17 +21,31 @@ namespace Walterlv.BlogPartial.Controllers
         public FileResult GetImageToCsdn()
         {
             _counter.AddCsdnPv();
-            return GetImage("CSDN");
+            return GetImage("CSDN", "bulletin");
+        }
+
+        [HttpGet, Route("banner/csdn.png")]
+        public FileResult GetBannerToCsdn()
+        {
+            _counter.AddCsdnPv();
+            return GetImage("CSDN", "bulletin");
         }
 
         [HttpGet, Route("bulletin/blog.png")]
         public FileResult GetImageToBlog()
         {
             _counter.AddBlogPv();
-            return GetImage("blog.walterlv.com");
+            return GetImage("blog.walterlv.com", "bulletin");
         }
 
-        private FileResult GetImage(string from)
+        [HttpGet, Route("banner/blog.png")]
+        public FileResult GetBannerToBlog()
+        {
+            _counter.AddBlogPv();
+            return GetImage("blog.walterlv.com", "banner");
+        }
+
+        private FileResult GetImage(string from, string name)
         {
             // 获取用户的真实 IP（此字段记录了出发点 IP 和代理服务器经过的 IP）。
             HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var ip);
@@ -46,7 +60,7 @@ UserAgent: {userAgent}");
             _counter.PrintSummary();
 
             // 返回图片。
-            var file = _cache.GetOrCreate("Image", entry => System.IO.File.ReadAllBytes("bulletin.png"));
+            var file = _cache.GetOrCreate("Image", entry => System.IO.File.ReadAllBytes($"{name}.png"));
             return File(file, "image/png");
         }
 
