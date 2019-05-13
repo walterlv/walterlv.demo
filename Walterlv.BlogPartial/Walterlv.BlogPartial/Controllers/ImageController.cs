@@ -65,9 +65,18 @@ UserAgent: {userAgent}");
         }
 
         [HttpGet, Route("UrlMove")]
-        public IActionResult UrlMove()
+        public IActionResult UrlMove() => BulletinUrlMove();
+
+        [HttpGet, Route("bulletin/UrlMove")]
+        public IActionResult BulletinUrlMove()
         {
             return Redirect("https://blog.walterlv.com");
+        }
+
+        [HttpGet, Route("banner/UrlMove")]
+        public IActionResult BannerUrlMove()
+        {
+            return Redirect("https://www.zhipin.com/job_detail/26bf2e69fc65103d1HN539S_FFQ~.html");
         }
     }
 }
