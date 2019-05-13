@@ -1,0 +1,23 @@
+﻿<Window x:Class="XamlBugs.StaticProperties.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XamlBugs.StaticProperties"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+
+        <!-- When you run this application, and you'll see an incorrect content value of this `Button`.
+             If you try to decompile this assembly and view the mainwindow.baml file,
+             you'll find that the static value has been changed to `SystemParameters.Border` -->
+        <!-- The XAML namespace prefix can be changed to any other and the bug still reproduces. -->
+        <Button Content="{x:Static local:FooClass.Border}" />
+
+        <!-- Don't uncomment this line, because it will cause a runtime error.
+             The `FooClass.Border` property is a string,
+             but it will be compiled to `SystemParameters.Border` which is not a string. -->
+        <!--<TextBlock Text="{x:Static local:FooClass.Border}" />-->
+        
+    </Grid>
+</Window>
