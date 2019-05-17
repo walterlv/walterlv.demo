@@ -7,6 +7,8 @@ namespace Walterlv.InputMethodInteraction
 {
     public partial class MainWindow : Window
     {
+        private ImeSupport _imeSupport;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,6 +28,7 @@ namespace Walterlv.InputMethodInteraction
             AddHandler(TextCompositionManager.PreviewTextInputEvent, previewTextInputHandler);
             AddHandler(TextCompositionManager.TextInputEvent, textInputHandler);
 
+            _imeSupport = new ImeSupport(this);
         }
 
         private void OnPreviewTextInputStart(object sender, TextCompositionEventArgs e)
@@ -39,6 +42,7 @@ namespace Walterlv.InputMethodInteraction
         {
             Debug.WriteLine($"OnTextInputStart");
             InputingInputBox.Text = e.TextComposition.CompositionText;
+            _imeSupport.UpdateCompositionWindow();
         }
 
         private void OnPreviewTextInputUpdate(object sender, TextCompositionEventArgs e)
@@ -50,6 +54,7 @@ namespace Walterlv.InputMethodInteraction
         {
             Debug.WriteLine($"OnTextInputUpdate");
             InputingInputBox.Text = e.TextComposition.CompositionText;
+            _imeSupport.UpdateCompositionWindow();
         }
 
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
