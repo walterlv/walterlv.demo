@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Walterlv.InputMethodInteraction
@@ -24,17 +25,20 @@ namespace Walterlv.InputMethodInteraction
             AddHandler(TextCompositionManager.TextInputUpdateEvent, textInputUpdateHandler);
             AddHandler(TextCompositionManager.PreviewTextInputEvent, previewTextInputHandler);
             AddHandler(TextCompositionManager.TextInputEvent, textInputHandler);
+
         }
 
         private void OnPreviewTextInputStart(object sender, TextCompositionEventArgs e)
         {
             Debug.WriteLine($"OnPreviewTextInputStart");
-            DebugTextBox.Focus();
+
+            // Keyboard.Focus(DebugTextBox);
         }
 
         private void OnTextInputStart(object sender, TextCompositionEventArgs e)
         {
             Debug.WriteLine($"OnTextInputStart");
+            InputingInputBox.Text = e.TextComposition.CompositionText;
         }
 
         private void OnPreviewTextInputUpdate(object sender, TextCompositionEventArgs e)
@@ -45,6 +49,7 @@ namespace Walterlv.InputMethodInteraction
         private void OnTextInputUpdate(object sender, TextCompositionEventArgs e)
         {
             Debug.WriteLine($"OnTextInputUpdate");
+            InputingInputBox.Text = e.TextComposition.CompositionText;
         }
 
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -58,6 +63,19 @@ namespace Walterlv.InputMethodInteraction
         private void OnTextInput(object sender, TextCompositionEventArgs e)
         {
             Debug.WriteLine($"OnTextInput");
+            InputingInputBox.Text = "";
+            if (e.Text == "\b")
+            {
+                var text = CustomInputBox.Text;
+                if (text.Length > 0)
+                {
+                    CustomInputBox.Text = text.Substring(0, text.Length - 1);
+                }
+            }
+            else
+            {
+                CustomInputBox.Text += e.Text;
+            }
         }
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)

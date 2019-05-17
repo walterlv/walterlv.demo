@@ -7,10 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock x:Name="DebugTextBlock" FontSize="24" Margin="16"
-                   Focusable="True" FocusVisualStyle="{x:Null}" />
-        <TextBlock x:Name="Debug2TextBlock" FontSize="24" Margin="16 120 16 16"
-                   Focusable="True" FocusVisualStyle="{x:Null}" />
-        <TextBox x:Name="DebugTextBox" VerticalAlignment="Bottom" />
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="DebugTextBlock" Grid.Row="0" FontSize="14" Margin="16"/>
+        <TextBlock x:Name="Debug2TextBlock" Grid.Row="1" FontSize="14" Margin="16 120 16 16" />
+        <TextBlock Grid.Row="2" FontSize="16" Margin="12 12 12 0"
+                   Focusable="True" FocusVisualStyle="{x:Null}">
+            <Run x:Name="CustomInputBox" /><Run x:Name="InputingInputBox" TextDecorations="Underline" />
+        </TextBlock>
+        <TextBox x:Name="DebugTextBox" Grid.Row="3"
+                 Margin="12" FontSize="14" Padding="4"
+                 VerticalAlignment="Bottom" />
     </Grid>
 </Window>
