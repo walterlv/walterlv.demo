@@ -55,9 +55,6 @@ namespace Walterlv.InputMethodInteraction
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Debug.WriteLine($"OnPreviewTextInput");
-            var textInput = $"Text={e.Text}, SysText={e.SystemText}, CtlText={e.ControlText}";
-            Debug.WriteLine(textInput);
-            Debug2TextBlock.Text = textInput;
         }
 
         private void OnTextInput(object sender, TextCompositionEventArgs e)
