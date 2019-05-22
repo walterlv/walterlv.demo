@@ -103,15 +103,23 @@ namespace Walterlv.Demo.DesktopDocking
             /// <param name="window">需要成为停靠窗口的 <see cref="Window"/> 的实例。</param>
             public AppBarWindowProcessor(Window window)
             {
+                var source = (HwndSource) PresentationSource.FromVisual(window);
+                _hwndSource = source ?? throw new InvalidOperationException(
+                                  "在 Window.SourceInitialized 事件之前和窗口关闭之后无法设置停靠属性。");
+
                 _window = window;
+
                 _callbackId = RegisterWindowMessage("AppBarMessage");
                 _restoreStyle = window.WindowStyle;
                 _restoreBounds = window.RestoreBounds;
                 _restoreResizeMode = window.ResizeMode;
                 _restoreTopmost = window.Topmost;
+
+                _window.Closed += OnClosed;
             }
 
             private readonly Window _window;
+            private readonly HwndSource _hwndSource;
             private readonly int _callbackId;
             private readonly WindowStyle _restoreStyle;
             private readonly Rect _restoreBounds;
@@ -121,25 +129,27 @@ namespace Walterlv.Demo.DesktopDocking
             private AppBarEdge Edge { get; set; }
 
             /// <summary>
+            /// 在窗口关闭之后，需要恢复窗口设置过的停靠属性。
+            /// </summary>
+            private void OnClosed(object sender, EventArgs e)
+            {
+                _window.Closed -= OnClosed;
+                _window.ClearValue(AppBarProperty);
+            }
+
+            /// <summary>
             /// 使一个窗口开始成为桌面停靠窗口，并开始处理窗口停靠消息。
             /// </summary>
             /// <param name="value">停靠方向。</param>
             public void Attach(AppBarEdge value)
             {
-                var hwnd = new WindowInteropHelper(_window).Handle;
-                var source = HwndSource.FromHwnd(hwnd);
-                if (hwnd == IntPtr.Zero || source is null)
-                {
-                    throw new InvalidOperationException("在 Window.SourceInitialized 事件之前和窗口关闭之后无法设置停靠属性。");
-                }
-
                 var data = new APPBARDATA();
                 data.cbSize = Marshal.SizeOf(data);
-                data.hWnd = hwnd;
+                data.hWnd = _hwndSource.Handle;
 
                 data.uCallbackMessage = _callbackId;
                 SHAppBarMessage((int) ABMsg.ABM_NEW, ref data);
-                source.AddHook(WndProc);
+                _hwndSource.AddHook(WndProc);
 
                 Update(value);
             }
@@ -164,15 +174,9 @@ namespace Walterlv.Demo.DesktopDocking
             /// </summary>
             public void Detach()
             {
-                var hwnd = new WindowInteropHelper(_window).Handle;
-                if (hwnd == IntPtr.Zero)
-                {
-                    throw new InvalidOperationException("在 Window.SourceInitialized 事件之前和窗口关闭之后无法设置停靠属性。");
-                }
-
                 var data = new APPBARDATA();
                 data.cbSize = Marshal.SizeOf(data);
-                data.hWnd = hwnd;
+                data.hWnd = _hwndSource.Handle;
 
                 SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref data);
 
