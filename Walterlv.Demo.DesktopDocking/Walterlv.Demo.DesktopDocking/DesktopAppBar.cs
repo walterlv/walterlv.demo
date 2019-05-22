@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
 // ReSharper disable IdentifierTypo
+// ReSharper disable InconsistentNaming
+// ReSharper disable EnumUnderlyingTypeIsInt
+// ReSharper disable MemberCanBePrivate.Local
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedMember.Global
 
@@ -47,239 +50,259 @@ namespace Walterlv.Demo.DesktopDocking
     /// </summary>
     public class DesktopAppBar
     {
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RECT
+        public static readonly DependencyProperty AppBarProperty = DependencyProperty.RegisterAttached(
+            "AppBar", typeof(AppBarEdge), typeof(DesktopAppBar),
+            new PropertyMetadata(AppBarEdge.None, OnAppBarEdgeChanged));
+
+        public static AppBarEdge GetAppBar(Window window) => (AppBarEdge) window.GetValue(AppBarProperty);
+
+        public static void SetAppBar(Window window, AppBarEdge value) => window.SetValue(AppBarProperty, value);
+
+        private static readonly DependencyProperty AppBarProcessorProperty = DependencyProperty.RegisterAttached(
+            "AppBarProcessor", typeof(AppBarWindowProcessor), typeof(DesktopAppBar), new PropertyMetadata(null));
+
+        [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
+        private static void OnAppBarEdgeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
+            var oldValue = (AppBarEdge) e.OldValue;
+            var newValue = (AppBarEdge) e.NewValue;
+            var oldEnabled = oldValue is AppBarEdge.Left
+                             || oldValue is AppBarEdge.Top
+                             || oldValue is AppBarEdge.Right
+                             || oldValue is AppBarEdge.Bottom;
+            var newEnabled = newValue is AppBarEdge.Left
+                             || newValue is AppBarEdge.Top
+                             || newValue is AppBarEdge.Right
+                             || newValue is AppBarEdge.Bottom;
+            if (oldEnabled && !newEnabled)
+            {
+                var processor = (AppBarWindowProcessor) d.GetValue(AppBarProcessorProperty);
+                processor.Detach();
+            }
+            else if (!oldEnabled && newEnabled)
+            {
+                var processor = new AppBarWindowProcessor((Window) d);
+                d.SetValue(AppBarProcessorProperty, processor);
+                processor.Attach(newValue);
+            }
+            else if (oldEnabled && newEnabled)
+            {
+                var processor = (AppBarWindowProcessor) d.GetValue(AppBarProcessorProperty);
+                processor.Update(newValue);
+            }
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct APPBARDATA
+        /// <summary>
+        /// 包含对 <see cref="Window"/> 进行操作以便使其成为一个桌面停靠窗口的能力。
+        /// </summary>
+        private class AppBarWindowProcessor
         {
-            public int cbSize;
-            public IntPtr hWnd;
-            public int uCallbackMessage;
-            public int uEdge;
-            public RECT rc;
-            public IntPtr lParam;
-        }
-
-        private enum ABMsg : int
-        {
-            ABM_NEW = 0,
-            ABM_REMOVE,
-            ABM_QUERYPOS,
-            ABM_SETPOS,
-            ABM_GETSTATE,
-            ABM_GETTASKBARPOS,
-            ABM_ACTIVATE,
-            ABM_GETAUTOHIDEBAR,
-            ABM_SETAUTOHIDEBAR,
-            ABM_WINDOWPOSCHANGED,
-            ABM_SETSTATE
-        }
-
-        private enum ABNotify : int
-        {
-            ABN_STATECHANGE = 0,
-            ABN_POSCHANGED,
-            ABN_FULLSCREENAPP,
-            ABN_WINDOWARRANGE
-        }
-
-        [DllImport("SHELL32", CallingConvention = CallingConvention.StdCall)]
-        private static extern uint SHAppBarMessage(int dwMessage, ref APPBARDATA pData);
-
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        private static extern int RegisterWindowMessage(string msg);
-
-        private class AppBarWindow
-        {
-            private readonly Window _window;
-
-            public AppBarWindow(Window window)
+            /// <summary>
+            /// 创建 <see cref="AppBarWindowProcessor"/> 的新实例。
+            /// </summary>
+            /// <param name="window">需要成为停靠窗口的 <see cref="Window"/> 的实例。</param>
+            public AppBarWindowProcessor(Window window)
             {
                 _window = window;
-                CallbackId = RegisterWindowMessage("AppBarMessage");
-
-                RestoreStyle = window.WindowStyle;
-                RestoreBounds = window.RestoreBounds;
-                RestoreResizeMode = window.ResizeMode;
-                RestoreTopmost = window.Topmost;
+                _callbackId = RegisterWindowMessage("AppBarMessage");
+                _restoreStyle = window.WindowStyle;
+                _restoreBounds = window.RestoreBounds;
+                _restoreResizeMode = window.ResizeMode;
+                _restoreTopmost = window.Topmost;
             }
 
-            public int CallbackId { get; }
-            public AppBarEdge Edge { get; set; }
+            private readonly Window _window;
+            private readonly int _callbackId;
+            private readonly WindowStyle _restoreStyle;
+            private readonly Rect _restoreBounds;
+            private readonly ResizeMode _restoreResizeMode;
+            private readonly bool _restoreTopmost;
 
-            public WindowStyle RestoreStyle { get; }
-            public Rect RestoreBounds { get; }
-            public ResizeMode RestoreResizeMode { get; }
-            public bool RestoreTopmost { get; }
+            private AppBarEdge Edge { get; set; }
 
-            public void ProcessMessage(ref APPBARDATA data)
+            /// <summary>
+            /// 使一个窗口开始成为桌面停靠窗口，并开始处理窗口停靠消息。
+            /// </summary>
+            /// <param name="value">停靠方向。</param>
+            public void Attach(AppBarEdge value)
             {
-                data.uCallbackMessage = CallbackId;
+                var hwnd = new WindowInteropHelper(_window).Handle;
+                var source = HwndSource.FromHwnd(hwnd);
+                if (hwnd == IntPtr.Zero || source is null)
+                {
+                    throw new InvalidOperationException("在 Window.SourceInitialized 事件之前和窗口关闭之后无法设置停靠属性。");
+                }
+
+                var data = new APPBARDATA();
+                data.cbSize = Marshal.SizeOf(data);
+                data.hWnd = hwnd;
+
+                data.uCallbackMessage = _callbackId;
                 SHAppBarMessage((int) ABMsg.ABM_NEW, ref data);
-                var source = HwndSource.FromHwnd(data.hWnd);
                 source.AddHook(WndProc);
+
+                Update(value);
             }
 
-            private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam,
-                IntPtr lParam, ref bool handled)
+            /// <summary>
+            /// 更新一个窗口的停靠方向。
+            /// </summary>
+            /// <param name="value">停靠方向。</param>
+            public void Update(AppBarEdge value)
             {
-                if (msg == CallbackId)
+                Edge = value;
+
+                _window.WindowStyle = WindowStyle.None;
+                _window.ResizeMode = ResizeMode.NoResize;
+                _window.Topmost = true;
+
+                ABSetPos(_window, value);
+            }
+
+            /// <summary>
+            /// 使一个窗口从桌面停靠窗口恢复成普通窗口。
+            /// </summary>
+            public void Detach()
+            {
+                var hwnd = new WindowInteropHelper(_window).Handle;
+                if (hwnd == IntPtr.Zero)
+                {
+                    throw new InvalidOperationException("在 Window.SourceInitialized 事件之前和窗口关闭之后无法设置停靠属性。");
+                }
+
+                var data = new APPBARDATA();
+                data.cbSize = Marshal.SizeOf(data);
+                data.hWnd = hwnd;
+
+                SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref data);
+
+                _window.WindowStyle = _restoreStyle;
+                _window.ResizeMode = _restoreResizeMode;
+                _window.Topmost = _restoreTopmost;
+
+                _window.Dispatcher.InvokeAsync(
+                    () => Resize(_window, _restoreBounds), DispatcherPriority.ContextIdle);
+            }
+
+            private IntPtr WndProc(IntPtr hwnd, int msg,
+                IntPtr wParam, IntPtr lParam, ref bool handled)
+            {
+                if (msg == _callbackId)
                 {
                     if (wParam.ToInt32() == (int) ABNotify.ABN_POSCHANGED)
                     {
-                        ABSetPos(Edge, _window);
+                        ABSetPos(_window, Edge);
                         handled = true;
                     }
                 }
 
                 return IntPtr.Zero;
             }
-        }
 
-        private static readonly Dictionary<Window, AppBarWindow> RegisteredWindowInfo
-            = new Dictionary<Window, AppBarWindow>();
-
-        private static AppBarWindow CreateOrGetRegisterInfo(Window window, ref APPBARDATA data)
-        {
-            if (!RegisteredWindowInfo.TryGetValue(window, out var info))
+            private static void Resize(Window window, Rect bounds)
             {
-                info = new AppBarWindow(window)
+                window.Left = bounds.Left;
+                window.Top = bounds.Top;
+                window.Width = bounds.Width;
+                window.Height = bounds.Height;
+            }
+
+            private static void ABSetPos(Window window, AppBarEdge edge)
+            {
+                var data = new APPBARDATA();
+                data.cbSize = Marshal.SizeOf(data);
+                data.hWnd = new WindowInteropHelper(window).Handle;
+                data.uEdge = (int) edge;
+
+                if (data.uEdge == (int) AppBarEdge.Left || data.uEdge == (int) AppBarEdge.Right)
                 {
-                    Edge = AppBarEdge.Top,
-                };
-                RegisteredWindowInfo.Add(window, info);
-
-                info.ProcessMessage(ref data);
-            }
-
-            return info;
-        }
-
-        private static AppBarWindow GetRegisterInfo(Window window)
-        {
-            return RegisteredWindowInfo.TryGetValue(window, out var info)
-                ? info
-                : throw new InvalidOperationException("没有注册过的窗口不能获取其信息。");
-        }
-
-        private static void ClearRegisterInfo(Window window, ref APPBARDATA data)
-        {
-            if (RegisteredWindowInfo.Remove(window))
-            {
-                SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref data);
-            }
-        }
-
-        private static void RestoreWindow(Window appbarWindow)
-        {
-            var info = GetRegisterInfo(appbarWindow);
-
-            appbarWindow.WindowStyle = info.RestoreStyle;
-            appbarWindow.ResizeMode = info.RestoreResizeMode;
-            appbarWindow.Topmost = info.RestoreTopmost;
-
-            appbarWindow.Dispatcher.InvokeAsync(
-                () => DoResize(appbarWindow, info.RestoreBounds), DispatcherPriority.ApplicationIdle);
-        }
-
-        public static void SetAppBar(Window window, AppBarEdge edge)
-        {
-            // 验证参数。
-            if (window == null) throw new ArgumentNullException(nameof(window));
-            var hwnd = new WindowInteropHelper(window).Handle;
-            if (hwnd == IntPtr.Zero)
-            {
-                throw new ArgumentException("请在 Window.SourceInitialized 事件引发之后再设置停靠属性。", nameof(window));
-            }
-
-            // 创建窗口的停靠结构。
-            var data = new APPBARDATA();
-            data.cbSize = Marshal.SizeOf(data);
-            data.hWnd = hwnd;
-
-            // 清除窗口的停靠效果。
-            if (edge == AppBarEdge.None)
-            {
-                ClearRegisterInfo(window, ref data);
-                RestoreWindow(window);
-                return;
-            }
-
-            // 设置窗口的停靠窗口。
-            var info = CreateOrGetRegisterInfo(window, ref data);
-            info.Edge = edge;
-
-            window.WindowStyle = WindowStyle.None;
-            window.ResizeMode = ResizeMode.NoResize;
-            window.Topmost = true;
-
-            ABSetPos(info.Edge, window);
-        }
-
-        private delegate void ResizeDelegate(Window appbarWindow, Rect rect);
-
-        private static void DoResize(Window appbarWindow, Rect rect)
-        {
-            appbarWindow.Width = rect.Width;
-            appbarWindow.Height = rect.Height;
-            appbarWindow.Top = rect.Top;
-            appbarWindow.Left = rect.Left;
-        }
-
-        private static void ABSetPos(AppBarEdge edge, Window appbarWindow)
-        {
-            var barData = new APPBARDATA();
-            barData.cbSize = Marshal.SizeOf(barData);
-            barData.hWnd = new WindowInteropHelper(appbarWindow).Handle;
-            barData.uEdge = (int) edge;
-
-            if (barData.uEdge == (int) AppBarEdge.Left || barData.uEdge == (int) AppBarEdge.Right)
-            {
-                barData.rc.top = 0;
-                barData.rc.bottom = (int) SystemParameters.PrimaryScreenHeight;
-                if (barData.uEdge == (int) AppBarEdge.Left)
-                {
-                    barData.rc.left = 0;
-                    barData.rc.right = (int) Math.Round(appbarWindow.ActualWidth);
+                    data.rc.top = 0;
+                    data.rc.bottom = (int) SystemParameters.PrimaryScreenHeight;
+                    if (data.uEdge == (int) AppBarEdge.Left)
+                    {
+                        data.rc.left = 0;
+                        data.rc.right = (int) Math.Round(window.ActualWidth);
+                    }
+                    else
+                    {
+                        data.rc.right = (int) SystemParameters.PrimaryScreenWidth;
+                        data.rc.left = data.rc.right - (int) Math.Round(window.ActualWidth);
+                    }
                 }
                 else
                 {
-                    barData.rc.right = (int) SystemParameters.PrimaryScreenWidth;
-                    barData.rc.left = barData.rc.right - (int) Math.Round(appbarWindow.ActualWidth);
+                    data.rc.left = 0;
+                    data.rc.right = (int) SystemParameters.PrimaryScreenWidth;
+                    if (data.uEdge == (int) AppBarEdge.Top)
+                    {
+                        data.rc.top = 0;
+                        data.rc.bottom = (int) Math.Round(window.ActualHeight);
+                    }
+                    else
+                    {
+                        data.rc.bottom = (int) SystemParameters.PrimaryScreenHeight;
+                        data.rc.top = data.rc.bottom - (int) Math.Round(window.ActualHeight);
+                    }
                 }
+
+                SHAppBarMessage((int) ABMsg.ABM_QUERYPOS, ref data);
+                SHAppBarMessage((int) ABMsg.ABM_SETPOS, ref data);
+
+                var bounds = new Rect(data.rc.left, data.rc.top,
+                    data.rc.right - data.rc.left, data.rc.bottom - data.rc.top);
+
+                window.Dispatcher.InvokeAsync(
+                    () => Resize(window, bounds), DispatcherPriority.ContextIdle);
             }
-            else
+
+            [StructLayout(LayoutKind.Sequential)]
+            private struct RECT
             {
-                barData.rc.left = 0;
-                barData.rc.right = (int) SystemParameters.PrimaryScreenWidth;
-                if (barData.uEdge == (int) AppBarEdge.Top)
-                {
-                    barData.rc.top = 0;
-                    barData.rc.bottom = (int) Math.Round(appbarWindow.ActualHeight);
-                }
-                else
-                {
-                    barData.rc.bottom = (int) SystemParameters.PrimaryScreenHeight;
-                    barData.rc.top = barData.rc.bottom - (int) Math.Round(appbarWindow.ActualHeight);
-                }
+                public int left;
+                public int top;
+                public int right;
+                public int bottom;
             }
 
-            SHAppBarMessage((int) ABMsg.ABM_QUERYPOS, ref barData);
-            SHAppBarMessage((int) ABMsg.ABM_SETPOS, ref barData);
+            [StructLayout(LayoutKind.Sequential)]
+            private struct APPBARDATA
+            {
+                public int cbSize;
+                public IntPtr hWnd;
+                public int uCallbackMessage;
+                public int uEdge;
+                public RECT rc;
+                public readonly IntPtr lParam;
+            }
 
-            var rect = new Rect(barData.rc.left, barData.rc.top,
-                barData.rc.right - barData.rc.left, barData.rc.bottom - barData.rc.top);
-            //This is done async, because WPF will send a resize after a new appbar is added.  
-            //if we size right away, WPFs resize comes last and overrides us.
-            appbarWindow.Dispatcher.InvokeAsync(
-                () => DoResize(appbarWindow, rect), DispatcherPriority.ApplicationIdle);
+            private enum ABMsg : int
+            {
+                ABM_NEW = 0,
+                ABM_REMOVE,
+                ABM_QUERYPOS,
+                ABM_SETPOS,
+                ABM_GETSTATE,
+                ABM_GETTASKBARPOS,
+                ABM_ACTIVATE,
+                ABM_GETAUTOHIDEBAR,
+                ABM_SETAUTOHIDEBAR,
+                ABM_WINDOWPOSCHANGED,
+                ABM_SETSTATE
+            }
+
+            private enum ABNotify : int
+            {
+                ABN_STATECHANGE = 0,
+                ABN_POSCHANGED,
+                ABN_FULLSCREENAPP,
+                ABN_WINDOWARRANGE
+            }
+
+            [DllImport("SHELL32", CallingConvention = CallingConvention.StdCall)]
+            private static extern uint SHAppBarMessage(int dwMessage, ref APPBARDATA pData);
+
+            [DllImport("User32.dll", CharSet = CharSet.Auto)]
+            private static extern int RegisterWindowMessage(string msg);
         }
     }
 }
