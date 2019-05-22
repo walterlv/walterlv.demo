@@ -260,7 +260,6 @@ namespace Walterlv.Demo.DesktopDocking
                 window.Height = bounds.Height;
             }
 
-            [Pure]
             private Rect TransformToAppBar(IntPtr hWnd, Rect area, AppBarEdge edge)
             {
                 var data = new APPBARDATA();
