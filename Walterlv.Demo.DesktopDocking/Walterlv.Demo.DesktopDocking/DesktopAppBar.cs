@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Threading;
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming
@@ -138,6 +138,9 @@ namespace Walterlv.Demo.DesktopDocking
 
             private AppBarEdge Edge { get; set; }
 
+            /// <summary>
+            /// 在可以获取到窗口句柄的时候，给窗口句柄设置值。
+            /// </summary>
             private void OnSourceInitialized(object sender, EventArgs e)
             {
                 _window.SourceInitialized -= OnSourceInitialized;
@@ -154,6 +157,19 @@ namespace Walterlv.Demo.DesktopDocking
                 _window.ClearValue(AppBarProperty);
             }
 
+            /// <summary>
+            /// 将窗口属性设置为停靠所需的属性。
+            /// </summary>
+            private void ForceWindowProperties()
+            {
+                _window.WindowStyle = WindowStyle.None;
+                _window.ResizeMode = ResizeMode.NoResize;
+                _window.Topmost = true;
+            }
+
+            /// <summary>
+            /// 备份窗口在成为停靠窗口之前的属性。
+            /// </summary>
             private void BackupWindowProperties()
             {
                 _restoreStyle = _window.WindowStyle;
@@ -169,6 +185,8 @@ namespace Walterlv.Demo.DesktopDocking
             public async void Attach(AppBarEdge value)
             {
                 var hwndSource = await _hwndSourceTask.Task;
+
+                BackupWindowProperties();
 
                 var data = new APPBARDATA();
                 data.cbSize = Marshal.SizeOf(data);
@@ -187,15 +205,14 @@ namespace Walterlv.Demo.DesktopDocking
             /// <param name="value">停靠方向。</param>
             public async void Update(AppBarEdge value)
             {
-                await _hwndSourceTask.Task;
+                var hwndSource = await _hwndSourceTask.Task;
 
                 Edge = value;
 
-                _window.WindowStyle = WindowStyle.None;
-                _window.ResizeMode = ResizeMode.NoResize;
-                _window.Topmost = true;
 
-                ABSetPos(_window, value);
+                var bounds = TransformToAppBar(hwndSource.Handle, _window.RestoreBounds, value);
+                ForceWindowProperties();
+                Resize(_window, bounds);
             }
 
             /// <summary>
@@ -215,8 +232,7 @@ namespace Walterlv.Demo.DesktopDocking
                 _window.ResizeMode = _restoreResizeMode;
                 _window.Topmost = _restoreTopmost;
 
-                await _window.Dispatcher.InvokeAsync(
-                    () => Resize(_window, _restoreBounds), DispatcherPriority.ContextIdle);
+                Resize(_window, _restoreBounds);
             }
 
             private IntPtr WndProc(IntPtr hwnd, int msg,
@@ -226,7 +242,9 @@ namespace Walterlv.Demo.DesktopDocking
                 {
                     if (wParam.ToInt32() == (int) ABNotify.ABN_POSCHANGED)
                     {
-                        ABSetPos(_window, Edge);
+                        var hwndSource = _hwndSourceTask.Task.Result;
+                        var bounds = TransformToAppBar(hwndSource.Handle, _window.RestoreBounds, Edge);
+                        Resize(_window, bounds);
                         handled = true;
                     }
                 }
@@ -242,11 +260,12 @@ namespace Walterlv.Demo.DesktopDocking
                 window.Height = bounds.Height;
             }
 
-            private void ABSetPos(Window window, AppBarEdge edge)
+            [Pure]
+            private Rect TransformToAppBar(IntPtr hWnd, Rect area, AppBarEdge edge)
             {
                 var data = new APPBARDATA();
                 data.cbSize = Marshal.SizeOf(data);
-                data.hWnd = new WindowInteropHelper(window).Handle;
+                data.hWnd = hWnd;
                 data.uEdge = (int) edge;
 
                 if (data.uEdge == (int) AppBarEdge.Left || data.uEdge == (int) AppBarEdge.Right)
@@ -256,12 +275,12 @@ namespace Walterlv.Demo.DesktopDocking
                     if (data.uEdge == (int) AppBarEdge.Left)
                     {
                         data.rc.left = 0;
-                        data.rc.right = (int) Math.Round(window.ActualWidth);
+                        data.rc.right = (int) Math.Round(area.Width);
                     }
                     else
                     {
                         data.rc.right = (int) SystemParameters.PrimaryScreenWidth;
-                        data.rc.left = data.rc.right - (int) Math.Round(window.ActualWidth);
+                        data.rc.left = data.rc.right - (int) Math.Round(area.Width);
                     }
                 }
                 else
@@ -271,23 +290,20 @@ namespace Walterlv.Demo.DesktopDocking
                     if (data.uEdge == (int) AppBarEdge.Top)
                     {
                         data.rc.top = 0;
-                        data.rc.bottom = (int) Math.Round(window.ActualHeight);
+                        data.rc.bottom = (int) Math.Round(area.Height);
                     }
                     else
                     {
                         data.rc.bottom = (int) SystemParameters.PrimaryScreenHeight;
-                        data.rc.top = data.rc.bottom - (int) Math.Round(window.ActualHeight);
+                        data.rc.top = data.rc.bottom - (int) Math.Round(area.Height);
                     }
                 }
 
                 SHAppBarMessage((int) ABMsg.ABM_QUERYPOS, ref data);
                 SHAppBarMessage((int) ABMsg.ABM_SETPOS, ref data);
 
-                var bounds = new Rect(data.rc.left, data.rc.top,
+                return new Rect(data.rc.left, data.rc.top,
                     data.rc.right - data.rc.left, data.rc.bottom - data.rc.top);
-
-                window.Dispatcher.InvokeAsync(
-                    () => Resize(window, bounds), DispatcherPriority.ContextIdle);
             }
 
             [StructLayout(LayoutKind.Sequential)]
