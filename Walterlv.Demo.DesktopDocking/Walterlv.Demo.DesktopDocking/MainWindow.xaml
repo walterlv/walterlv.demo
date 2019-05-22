@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel Background="#ffcd42">
-        <TextBlock FontSize="64" Margin="64" TextAlignment="Center" Text="停靠在右边的窗口" />
-        <Button Content="再停靠一个" FontSize="32" Padding="32" Margin="32" Background="#f9d77b" BorderThickness="0"
+        <TextBlock FontSize="64" Margin="64" TextAlignment="Center" Text="walterlv 的停靠窗口" />
+        <Button Content="再停靠一个 - blog.walterlv.com" FontSize="32" Padding="32" Margin="32" Background="#f9d77b" BorderThickness="0"
                 Click="Button_Click"/>
     </StackPanel>
 </Window>

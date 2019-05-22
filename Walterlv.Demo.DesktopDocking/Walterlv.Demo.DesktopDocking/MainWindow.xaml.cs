@@ -9,7 +9,6 @@ namespace Walterlv.Demo.DesktopDocking
         public MainWindow()
         {
             InitializeComponent();
-            DesktopAppBar.SetAppBar(this, AppBarEdge.Right);
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -24,6 +23,7 @@ namespace Walterlv.Demo.DesktopDocking
             new AnotherWindow().Show();
         }
     }
+
     public static class DesignTimeExtensions
     {
         /// <summary>
