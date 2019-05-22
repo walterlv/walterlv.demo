@@ -8,13 +8,14 @@ namespace Walterlv.Demo.DesktopDocking
         public MainWindow()
         {
             InitializeComponent();
+            DesktopAppBar.SetAppBar(this, AppBarEdge.Right);
         }
 
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
 
-            DesktopAppBar.SetAppBar(this, ABEdge.Right);
+            DesktopAppBar.SetAppBar(this, AppBarEdge.Right);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

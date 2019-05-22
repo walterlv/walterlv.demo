@@ -14,7 +14,7 @@ namespace Walterlv.Demo.DesktopDocking
         {
             base.OnSourceInitialized(e);
 
-            DesktopAppBar.SetAppBar(this, ABEdge.Top);
+            DesktopAppBar.SetAppBar(this, AppBarEdge.Top);
         }
     }
 }

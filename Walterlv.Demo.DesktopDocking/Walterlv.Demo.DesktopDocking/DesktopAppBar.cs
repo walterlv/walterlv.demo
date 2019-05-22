@@ -5,17 +5,47 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable IdentifierTypo
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedMember.Global
+
 namespace Walterlv.Demo.DesktopDocking
 {
-    public enum ABEdge : int
+    /// <summary>
+    /// 表示窗口停靠到桌面上时的边缘方向。
+    /// </summary>
+    public enum AppBarEdge
     {
+        /// <summary>
+        /// 窗口停靠到桌面的左边。
+        /// </summary>
         Left = 0,
+
+        /// <summary>
+        /// 窗口停靠到桌面的顶部。
+        /// </summary>
         Top,
+
+        /// <summary>
+        /// 窗口停靠到桌面的右边。
+        /// </summary>
         Right,
+
+        /// <summary>
+        /// 窗口停靠到桌面的底部。
+        /// </summary>
         Bottom,
+
+        /// <summary>
+        /// 窗口不停靠到任何方向，而是成为一个普通窗口占用剩余的可用空间（工作区）。
+        /// </summary>
         None
     }
 
+    /// <summary>
+    /// 提供将窗口停靠到桌面某个方向的能力。
+    /// </summary>
     public class DesktopAppBar
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -67,17 +97,15 @@ namespace Walterlv.Demo.DesktopDocking
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         private static extern int RegisterWindowMessage(string msg);
 
-        private class RegisterInfo
+        private class AppBarWindow
         {
             public int CallbackId { get; set; }
             public bool IsRegistered { get; set; }
             public Window Window { get; set; }
-            public ABEdge Edge { get; set; }
+            public AppBarEdge Edge { get; set; }
             public WindowStyle OriginalStyle { get; set; }
-            public Point OriginalPosition { get; set; }
-            public Size OriginalSize { get; set; }
+            public Rect RestoreBounds { get; set; }
             public ResizeMode OriginalResizeMode { get; set; }
-
 
             public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam,
                 IntPtr lParam, ref bool handled)
@@ -93,68 +121,62 @@ namespace Walterlv.Demo.DesktopDocking
 
                 return IntPtr.Zero;
             }
-
         }
 
-        private static Dictionary<Window, RegisterInfo> s_RegisteredWindowInfo
-            = new Dictionary<Window, RegisterInfo>();
+        private static readonly Dictionary<Window, AppBarWindow> RegisteredWindowInfo
+            = new Dictionary<Window, AppBarWindow>();
 
-        private static RegisterInfo GetRegisterInfo(Window appbarWindow)
+        private static AppBarWindow GetRegisterInfo(Window window)
         {
-            RegisterInfo reg;
-            if (s_RegisteredWindowInfo.ContainsKey(appbarWindow))
+            if (!RegisteredWindowInfo.TryGetValue(window, out var info))
             {
-                reg = s_RegisteredWindowInfo[appbarWindow];
-            }
-            else
-            {
-                reg = new RegisterInfo()
+                info = new AppBarWindow
                 {
                     CallbackId = 0,
-                    Window = appbarWindow,
+                    Window = window,
                     IsRegistered = false,
-                    Edge = ABEdge.Top,
-                    OriginalStyle = appbarWindow.WindowStyle,
-                    OriginalPosition = new Point(appbarWindow.Left, appbarWindow.Top),
-                    OriginalSize =
-                        new Size(appbarWindow.ActualWidth, appbarWindow.ActualHeight),
-                    OriginalResizeMode = appbarWindow.ResizeMode,
+                    Edge = AppBarEdge.Top,
+                    OriginalStyle = window.WindowStyle,
+                    RestoreBounds = window.RestoreBounds,
+                    OriginalResizeMode = window.ResizeMode,
                 };
-                s_RegisteredWindowInfo.Add(appbarWindow, reg);
+                RegisteredWindowInfo.Add(window, info);
             }
 
-            return reg;
+            return info;
         }
 
         private static void RestoreWindow(Window appbarWindow)
         {
-            RegisterInfo info = GetRegisterInfo(appbarWindow);
+            var info = GetRegisterInfo(appbarWindow);
 
             appbarWindow.WindowStyle = info.OriginalStyle;
             appbarWindow.ResizeMode = info.OriginalResizeMode;
             appbarWindow.Topmost = false;
 
-            Rect rect = new Rect(info.OriginalPosition.X, info.OriginalPosition.Y,
-                info.OriginalSize.Width, info.OriginalSize.Height);
-            appbarWindow.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
-                new ResizeDelegate(DoResize), appbarWindow, rect);
-
+            appbarWindow.Dispatcher.InvokeAsync(
+                () => DoResize(appbarWindow, info.RestoreBounds), DispatcherPriority.ApplicationIdle);
         }
 
-        public static void SetAppBar(Window appbarWindow, ABEdge edge)
+        public static void SetAppBar(Window appbarWindow, AppBarEdge edge)
         {
-            RegisterInfo info = GetRegisterInfo(appbarWindow);
+            var info = GetRegisterInfo(appbarWindow);
             info.Edge = edge;
 
-            APPBARDATA abd = new APPBARDATA();
-            abd.cbSize = Marshal.SizeOf(abd);
-            abd.hWnd = new WindowInteropHelper(appbarWindow).Handle;
+            var data = new APPBARDATA();
+            data.cbSize = Marshal.SizeOf(data);
+            data.hWnd = new WindowInteropHelper(appbarWindow).Handle;
 
-            if (edge == ABEdge.None)
+            if (data.hWnd == IntPtr.Zero)
+            {
+                throw new ArgumentException("请在 Window.SourceInitialized 事件引发之后再设置停靠属性。", nameof(appbarWindow));
+            }
+
+            if (edge == AppBarEdge.None)
             {
                 if (info.IsRegistered)
                 {
-                    SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref abd);
+                    SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref data);
                     info.IsRegistered = false;
                 }
 
@@ -166,12 +188,12 @@ namespace Walterlv.Demo.DesktopDocking
             {
                 info.IsRegistered = true;
                 info.CallbackId = RegisterWindowMessage("AppBarMessage");
-                abd.uCallbackMessage = info.CallbackId;
+                data.uCallbackMessage = info.CallbackId;
 
-                uint ret = SHAppBarMessage((int) ABMsg.ABM_NEW, ref abd);
+                var ret = SHAppBarMessage((int) ABMsg.ABM_NEW, ref data);
 
-                HwndSource source = HwndSource.FromHwnd(abd.hWnd);
-                source.AddHook(new HwndSourceHook(info.WndProc));
+                var source = HwndSource.FromHwnd(data.hWnd);
+                source.AddHook(info.WndProc);
             }
 
             appbarWindow.WindowStyle = WindowStyle.None;
@@ -191,20 +213,18 @@ namespace Walterlv.Demo.DesktopDocking
             appbarWindow.Left = rect.Left;
         }
 
-
-
-        private static void ABSetPos(ABEdge edge, Window appbarWindow)
+        private static void ABSetPos(AppBarEdge edge, Window appbarWindow)
         {
-            APPBARDATA barData = new APPBARDATA();
+            var barData = new APPBARDATA();
             barData.cbSize = Marshal.SizeOf(barData);
             barData.hWnd = new WindowInteropHelper(appbarWindow).Handle;
             barData.uEdge = (int) edge;
 
-            if (barData.uEdge == (int) ABEdge.Left || barData.uEdge == (int) ABEdge.Right)
+            if (barData.uEdge == (int) AppBarEdge.Left || barData.uEdge == (int) AppBarEdge.Right)
             {
                 barData.rc.top = 0;
                 barData.rc.bottom = (int) SystemParameters.PrimaryScreenHeight;
-                if (barData.uEdge == (int) ABEdge.Left)
+                if (barData.uEdge == (int) AppBarEdge.Left)
                 {
                     barData.rc.left = 0;
                     barData.rc.right = (int) Math.Round(appbarWindow.ActualWidth);
@@ -219,7 +239,7 @@ namespace Walterlv.Demo.DesktopDocking
             {
                 barData.rc.left = 0;
                 barData.rc.right = (int) SystemParameters.PrimaryScreenWidth;
-                if (barData.uEdge == (int) ABEdge.Top)
+                if (barData.uEdge == (int) AppBarEdge.Top)
                 {
                     barData.rc.top = 0;
                     barData.rc.bottom = (int) Math.Round(appbarWindow.ActualHeight);
@@ -234,12 +254,12 @@ namespace Walterlv.Demo.DesktopDocking
             SHAppBarMessage((int) ABMsg.ABM_QUERYPOS, ref barData);
             SHAppBarMessage((int) ABMsg.ABM_SETPOS, ref barData);
 
-            Rect rect = new Rect((double) barData.rc.left, (double) barData.rc.top,
-                (double) (barData.rc.right - barData.rc.left), (double) (barData.rc.bottom - barData.rc.top));
+            var rect = new Rect(barData.rc.left, barData.rc.top,
+                barData.rc.right - barData.rc.left, barData.rc.bottom - barData.rc.top);
             //This is done async, because WPF will send a resize after a new appbar is added.  
             //if we size right away, WPFs resize comes last and overrides us.
-            appbarWindow.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
-                new ResizeDelegate(DoResize), appbarWindow, rect);
+            appbarWindow.Dispatcher.InvokeAsync(
+                () => DoResize(appbarWindow, rect), DispatcherPriority.ApplicationIdle);
         }
     }
 }
