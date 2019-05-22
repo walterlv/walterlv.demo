@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
-// ReSharper disable InconsistentNaming
 // ReSharper disable IdentifierTypo
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedMember.Global
@@ -99,22 +98,43 @@ namespace Walterlv.Demo.DesktopDocking
 
         private class AppBarWindow
         {
-            public int CallbackId { get; set; }
-            public bool IsRegistered { get; set; }
-            public Window Window { get; set; }
-            public AppBarEdge Edge { get; set; }
-            public WindowStyle OriginalStyle { get; set; }
-            public Rect RestoreBounds { get; set; }
-            public ResizeMode OriginalResizeMode { get; set; }
+            private readonly Window _window;
 
-            public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam,
+            public AppBarWindow(Window window)
+            {
+                _window = window;
+                CallbackId = RegisterWindowMessage("AppBarMessage");
+
+                RestoreStyle = window.WindowStyle;
+                RestoreBounds = window.RestoreBounds;
+                RestoreResizeMode = window.ResizeMode;
+                RestoreTopmost = window.Topmost;
+            }
+
+            public int CallbackId { get; }
+            public AppBarEdge Edge { get; set; }
+
+            public WindowStyle RestoreStyle { get; }
+            public Rect RestoreBounds { get; }
+            public ResizeMode RestoreResizeMode { get; }
+            public bool RestoreTopmost { get; }
+
+            public void ProcessMessage(ref APPBARDATA data)
+            {
+                data.uCallbackMessage = CallbackId;
+                SHAppBarMessage((int) ABMsg.ABM_NEW, ref data);
+                var source = HwndSource.FromHwnd(data.hWnd);
+                source.AddHook(WndProc);
+            }
+
+            private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam,
                 IntPtr lParam, ref bool handled)
             {
                 if (msg == CallbackId)
                 {
                     if (wParam.ToInt32() == (int) ABNotify.ABN_POSCHANGED)
                     {
-                        ABSetPos(Edge, Window);
+                        ABSetPos(Edge, _window);
                         handled = true;
                     }
                 }
@@ -126,81 +146,81 @@ namespace Walterlv.Demo.DesktopDocking
         private static readonly Dictionary<Window, AppBarWindow> RegisteredWindowInfo
             = new Dictionary<Window, AppBarWindow>();
 
-        private static AppBarWindow GetRegisterInfo(Window window)
+        private static AppBarWindow CreateOrGetRegisterInfo(Window window, ref APPBARDATA data)
         {
             if (!RegisteredWindowInfo.TryGetValue(window, out var info))
             {
-                info = new AppBarWindow
+                info = new AppBarWindow(window)
                 {
-                    CallbackId = 0,
-                    Window = window,
-                    IsRegistered = false,
                     Edge = AppBarEdge.Top,
-                    OriginalStyle = window.WindowStyle,
-                    RestoreBounds = window.RestoreBounds,
-                    OriginalResizeMode = window.ResizeMode,
                 };
                 RegisteredWindowInfo.Add(window, info);
+
+                info.ProcessMessage(ref data);
             }
 
             return info;
+        }
+
+        private static AppBarWindow GetRegisterInfo(Window window)
+        {
+            return RegisteredWindowInfo.TryGetValue(window, out var info)
+                ? info
+                : throw new InvalidOperationException("没有注册过的窗口不能获取其信息。");
+        }
+
+        private static void ClearRegisterInfo(Window window, ref APPBARDATA data)
+        {
+            if (RegisteredWindowInfo.Remove(window))
+            {
+                SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref data);
+            }
         }
 
         private static void RestoreWindow(Window appbarWindow)
         {
             var info = GetRegisterInfo(appbarWindow);
 
-            appbarWindow.WindowStyle = info.OriginalStyle;
-            appbarWindow.ResizeMode = info.OriginalResizeMode;
-            appbarWindow.Topmost = false;
+            appbarWindow.WindowStyle = info.RestoreStyle;
+            appbarWindow.ResizeMode = info.RestoreResizeMode;
+            appbarWindow.Topmost = info.RestoreTopmost;
 
             appbarWindow.Dispatcher.InvokeAsync(
                 () => DoResize(appbarWindow, info.RestoreBounds), DispatcherPriority.ApplicationIdle);
         }
 
-        public static void SetAppBar(Window appbarWindow, AppBarEdge edge)
+        public static void SetAppBar(Window window, AppBarEdge edge)
         {
-            var info = GetRegisterInfo(appbarWindow);
-            info.Edge = edge;
-
-            var data = new APPBARDATA();
-            data.cbSize = Marshal.SizeOf(data);
-            data.hWnd = new WindowInteropHelper(appbarWindow).Handle;
-
-            if (data.hWnd == IntPtr.Zero)
+            // 验证参数。
+            if (window == null) throw new ArgumentNullException(nameof(window));
+            var hwnd = new WindowInteropHelper(window).Handle;
+            if (hwnd == IntPtr.Zero)
             {
-                throw new ArgumentException("请在 Window.SourceInitialized 事件引发之后再设置停靠属性。", nameof(appbarWindow));
+                throw new ArgumentException("请在 Window.SourceInitialized 事件引发之后再设置停靠属性。", nameof(window));
             }
 
+            // 创建窗口的停靠结构。
+            var data = new APPBARDATA();
+            data.cbSize = Marshal.SizeOf(data);
+            data.hWnd = hwnd;
+
+            // 清除窗口的停靠效果。
             if (edge == AppBarEdge.None)
             {
-                if (info.IsRegistered)
-                {
-                    SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref data);
-                    info.IsRegistered = false;
-                }
-
-                RestoreWindow(appbarWindow);
+                ClearRegisterInfo(window, ref data);
+                RestoreWindow(window);
                 return;
             }
 
-            if (!info.IsRegistered)
-            {
-                info.IsRegistered = true;
-                info.CallbackId = RegisterWindowMessage("AppBarMessage");
-                data.uCallbackMessage = info.CallbackId;
+            // 设置窗口的停靠窗口。
+            var info = CreateOrGetRegisterInfo(window, ref data);
+            info.Edge = edge;
 
-                var ret = SHAppBarMessage((int) ABMsg.ABM_NEW, ref data);
+            window.WindowStyle = WindowStyle.None;
+            window.ResizeMode = ResizeMode.NoResize;
+            window.Topmost = true;
 
-                var source = HwndSource.FromHwnd(data.hWnd);
-                source.AddHook(info.WndProc);
-            }
-
-            appbarWindow.WindowStyle = WindowStyle.None;
-            appbarWindow.ResizeMode = ResizeMode.NoResize;
-            appbarWindow.Topmost = true;
-
-            ABSetPos(info.Edge, appbarWindow);
+            ABSetPos(info.Edge, window);
         }
 
         private delegate void ResizeDelegate(Window appbarWindow, Rect rect);
