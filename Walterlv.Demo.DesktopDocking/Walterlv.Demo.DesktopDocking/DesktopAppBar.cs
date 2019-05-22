@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -64,6 +66,11 @@ namespace Walterlv.Demo.DesktopDocking
         [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
         private static void OnAppBarEdgeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            if (DesignerProperties.GetIsInDesignMode(d))
+            {
+                return;
+            }
+
             var oldValue = (AppBarEdge) e.OldValue;
             var newValue = (AppBarEdge) e.NewValue;
             var oldEnabled = oldValue is AppBarEdge.Left
@@ -103,30 +110,40 @@ namespace Walterlv.Demo.DesktopDocking
             /// <param name="window">需要成为停靠窗口的 <see cref="Window"/> 的实例。</param>
             public AppBarWindowProcessor(Window window)
             {
-                var source = (HwndSource) PresentationSource.FromVisual(window);
-                _hwndSource = source ?? throw new InvalidOperationException(
-                                  "在 Window.SourceInitialized 事件之前和窗口关闭之后无法设置停靠属性。");
-
                 _window = window;
-
                 _callbackId = RegisterWindowMessage("AppBarMessage");
-                _restoreStyle = window.WindowStyle;
-                _restoreBounds = window.RestoreBounds;
-                _restoreResizeMode = window.ResizeMode;
-                _restoreTopmost = window.Topmost;
+                _hwndSourceTask = new TaskCompletionSource<HwndSource>();
+
+                var source = (HwndSource) PresentationSource.FromVisual(window);
+                if (source == null)
+                {
+                    window.SourceInitialized += OnSourceInitialized;
+                }
+                else
+                {
+                    _hwndSourceTask.SetResult(source);
+                }
 
                 _window.Closed += OnClosed;
             }
 
             private readonly Window _window;
-            private readonly HwndSource _hwndSource;
+            private readonly TaskCompletionSource<HwndSource> _hwndSourceTask;
             private readonly int _callbackId;
-            private readonly WindowStyle _restoreStyle;
-            private readonly Rect _restoreBounds;
-            private readonly ResizeMode _restoreResizeMode;
-            private readonly bool _restoreTopmost;
+
+            private WindowStyle _restoreStyle;
+            private Rect _restoreBounds;
+            private ResizeMode _restoreResizeMode;
+            private bool _restoreTopmost;
 
             private AppBarEdge Edge { get; set; }
+
+            private void OnSourceInitialized(object sender, EventArgs e)
+            {
+                _window.SourceInitialized -= OnSourceInitialized;
+                var source = (HwndSource) PresentationSource.FromVisual(_window);
+                _hwndSourceTask.SetResult(source);
+            }
 
             /// <summary>
             /// 在窗口关闭之后，需要恢复窗口设置过的停靠属性。
@@ -137,19 +154,29 @@ namespace Walterlv.Demo.DesktopDocking
                 _window.ClearValue(AppBarProperty);
             }
 
+            private void BackupWindowProperties()
+            {
+                _restoreStyle = _window.WindowStyle;
+                _restoreBounds = _window.RestoreBounds;
+                _restoreResizeMode = _window.ResizeMode;
+                _restoreTopmost = _window.Topmost;
+            }
+
             /// <summary>
             /// 使一个窗口开始成为桌面停靠窗口，并开始处理窗口停靠消息。
             /// </summary>
             /// <param name="value">停靠方向。</param>
-            public void Attach(AppBarEdge value)
+            public async void Attach(AppBarEdge value)
             {
+                var hwndSource = await _hwndSourceTask.Task;
+
                 var data = new APPBARDATA();
                 data.cbSize = Marshal.SizeOf(data);
-                data.hWnd = _hwndSource.Handle;
+                data.hWnd = hwndSource.Handle;
 
                 data.uCallbackMessage = _callbackId;
                 SHAppBarMessage((int) ABMsg.ABM_NEW, ref data);
-                _hwndSource.AddHook(WndProc);
+                hwndSource.AddHook(WndProc);
 
                 Update(value);
             }
@@ -158,8 +185,10 @@ namespace Walterlv.Demo.DesktopDocking
             /// 更新一个窗口的停靠方向。
             /// </summary>
             /// <param name="value">停靠方向。</param>
-            public void Update(AppBarEdge value)
+            public async void Update(AppBarEdge value)
             {
+                await _hwndSourceTask.Task;
+
                 Edge = value;
 
                 _window.WindowStyle = WindowStyle.None;
@@ -172,11 +201,13 @@ namespace Walterlv.Demo.DesktopDocking
             /// <summary>
             /// 使一个窗口从桌面停靠窗口恢复成普通窗口。
             /// </summary>
-            public void Detach()
+            public async void Detach()
             {
+                var hwndSource = await _hwndSourceTask.Task;
+
                 var data = new APPBARDATA();
                 data.cbSize = Marshal.SizeOf(data);
-                data.hWnd = _hwndSource.Handle;
+                data.hWnd = hwndSource.Handle;
 
                 SHAppBarMessage((int) ABMsg.ABM_REMOVE, ref data);
 
@@ -184,7 +215,7 @@ namespace Walterlv.Demo.DesktopDocking
                 _window.ResizeMode = _restoreResizeMode;
                 _window.Topmost = _restoreTopmost;
 
-                _window.Dispatcher.InvokeAsync(
+                await _window.Dispatcher.InvokeAsync(
                     () => Resize(_window, _restoreBounds), DispatcherPriority.ContextIdle);
             }
 
@@ -211,7 +242,7 @@ namespace Walterlv.Demo.DesktopDocking
                 window.Height = bounds.Height;
             }
 
-            private static void ABSetPos(Window window, AppBarEdge edge)
+            private void ABSetPos(Window window, AppBarEdge edge)
             {
                 var data = new APPBARDATA();
                 data.cbSize = Marshal.SizeOf(data);
