@@ -51,12 +51,25 @@ namespace Walterlv.Demo.DesktopDocking
     /// </summary>
     public class DesktopAppBar
     {
+        /// <summary>
+        /// 标识 Window.AppBar 的附加属性。
+        /// </summary>
         public static readonly DependencyProperty AppBarProperty = DependencyProperty.RegisterAttached(
             "AppBar", typeof(AppBarEdge), typeof(DesktopAppBar),
             new PropertyMetadata(AppBarEdge.None, OnAppBarEdgeChanged));
 
+        /// <summary>
+        /// 获取 <paramref name="window"/> 当前的停靠边缘。
+        /// </summary>
+        /// <param name="window">要获取停靠边缘的窗口。</param>
+        /// <returns>停靠边缘。</returns>
         public static AppBarEdge GetAppBar(Window window) => (AppBarEdge) window.GetValue(AppBarProperty);
 
+        /// <summary>
+        /// 设置 <paramref name="window"/> 的停靠边缘方向。
+        /// </summary>
+        /// <param name="window">要设置停靠的窗口。</param>
+        /// <param name="value">要设置的停靠边缘方向。</param>
         public static void SetAppBar(Window window, AppBarEdge value) => window.SetValue(AppBarProperty, value);
 
         private static readonly DependencyProperty AppBarProcessorProperty = DependencyProperty.RegisterAttached(
