@@ -21,7 +21,7 @@ namespace Walterlv.BlogPartial.Controllers
         public FileResult GetImageToCsdn()
         {
             _counter.AddCsdnPv();
-            return GetImage("CSDN", "bulletin");
+            return GetImage("CSDN", "csdn-column");
         }
 
         [HttpGet, Route("banner/csdn.png")]
