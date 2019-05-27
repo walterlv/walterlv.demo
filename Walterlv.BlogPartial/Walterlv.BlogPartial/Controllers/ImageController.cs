@@ -60,7 +60,7 @@ UserAgent: {userAgent}");
             _counter.PrintSummary();
 
             // 返回图片。
-            var file = _cache.GetOrCreate("Image", entry => System.IO.File.ReadAllBytes($"{name}.png"));
+            var file = _cache.GetOrCreate(name, entry => System.IO.File.ReadAllBytes($"{name}.png"));
             return File(file, "image/png");
         }
 
