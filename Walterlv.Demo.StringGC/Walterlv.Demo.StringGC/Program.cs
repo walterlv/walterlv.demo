@@ -23,11 +23,6 @@ namespace Walterlv.Demo.StringGC
             GC.Collect();
             Console.WriteLine($"剩余个数：{table.Count()}");
 
-            var walterlv = string.Intern("walterlv");
-            var foo = string.Intern("foo");
-            var time1 = DateTime.Now.ToString("T");
-            var time2 = string.Intern(time1);
-
             Console.ReadLine();
         }
     }
