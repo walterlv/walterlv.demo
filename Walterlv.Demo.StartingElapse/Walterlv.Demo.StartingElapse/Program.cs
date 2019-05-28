@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Walterlv.Demo.StartingElapse
 {
@@ -7,12 +8,15 @@ namespace Walterlv.Demo.StartingElapse
     {
         static void Main(string[] args)
         {
-            var stopwatch = Stopwatch.StartNew();
             var time1 = DateTime.Now;
+            var stopwatch = Stopwatch.StartNew();
             var startTime = Process.GetCurrentProcess().StartTime;
-            var time2 = DateTime.Now;
             stopwatch.Stop();
-            Console.WriteLine($"{time1} - {time2} - {startTime}");
+            var time2 = DateTime.Now;
+            Console.WriteLine($@"{startTime.Ticks} - {startTime:O}
+{time1.Ticks} - {time1:O}
+{time2.Ticks} - {time2:O}
+{stopwatch.ElapsedTicks} - {stopwatch.ElapsedMilliseconds}");
             Console.ReadLine();
         }
     }
