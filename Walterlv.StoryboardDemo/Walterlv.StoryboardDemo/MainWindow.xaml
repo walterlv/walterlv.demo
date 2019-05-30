@@ -1,0 +1,16 @@
+﻿<Window x:Class="Walterlv.StoryboardDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.StoryboardDemo"
+        mc:Ignorable="d" Left="200" Top="200"
+        Title="Walterlv Demo Window" Height="450" Width="800">
+    <Canvas>
+        <Border x:Name="imgGhost" Background="Teal" Width="100" Height="100">
+            <Border.RenderTransform>
+                <TranslateTransform />
+            </Border.RenderTransform>
+        </Border>
+    </Canvas>
+</Window>
