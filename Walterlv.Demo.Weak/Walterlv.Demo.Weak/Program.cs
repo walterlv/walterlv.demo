@@ -11,11 +11,12 @@ namespace Walterlv.Demo.Weak
             var key1 = new Key("Key1");
             var key2 = new Key("Key2");
             var key3 = new Key("Key3");
+            WalterlvValue value2;
 
             var table = new ConditionalWeakTable<Key, WalterlvValue>
             {
                 {key1, new WalterlvValue()},
-                {key2, new WalterlvValue()},
+                {key2, (value2 = new WalterlvValue())},
                 {key3, new WalterlvValue()}
             };
 
@@ -29,6 +30,8 @@ namespace Walterlv.Demo.Weak
 key2 = {key2?.ToString() ?? "null"}, weak2 = {weak2.Target ?? "null"}
 key3 = {key3?.ToString() ?? "null"}
 Table = {{{string.Join(", ", table.Select(x => $"{x.Key} = {x.Value}"))}}}");
+            Console.WriteLine(value2);
+            Console.ReadLine();
         }
     }
 
