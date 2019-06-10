@@ -1,0 +1,14 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <Target Name="_IncludeSomeCode"
+          BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <Compile Include="$(MSBuildThisFileDirectory)..\src\**\*.cs" />
+    </ItemGroup>
+  </Target>
+  
+</Project>

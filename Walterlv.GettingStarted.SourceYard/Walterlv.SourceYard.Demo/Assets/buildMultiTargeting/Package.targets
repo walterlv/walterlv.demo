@@ -1,0 +1,5 @@
+﻿<Project>
+
+  <Import Project="..\build\Walterlv.SourceYard.Demo.targets" />
+
+</Project>

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>0.1.0-alpha</Version>
+    <Authors>walterlv</Authors>
+    <Company>dotnet-campus</Company>
+  </PropertyGroup>
+
+  <!-- 在编译结束后将需要的源码拷贝到 NuGet 包中 -->
+  <Target Name="IncludeAllDependencies" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+      <None Include="Assets\build\Package.targets" Pack="True" PackagePath="build\$(PackageId).targets" />
+      <None Include="Assets\buildMultiTargeting\Package.targets" Pack="True" PackagePath="buildMultiTargeting\$(PackageId).targets" />
+      <None Include="Assets\src\**" Pack="True" PackagePath="src" />
+    </ItemGroup>
+  </Target>
+  
+</Project>
