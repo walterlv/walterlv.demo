@@ -10,5 +10,11 @@
       <Compile Include="$(MSBuildThisFileDirectory)..\src\**\*.cs" />
     </ItemGroup>
   </Target>
+
+  <Target Name="_ENSdkImportInTempProject" AfterTargets="MarkupCompilePass1" BeforeTargets="GenerateTemporaryTargetAssembly">
+    <ItemGroup>
+      <_GeneratedCodeFiles Include="$(MSBuildThisFileDirectory)..\src\**\*.cs" />
+    </ItemGroup>
+  </Target>
   
 </Project>
