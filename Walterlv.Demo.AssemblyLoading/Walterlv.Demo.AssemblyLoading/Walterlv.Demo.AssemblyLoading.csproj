@@ -4,18 +4,23 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.1.4" />
+    <PackageReference Include="ILMerge" Version="3.0.29" />
   </ItemGroup>
 
-  <Target Name="_ProjectMoveDependencies" AfterTargets="AfterBuild">
+  <Target Name="ILMerge">
+    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /ndebug /target:exe /out:$(OutputPath)$(AssemblyName).exe /log $(OutputPath)$(AssemblyName).exe /log $(OutputPath)Ben.Demystifier.dll /log $(OutputPath)System.Collections.Immutable.dll /log $(OutputPath)System.Reflection.Metadata.dll /targetplatform:v4" />
+  </Target>
+
+  <Target Name="_ProjectRemoveDependencyFiles" AfterTargets="AfterBuild" DependsOnTargets="ILMerge">
     <ItemGroup>
-      <_ProjectToMoveFile Include="$(OutputPath)Ben.Demystifier.dll" />
-      <_ProjectToMoveFile Include="$(OutputPath)System.Collections.Immutable.dll" />
-      <_ProjectToMoveFile Include="$(OutputPath)System.Reflection.Metadata.dll" />
+      <_ProjectDependencyFile Include="$(OutputPath)Ben.Demystifier.dll" />
+      <_ProjectDependencyFile Include="$(OutputPath)System.Collections.Immutable.dll" />
+      <_ProjectDependencyFile Include="$(OutputPath)System.Reflection.Metadata.dll" />
     </ItemGroup>
-    <Move SourceFiles="@(_ProjectToMoveFile)" DestinationFolder="$(OutputPath)Dependencies" />
+    <Delete Files="@(_ProjectDependencyFile)" />
   </Target>
   
 </Project>
