@@ -4,17 +4,17 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.1.4" />
-    <PackageReference Include="ILMerge" Version="3.0.29" />
+    <PackageReference Include="ILRepack" Version="2.0.17" />
   </ItemGroup>
 
-  <Target Name="ILMerge">
-    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /ndebug /target:exe /out:$(OutputPath)$(AssemblyName).exe /log $(OutputPath)$(AssemblyName).exe /log $(OutputPath)Ben.Demystifier.dll /log $(OutputPath)System.Collections.Immutable.dll /log $(OutputPath)System.Reflection.Metadata.dll /targetplatform:v4" />
+  <Target Name="ILRepack">
+    <Exec Command="&quot;$(ILRepack)&quot; /out:$(OutputPath)$(AssemblyName).exe $(OutputPath)$(AssemblyName).exe $(OutputPath)Ben.Demystifier.dll $(OutputPath)System.Collections.Immutable.dll $(OutputPath)System.Reflection.Metadata.dll" />
   </Target>
 
-  <Target Name="_ProjectRemoveDependencyFiles" AfterTargets="AfterBuild" DependsOnTargets="ILMerge">
+  <Target Name="_ProjectRemoveDependencyFiles" AfterTargets="AfterBuild" DependsOnTargets="ILRepack">
     <ItemGroup>
       <_ProjectDependencyFile Include="$(OutputPath)Ben.Demystifier.dll" />
       <_ProjectDependencyFile Include="$(OutputPath)System.Collections.Immutable.dll" />
@@ -22,5 +22,5 @@
     </ItemGroup>
     <Delete Files="@(_ProjectDependencyFile)" />
   </Target>
-  
+
 </Project>
