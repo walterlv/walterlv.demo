@@ -1,0 +1,9 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  
+  <Import Project="..\build\Walterlv.PackageDemo.SourceCode.props" />
+
+</Project>

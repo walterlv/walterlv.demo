@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWpf>True</UseWpf>
+
+    <!-- 要求此项目编译时要生成一个 NuGet 包。-->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <!-- 这里为了方便，我将 NuGet 包的输出路径设置在了解决方案根目录的 bin 文件夹下，而不是项目的 bin 文件夹下。-->
+    <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
+
+    <!-- 创建 NuGet 包时，项目的输出文件对应到 NuGet 包的 tools 文件夹，这可以避免目标项目引用我们的 NuGet 包的输出文件。
+         同时，如果将来我们准备动态生成源代码，而不只是引入静态源代码，还可以有机会运行我们 Program 中的 Main 函数。-->
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+
+    <!-- 此包将不会传递依赖。意味着如果目标项目安装了此 NuGet 包，那么安装目标项目包的项目不会间接安装此 NuGet 包。-->
+    <DevelopmentDependency>true</DevelopmentDependency>
+
+    <!-- 包的版本号，我们设成了一个预览版；当然你也可以设置为正式版，即没有后面的 -alpha 后缀。-->
+    <Version>0.1.0-alpha</Version>
+
+    <!-- 设置包的作者。在上传到 nuget.org 之后，如果作者名与 nuget.org 上的账号名相同，其他人浏览包是可以直接点击链接看作者页面。-->
+    <Authors>walterlv</Authors>
+
+    <!-- 设置包的组织名称。我当然写成我所在的组织 dotnet 职业技术学院啦。-->
+    <Company>dotnet-campus</Company>
+  </PropertyGroup>
+
+  <!-- 我们添加的其他资源需要在这里 Link 到一个统一的目录下，以便在此项目和安装 NuGet 包的目标项目中可以用同样的 Uri 使用。 -->
+  <ItemGroup>
+    <Resource Include="Assets\assets\Icon.ico" Link="Assets\Icon.ico" Visible="False" />
+    <Resource Include="Assets\assets\Background.png" Link="Assets\Background.png" Visible="False" />
+  </ItemGroup>
+  
+  <!-- 在生成 NuGet 包之前，我们需要将我们项目中的文件夹结构一一映射到 NuGet 包中。-->
+  <Target Name="IncludeAllDependencies" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+
+      <!-- 将 Package.props / Package.targets 文件的名称在 NuGet 包中改为需要的真正名称。
+           因为 NuGet 包要自动导入 props 和 targets 文件，要求文件的名称必须是 包名.props 和 包名.targets；
+           然而为了避免我们改包名的时候还要同步改四个文件的名称，所以就在项目文件中动态生成。-->
+      <None Include="Assets\build\Package.props" Pack="True" PackagePath="build\$(PackageId).props" />
+      <None Include="Assets\build\Package.targets" Pack="True" PackagePath="build\$(PackageId).targets" />
+      <None Include="Assets\buildMultiTargeting\Package.props" Pack="True" PackagePath="buildMultiTargeting\$(PackageId).props" />
+      <None Include="Assets\buildMultiTargeting\Package.targets" Pack="True" PackagePath="buildMultiTargeting\$(PackageId).targets" />
+
+      <!-- 我们将 src 目录中的所有源代码映射到 NuGet 包中的 src 目录中。-->
+      <None Include="Assets\src\**" Pack="True" PackagePath="src" />
+
+      <!-- 我们将 assets 目录中的所有源代码映射到 NuGet 包中的 assets 目录中。-->
+      <None Include="Assets\assets\**" Pack="True" PackagePath="assets" />
+      
+    </ItemGroup>
+  </Target>
+
+  <!-- 在编译结束后将生成的可执行程序放到 Tools 文件夹中，使得 Assets 文件夹的目录结构与 NuGet 包非常相似，便于 Sample 项目进行及时的 NuGet 包调试。 -->
+  <Target Name="_WalterlvDemoCopyOutputToDebuggableFolder" AfterTargets="AfterBuild">
+    <ItemGroup>
+      <_WalterlvDemoToCopiedFiles Include="$(OutputPath)**" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_WalterlvDemoToCopiedFiles)" DestinationFolder="Assets\tools\$(TargetFramework)" />
+  </Target>
+  
+</Project>
