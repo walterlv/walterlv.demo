@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="Walterlv.Demo.Analyzers.5d2fae82-07a1-437a-8f54-e6c158983ca7" Version="1.0" Language="zh-Hans" Publisher="lvyi"/>
+        <DisplayName>Walterlv.Demo.Analyzers</DisplayName>
+        <Description xml:space="preserve">This is a sample diagnostic extension for the .NET Compiler Platform ("Roslyn").</Description>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[15.0,)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[15.0,)" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.8,)" />
+    </Dependencies>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Walterlv.Demo.Analyzers" Path="|Walterlv.Demo.Analyzers|"/>
+        <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Walterlv.Demo.Analyzers" Path="|Walterlv.Demo.Analyzers|"/>
+    </Assets>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0,17.0)" DisplayName="Roslyn Language Services" />
+    </Prerequisites>
+</PackageManifest>
