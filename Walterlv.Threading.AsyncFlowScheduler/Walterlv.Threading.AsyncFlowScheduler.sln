@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Threading.AsyncFlowScheduler", "Walterlv.Threading.AsyncFlowScheduler\Walterlv.Threading.AsyncFlowScheduler.csproj", "{E3A2823C-2E53-4FDA-ACC0-63B16D4A09BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3A2823C-2E53-4FDA-ACC0-63B16D4A09BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3A2823C-2E53-4FDA-ACC0-63B16D4A09BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3A2823C-2E53-4FDA-ACC0-63B16D4A09BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3A2823C-2E53-4FDA-ACC0-63B16D4A09BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF023ECF-BA67-4A4C-B6DC-8600059529EE}
+	EndGlobalSection
+EndGlobal
