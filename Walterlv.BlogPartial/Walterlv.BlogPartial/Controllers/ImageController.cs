@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Policy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Walterlv.BlogPartial.Data;
+using static Walterlv.BlogPartial.Data.Site;
 
 namespace Walterlv.BlogPartial.Controllers
 {
@@ -23,28 +26,28 @@ namespace Walterlv.BlogPartial.Controllers
         [HttpGet, Route("bulletin/csdn.png")]
         public FileResult GetImageToCsdn()
         {
-            RecordVisitingInfo("CSDN", "/bulletin/csdn.png");
+            RecordVisitingInfo(Csdn, "/bulletin/csdn.png");
             return GetImage("CSDN", "csdn-column");
         }
 
         [HttpGet, Route("banner/csdn.png")]
         public FileResult GetBannerToCsdn()
         {
-            RecordVisitingInfo("CSDN", "/banner/csdn.png");
+            RecordVisitingInfo(Csdn, "/banner/csdn.png");
             return GetImage("CSDN", "bulletin");
         }
 
         [HttpGet, Route("bulletin/blog.png")]
         public FileResult GetImageToBlog()
         {
-            RecordVisitingInfo("blog.walterlv.com", "/bulletin/blog.png");
+            RecordVisitingInfo(Blog, "/bulletin/blog.png");
             return GetImage("blog.walterlv.com", "bulletin");
         }
 
         [HttpGet, Route("banner/blog.png")]
         public FileResult GetBannerToBlog()
         {
-            RecordVisitingInfo("blog.walterlv.com", "/banner/blog.png");
+            RecordVisitingInfo(Blog, "/banner/blog.png");
             return GetImage("blog.walterlv.com", "banner");
         }
 
@@ -88,9 +91,11 @@ namespace Walterlv.BlogPartial.Controllers
             _context.SaveChangesAsync();
 
             // 输出摘要。
-            Console.WriteLine($@"==== [{DateTime.Now}] ====
-IP: {ip}
-UserAgent: {userAgent}");
+            var csdnCount = _context.VisitingInfoSet.Where(x => x.Site == Csdn).Count();
+            var blogCount = _context.VisitingInfoSet.Where(x => x.Site == Blog).Count();
+            Console.WriteLine($@"[{DateTime.Now}] [{site}{url}] {ip}                ");
+            Console.WriteLine($@"CSDN = {csdnCount} | Blog = {blogCount}");
+            Console.CursorLeft = 0;
         }
     }
 }
