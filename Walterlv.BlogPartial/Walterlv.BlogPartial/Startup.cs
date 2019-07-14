@@ -1,17 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Walterlv.BlogPartial.Services;
-using Walterlv.BlogPartial.Services.Implements;
+using Walterlv.BlogPartial.Data;
 
 namespace Walterlv.BlogPartial
 {
@@ -27,11 +26,22 @@ namespace Walterlv.BlogPartial
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            services.AddMemoryCache();
+
             services.AddControllers()
                 .AddNewtonsoftJson();
 
-            services.AddMemoryCache();
-            services.AddSingleton<IVisitingCounter, VisitingCounter>();
+            services.AddDbContext<VisitingInfoContext>(options =>
+                options.UseSqlite("Filename=./VisitingInfo.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

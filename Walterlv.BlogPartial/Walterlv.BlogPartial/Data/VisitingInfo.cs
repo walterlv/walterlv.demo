@@ -14,5 +14,9 @@ namespace Walterlv.BlogPartial.Data
         public string Ip { get; set; }
 
         public string UserAgent { get; set; }
+
+        public string Site { get; set; }
+
+        public string Url { get; set; }
     }
 }
