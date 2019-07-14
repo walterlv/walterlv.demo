@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Walterlv.BlogPartial.Services;
@@ -8,11 +11,13 @@ namespace Walterlv.BlogPartial.Controllers
     [ApiController, Route("api/[controller]")]
     public class ImageController : ControllerBase
     {
+        private readonly IHttpContextAccessor _accessor;
         private readonly IMemoryCache _cache;
         private readonly IVisitingCounter _counter;
 
-        public ImageController(IMemoryCache memoryCache, IVisitingCounter counter)
+        public ImageController(IHttpContextAccessor accessor, IMemoryCache memoryCache, IVisitingCounter counter)
         {
+            _accessor = accessor;
             _cache = memoryCache;
             _counter = counter;
         }
@@ -48,10 +53,10 @@ namespace Walterlv.BlogPartial.Controllers
         private FileResult GetImage(string from, string name)
         {
             // 获取用户的真实 IP（此字段记录了出发点 IP 和代理服务器经过的 IP）。
-            HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var ip);
+            _accessor.HttpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var ip);
 
             // 获取用户浏览器信息。
-            HttpContext.Request.Headers.TryGetValue("User-Agent", out var userAgent);
+            _accessor.HttpContext.Request.Headers.TryGetValue("User-Agent", out var userAgent);
 
             // 输出摘要。
             Console.WriteLine($@"==== [{DateTime.Now}] ====
@@ -77,6 +82,18 @@ UserAgent: {userAgent}");
         public IActionResult BannerUrlMove()
         {
             return Redirect("https://www.zhipin.com/job_detail/26bf2e69fc65103d1HN539S_FFQ~.html");
+        }
+
+        private string GetUserId()
+        {
+            const string userId = "UserId";
+            var id = _accessor.HttpContext.Request.Cookies[userId];
+            if (id is null)
+            {
+                id = Guid.NewGuid().ToString();
+                _accessor.HttpContext.Request.Cookies.Append(new KeyValuePair<string, string>(userId, id));
+            }
+            return id;
         }
     }
 }
