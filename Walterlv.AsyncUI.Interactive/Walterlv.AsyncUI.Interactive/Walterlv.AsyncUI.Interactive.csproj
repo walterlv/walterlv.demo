@@ -5,6 +5,22 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <RootNamespace>Walterlv</RootNamespace>
+    <StartupObject>Walterlv.Program</StartupObject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cvte.Windows" Version="9.12.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Threading\**" />
+    <Compile Remove="Win32\**" />
+    <EmbeddedResource Remove="Threading\**" />
+    <EmbeddedResource Remove="Win32\**" />
+    <None Remove="Threading\**" />
+    <None Remove="Win32\**" />
+    <Page Remove="Threading\**" />
+    <Page Remove="Win32\**" />
+  </ItemGroup>
 
 </Project>
