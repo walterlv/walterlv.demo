@@ -1,0 +1,21 @@
+﻿<Window x:Class="Walterlv.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Walterlv 的 WindowChrome 示例窗口" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid x:Name="VisualSource">
+            <Rectangle x:Name="VisibleOr" Fill="LightCoral" Visibility="Visible" />
+            <TextBlock FontSize="24" TextAlignment="Center" VerticalAlignment="Center">
+                <Run Text="I'm walterlv, " />
+                <LineBreak />
+                <Run Text="I'm reproducing this Visual bug." />
+            </TextBlock>
+        </Grid>
+        <Border>
+            <Border.Background>
+                <VisualBrush Visual="{Binding Source={x:Reference VisualSource}}" />
+            </Border.Background>
+        </Border>
+    </Grid>
+</Window>
