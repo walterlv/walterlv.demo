@@ -8,11 +8,15 @@ namespace Walterlv.Threading
 {
     public abstract class AsyncFlowScheduler<T>
     {
-        protected Func<Task<T>> 
-
-        public Task<T> RunAsync(CancellationToken cancellationToken = null)
+        protected Func<Task<T>> AsyncAction = async () =>
         {
-            Task.Run()
+            await Task.Delay(1000);
+            return default;
+        };
+
+        public Task<T> RunAsync()
+        {
+            AsyncAction
         }
     }
 
