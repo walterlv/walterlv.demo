@@ -1,0 +1,3 @@
+﻿Walterlv.PackageDemo.ApiTracking.Class1
+Walterlv.PackageDemo.ApiTracking.Class1.Class1() -> void
+Walterlv.PackageDemo.ApiTracking.Class1.Foo.get -> string
