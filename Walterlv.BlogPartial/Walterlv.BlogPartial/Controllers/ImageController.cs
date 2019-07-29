@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using Microsoft.AspNetCore.Http;
@@ -93,9 +94,17 @@ namespace Walterlv.BlogPartial.Controllers
             // 输出摘要。
             var csdnCount = _context.VisitingInfoSet.Where(x => x.Site == Csdn).Count();
             var blogCount = _context.VisitingInfoSet.Where(x => x.Site == Blog).Count();
+            Console.ForegroundColor = SiteColorMapping[site];
             Console.WriteLine($@"[{DateTime.Now}] [{site}{url}] {ip}                ");
             Console.WriteLine($@"CSDN = {csdnCount} | Blog = {blogCount}");
-            Console.CursorLeft = 0;
+            Console.ResetColor();
         }
+
+        private static readonly Dictionary<string, ConsoleColor> SiteColorMapping
+            = new Dictionary<string, ConsoleColor>
+            {
+                { Csdn, ConsoleColor.DarkYellow },
+                { Blog, ConsoleColor.DarkCyan },
+            };
     }
 }
