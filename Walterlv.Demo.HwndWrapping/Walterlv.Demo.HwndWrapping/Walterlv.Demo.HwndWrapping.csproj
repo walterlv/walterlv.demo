@@ -6,8 +6,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Cvte.Windows" Version="9.20.0" />
-  </ItemGroup>
-
 </Project>

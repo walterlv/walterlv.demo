@@ -2,8 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using Cvte.Windows.Native;
-using static Cvte.Windows.Native.Win32.WindowStyles;
 
 namespace Walterlv.Demo.HwndWrapping
 {
@@ -21,6 +19,7 @@ namespace Walterlv.Demo.HwndWrapping
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
         {
+            const int WS_CHILD = 0x40000000;
             var owner = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
 
             var parameters = new HwndSourceParameters("demo")
@@ -36,12 +35,6 @@ namespace Walterlv.Demo.HwndWrapping
         protected override void DestroyWindowCore(HandleRef hwnd)
         {
             _source?.Dispose();
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            Win32.User32.GetWindowRect(_source.Handle, out var bounds);
-            return new Size(bounds.Width, bounds.Height);
         }
     }
 }
