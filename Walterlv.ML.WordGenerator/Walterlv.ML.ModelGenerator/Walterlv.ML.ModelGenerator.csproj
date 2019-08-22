@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>Walterlv.Demo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dotnetCampus.CommandLine" Version="1.0.0" />
+    <PackageReference Include="PlatformSpellCheck" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
