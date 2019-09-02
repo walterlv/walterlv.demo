@@ -19,17 +19,17 @@ namespace Walterlv.Exceptions.CloseWindow
 
         private static async void App_Startup(object sender, StartupEventArgs e)
         {
-            for (int i = 0; i < int.MaxValue; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var window = new MainWindow
                 {
                     Left = 3000,
                 };
                 window.Show();
-                await Task.Yield();
-                window.WindowState = WindowState.Maximized;
-                await Task.Delay(1000);
-                window.Close();
+                //await Task.Yield();
+                //window.WindowState = WindowState.Maximized;
+                //await Task.Delay(1000);
+                //window.Close();
             }
         }
     }

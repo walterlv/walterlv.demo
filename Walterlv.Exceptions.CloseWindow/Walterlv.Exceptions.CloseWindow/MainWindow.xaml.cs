@@ -23,19 +23,10 @@ namespace Walterlv.Exceptions.CloseWindow
         public MainWindow()
         {
             InitializeComponent();
-            Closing += OnClosing;
-            Closed += OnClosed;
-        }
-
-        private async void OnClosing(object sender, CancelEventArgs e)
-        {
-            //await Task.Yield();
-            //var point = PointFromScreen(new Point());
-            //Debug.WriteLine(point);
-        }
-
-        private void OnClosed(object sender, EventArgs e)
-        {
+            var scaleTransform = new ScaleTransform(1, 1);
+            this.RenderTransform = scaleTransform;
+            scaleTransform.ScaleX = 0;
+            scaleTransform.ScaleY = 0;
         }
     }
 }
