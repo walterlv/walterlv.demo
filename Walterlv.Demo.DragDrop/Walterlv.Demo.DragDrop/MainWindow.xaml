@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:Walterlv.Demo"
         mc:Ignorable="d"
         Title="拖拽测试 - walterlv" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <UniformGrid Rows="1">
+        <Border x:Name="DragSourceBorder" Margin="20 20 10 20" Background="#3192e8">
+            <local:HwndWrapper Margin="20" />
+        </Border>
+        <Border x:Name="DropTargetBorder" Margin="10 20 20 20" Background="#8350bc" />
+    </UniformGrid>
 </Window>
