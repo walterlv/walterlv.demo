@@ -25,11 +25,6 @@ namespace Walterlv.Demo.FileWatcherRecycle
             relayEventAdder();
         }
 
-        protected void Unsubscribe(Action<TEventSource> sourceEventRemover, Action relayEventRemover)
-        {
-            relayEventRemover();
-        }
-
         protected void TryInvoke<TSender, TArgs>(WeakEvent<TSender, TArgs> weakEvent, TSender sender, TArgs e)
         {
             var anyAlive = weakEvent.Invoke(sender, e);
@@ -45,24 +40,27 @@ namespace Walterlv.Demo.FileWatcherRecycle
     public class WeakEvent<TSender, TArgs>
     {
         private readonly object _locker = new object();
-        private readonly List<WeakReference<Action<TSender, TArgs>>> _handlers = new List<WeakReference<Action<TSender, TArgs>>>();
+        private readonly List<WeakReference<Delegate>> _originalHandlers = new List<WeakReference<Delegate>>();
+        private readonly List<WeakReference<Action<TSender, TArgs>>> _castedHandlers = new List<WeakReference<Action<TSender, TArgs>>>();
 
-        public void Add(Action<TSender, TArgs> value)
+        public void Add(Delegate originalHandler, Action<TSender, TArgs> castedHandler)
         {
             lock (_locker)
             {
-                _handlers.Add(new WeakReference<Action<TSender, TArgs>>(value));
+                _originalHandlers.Add(new WeakReference<Delegate>(originalHandler));
+                _castedHandlers.Add(new WeakReference<Action<TSender, TArgs>>(castedHandler));
             }
         }
 
-        public void Remove(Action<TSender, TArgs> value)
+        public void Remove(Delegate originalHandler)
         {
             lock (_locker)
             {
-                var index = _handlers.FindIndex(x => x.TryGetTarget(out var handler) && handler == value);
+                var index = _originalHandlers.FindIndex(x => x.TryGetTarget(out var handler) && handler == originalHandler);
                 if (index >= 0)
                 {
-                    _handlers.RemoveAt(index);
+                    _originalHandlers.RemoveAt(index);
+                    _castedHandlers.RemoveAt(index);
                 }
             }
         }
@@ -72,7 +70,7 @@ namespace Walterlv.Demo.FileWatcherRecycle
             List<Action<TSender, TArgs>> invokingHandlers = null;
             lock (_locker)
             {
-                var handlers = _handlers.ConvertAll(x => x.TryGetTarget(out var target) ? target : null);
+                var handlers = _castedHandlers.ConvertAll(x => x.TryGetTarget(out var target) ? target : null);
                 var anyHandlerAlive = handlers.Exists(x => x != null);
                 if (anyHandlerAlive)
                 {
@@ -81,7 +79,7 @@ namespace Walterlv.Demo.FileWatcherRecycle
                 else
                 {
                     invokingHandlers = null;
-                    _handlers.Clear();
+                    _castedHandlers.Clear();
                 }
             }
             if (invokingHandlers != null)

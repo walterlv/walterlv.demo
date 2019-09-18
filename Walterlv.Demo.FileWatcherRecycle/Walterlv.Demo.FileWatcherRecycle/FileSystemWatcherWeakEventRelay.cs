@@ -13,26 +13,26 @@ namespace Walterlv.Demo.FileWatcherRecycle
 
         public event FileSystemEventHandler Created
         {
-            add => Subscribe(o => o.Created += OnCreated, () => _created.Add(value.Invoke));
-            remove => _created.Remove(value.Invoke);
+            add => Subscribe(o => o.Created += OnCreated, () => _created.Add(value, value.Invoke));
+            remove => _created.Remove(value);
         }
 
         public event FileSystemEventHandler Changed
         {
-            add => Subscribe(o => o.Changed += OnChanged, () => _changed.Add(value.Invoke));
-            remove => _changed.Remove(value.Invoke);
+            add => Subscribe(o => o.Changed += OnChanged, () => _changed.Add(value, value.Invoke));
+            remove => _changed.Remove(value);
         }
 
         public event RenamedEventHandler Renamed
         {
-            add => Subscribe(o => o.Renamed += OnRenamed, () => _renamed.Add(value.Invoke));
-            remove => _renamed.Remove(value.Invoke);
+            add => Subscribe(o => o.Renamed += OnRenamed, () => _renamed.Add(value, value.Invoke));
+            remove => _renamed.Remove(value);
         }
 
         public event FileSystemEventHandler Deleted
         {
-            add => Subscribe(o => o.Deleted += OnDeleted, () => _deleted.Add(value.Invoke));
-            remove => _deleted.Remove(value.Invoke);
+            add => Subscribe(o => o.Deleted += OnDeleted, () => _deleted.Add(value, value.Invoke));
+            remove => _deleted.Remove(value);
         }
 
         private void OnCreated(object sender, FileSystemEventArgs e) => TryInvoke(_created, sender, e);
