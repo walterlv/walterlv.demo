@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Walterlv.Demo.FileWatcherRecycle;
 
 namespace Walterlv.IO
 {
@@ -87,8 +88,9 @@ namespace Walterlv.IO
                     EnableRaisingEvents = true,
                     NotifyFilter = NotifyFilters.LastWrite,
                 };
-                _watcher.Changed += FinalFile_Changed;
-                _watcher.Deleted += FileOrDirectory_CreatedOrDeleted;
+                var weakEvent = new FileSystemWatcherWeakEventRelay(_watcher);
+                weakEvent.Changed += FinalFile_Changed;
+                weakEvent.Deleted += FileOrDirectory_CreatedOrDeleted;
             }
             else
             {
@@ -97,9 +99,10 @@ namespace Walterlv.IO
                 {
                     EnableRaisingEvents = true,
                 };
-                _watcher.Created += FileOrDirectory_CreatedOrDeleted;
-                _watcher.Renamed += FileOrDirectory_CreatedOrDeleted;
-                _watcher.Deleted += FileOrDirectory_CreatedOrDeleted;
+                var weakEvent = new FileSystemWatcherWeakEventRelay(_watcher);
+                weakEvent.Created += FileOrDirectory_CreatedOrDeleted;
+                weakEvent.Renamed += FileOrDirectory_CreatedOrDeleted;
+                weakEvent.Deleted += FileOrDirectory_CreatedOrDeleted;
             }
         }
 
