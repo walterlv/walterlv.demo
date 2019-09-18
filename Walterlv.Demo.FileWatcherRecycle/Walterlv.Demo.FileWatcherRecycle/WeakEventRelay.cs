@@ -60,7 +60,10 @@ namespace Walterlv.Demo.FileWatcherRecycle
             lock (_locker)
             {
                 var index = _handlers.FindIndex(x => x.TryGetTarget(out var handler) && handler == value);
-                _handlers.RemoveAt(index);
+                if (index >= 0)
+                {
+                    _handlers.RemoveAt(index);
+                }
             }
         }
 
