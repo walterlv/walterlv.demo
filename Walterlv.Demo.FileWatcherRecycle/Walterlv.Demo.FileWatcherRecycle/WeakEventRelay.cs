@@ -25,14 +25,14 @@ namespace Walterlv.Demo.FileWatcherRecycle
             relayEventAdder();
         }
 
-        protected void Unsubscribe(Action<TEventSource> sourceEventRemover, Action relayEventRemover, [CallerMemberName] string eventName = null)
+        protected void Unsubscribe(Action<TEventSource> sourceEventRemover, Action relayEventRemover)
         {
             relayEventRemover();
         }
 
-        protected void TryInvoke(Func<bool> weakEventInvoker)
+        protected void TryInvoke<TSender, TArgs>(WeakEvent<TSender, TArgs> weakEvent, TSender sender, TArgs e)
         {
-            var anyAlive = weakEventInvoker();
+            var anyAlive = weakEvent.Invoke(sender, e);
             if (!anyAlive)
             {
                 OnRefereceLost(_eventSource);
@@ -42,20 +42,20 @@ namespace Walterlv.Demo.FileWatcherRecycle
         protected abstract void OnRefereceLost(TEventSource source);
     }
 
-    public class WeakEvent<THandler> where THandler : Delegate
+    public class WeakEvent<TSender, TArgs>
     {
         private readonly object _locker = new object();
-        private readonly List<WeakReference<THandler>> _handlers = new List<WeakReference<THandler>>();
+        private readonly List<WeakReference<Action<TSender, TArgs>>> _handlers = new List<WeakReference<Action<TSender, TArgs>>>();
 
-        internal void Add(THandler value)
+        public void Add(Action<TSender, TArgs> value)
         {
             lock (_locker)
             {
-                _handlers.Add(new WeakReference<THandler>(value));
+                _handlers.Add(new WeakReference<Action<TSender, TArgs>>(value));
             }
         }
 
-        internal void Remove(THandler value)
+        public void Remove(Action<TSender, TArgs> value)
         {
             lock (_locker)
             {
@@ -64,9 +64,9 @@ namespace Walterlv.Demo.FileWatcherRecycle
             }
         }
 
-        internal bool Invoke<TSender, TArgs>(TSender sender, TArgs e)
+        public bool Invoke(TSender sender, TArgs e)
         {
-            List<THandler> invokingHandlers = null;
+            List<Action<TSender, TArgs>> invokingHandlers = null;
             lock (_locker)
             {
                 var handlers = _handlers.ConvertAll(x => x.TryGetTarget(out var target) ? target : null);
@@ -85,11 +85,15 @@ namespace Walterlv.Demo.FileWatcherRecycle
             {
                 foreach (var handler in invokingHandlers)
                 {
-                    var strongHandler = (Action<TSender, TArgs>)(Delegate)handler;
+                    var strongHandler = handler;
                     strongHandler(sender, e);
                 }
             }
             return invokingHandlers != null;
         }
+    }
+
+    public class WeakEvent<TArgs> : WeakEvent<object, TArgs>
+    {
     }
 }
