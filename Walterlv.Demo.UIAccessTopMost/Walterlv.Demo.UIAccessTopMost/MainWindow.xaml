@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Walterlv.Demo.UIAccessTopMost"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="TopMost - walterlv" Height="450" Width="800"
+        ShowInTaskbar="True" Topmost="True">
     <Grid>
 
     </Grid>
