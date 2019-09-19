@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Walterlv.WeakEvents;
 
 namespace Walterlv.Demo.FileWatcherRecycle
 {

@@ -8,4 +8,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Walterlv.WeakEvents" Version="0.4.0-alpha" />
+  </ItemGroup>
+
 </Project>
