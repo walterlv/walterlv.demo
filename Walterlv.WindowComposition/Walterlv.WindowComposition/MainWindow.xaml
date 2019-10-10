@@ -1,0 +1,21 @@
+﻿<Window x:Class="Walterlv.WindowComposition.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.WindowComposition"
+        mc:Ignorable="d"
+        Title="欢迎访问吕毅的博客：blog.walterlv.com" Height="450" Width="800">
+    <!--<Window.Template>
+        <ControlTemplate TargetType="Window">
+            <AdornerDecorator>
+                <ContentPresenter />
+            </AdornerDecorator>
+        </ControlTemplate>
+    </Window.Template>-->
+    <WindowChrome.WindowChrome>
+        <WindowChrome />
+    </WindowChrome.WindowChrome>
+    <Grid Background="#1e1e1e">
+    </Grid>
+</Window>
