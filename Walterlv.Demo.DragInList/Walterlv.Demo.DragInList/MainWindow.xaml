@@ -1,0 +1,33 @@
+﻿<Window x:Class="Walterlv.Demo.DragInList.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.Demo.DragInList"
+        xmlns:ww="clr-namespace:Walterlv.Demo.Windows"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        ww:WindowBlur.IsEnabled="True">
+    <Window.Template>
+        <ControlTemplate TargetType="{x:Type Window}">
+            <Border>
+                <ContentPresenter />
+            </Border>
+        </ControlTemplate>
+    </Window.Template>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0 1 0 0" CaptionHeight="32"
+                      ResizeBorderThickness="8" CornerRadius="0" />
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8" />
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ww:ApplicationTabView Grid.Row="1" />
+        <Border Grid.Row="2">
+            
+        </Border>
+    </Grid>
+</Window>
