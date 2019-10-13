@@ -56,7 +56,7 @@ namespace Walterlv.WindowDetector
         /// <summary>
         /// 默认的查找窗口的过滤条件。可见 + 非最小化 + 包含窗口标题。
         /// </summary>
-        private static readonly Predicate<WindowInfo> DefaultPredicate = x => x.IsVisible && !x.IsMinimized && x.Title.Length > 0;
+        private static readonly Predicate<WindowInfo> DefaultPredicate = x => x.IsVisible && x.Title.Length > 0;
 
         private delegate bool WndEnumProc(IntPtr hWnd, int lParam);
 
