@@ -42,7 +42,7 @@ namespace Walterlv.Windows.Effects
             // 创建 AccentPolicy 对象。
             var accent = new AccentPolicy
             {
-                AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND,
+                AccentState = AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT,
                 GradientColor = 0,
             };
 

@@ -9,8 +9,8 @@ namespace Walterlv.WindowComposition
         public MainWindow()
         {
             InitializeComponent();
-            //var compositor = new WindowAccentCompositor(this);
-            //compositor.Composite(Color.FromArgb(0xa0, 0x18, 0xa0, 0x5e));
+            var compositor = new WindowAccentCompositor(this);
+            compositor.Composite(Color.FromArgb(0xa0, 0x18, 0xa0, 0x5e));
         }
     }
 }
