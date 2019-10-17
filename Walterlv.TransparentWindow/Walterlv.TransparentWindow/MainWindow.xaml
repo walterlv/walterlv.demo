@@ -1,0 +1,23 @@
+﻿<Window x:Class="Walterlv.TransparentWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Walterlv.TransparentWindow"
+        mc:Ignorable="d" Title="全透明可遮挡窗口 - walterlv"
+        ResizeMode="CanMinimize" WindowStyle="None"
+        Left="0" Top="0" Width="4480" Height="1080">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1" />
+    </WindowChrome.WindowChrome>
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <AdornerDecorator>
+                <ContentPresenter />
+            </AdornerDecorator>
+        </ControlTemplate>
+    </Window.Template>
+    <Grid>
+
+    </Grid>
+</Window>
