@@ -68,12 +68,12 @@ namespace Walterlv.Demo
             builder.AppendLine($"Label\tValue");
             foreach (var word in wordBag)
             {
-                var formatted = Format(word.Key, 10);
-                if (string.IsNullOrWhiteSpace(formatted))
-                {
-                    continue;
-                }
-                builder.AppendLine($"{(word.Value ? "1" : "0")}\t{formatted}");
+                //var formatted = Format(word.Key, 10);
+                //if (string.IsNullOrWhiteSpace(formatted))
+                //{
+                //    continue;
+                //}
+                builder.AppendLine($"{(word.Value ? "1" : "0")}\t{word.Key}");
             }
 
             File.WriteAllText(outputFile.FullName, builder.ToString());

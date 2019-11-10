@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.ML.WordGenerator", "Walterlv.ML.WordGenerator\Walterlv.ML.WordGenerator.csproj", "{FD8D9591-99C7-4F63-A121-8862F0A8E447}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.ML.WordGenerator", "Walterlv.ML.WordGenerator\Walterlv.ML.WordGenerator.csproj", "{FD8D9591-99C7-4F63-A121-8862F0A8E447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.ML.ModelGenerator", "Walterlv.ML.ModelGenerator\Walterlv.ML.ModelGenerator.csproj", "{9EB5DBE1-7D2F-4C91-8571-5FB55933C5C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.ML.ModelGenerator", "Walterlv.ML.ModelGenerator\Walterlv.ML.ModelGenerator.csproj", "{9EB5DBE1-7D2F-4C91-8571-5FB55933C5C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.ML.WordGeneratorML.Model", "Walterlv.ML.WordGeneratorML.Model\Walterlv.ML.WordGeneratorML.Model.csproj", "{3B3F3624-0499-42EB-BAAD-9D8675AC9EE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.ML.WordGeneratorML.Model", "Walterlv.ML.WordGeneratorML.Model\Walterlv.ML.WordGeneratorML.Model.csproj", "{588AF5AA-C24E-4BBC-9666-AAA5ADF73484}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.ML.WordGeneratorML.ConsoleApp", "Walterlv.ML.WordGeneratorML.ConsoleApp\Walterlv.ML.WordGeneratorML.ConsoleApp.csproj", "{82243FE0-D03C-4143-B852-6234D1F5D608}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Walterlv.ML.WordGeneratorML.ConsoleApp", "Walterlv.ML.WordGeneratorML.ConsoleApp\Walterlv.ML.WordGeneratorML.ConsoleApp.csproj", "{A30A0E86-E3DD-4802-8F27-0A6E47996544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{9EB5DBE1-7D2F-4C91-8571-5FB55933C5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EB5DBE1-7D2F-4C91-8571-5FB55933C5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EB5DBE1-7D2F-4C91-8571-5FB55933C5C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B3F3624-0499-42EB-BAAD-9D8675AC9EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B3F3624-0499-42EB-BAAD-9D8675AC9EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B3F3624-0499-42EB-BAAD-9D8675AC9EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B3F3624-0499-42EB-BAAD-9D8675AC9EE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82243FE0-D03C-4143-B852-6234D1F5D608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82243FE0-D03C-4143-B852-6234D1F5D608}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82243FE0-D03C-4143-B852-6234D1F5D608}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82243FE0-D03C-4143-B852-6234D1F5D608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{588AF5AA-C24E-4BBC-9666-AAA5ADF73484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588AF5AA-C24E-4BBC-9666-AAA5ADF73484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588AF5AA-C24E-4BBC-9666-AAA5ADF73484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588AF5AA-C24E-4BBC-9666-AAA5ADF73484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30A0E86-E3DD-4802-8F27-0A6E47996544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30A0E86-E3DD-4802-8F27-0A6E47996544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30A0E86-E3DD-4802-8F27-0A6E47996544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30A0E86-E3DD-4802-8F27-0A6E47996544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
