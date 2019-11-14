@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Study.WindowStates", "Walterlv.Study.WindowStates\Walterlv.Study.WindowStates.csproj", "{98B8CD3E-9DC7-43E5-B789-8036B9209FAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98B8CD3E-9DC7-43E5-B789-8036B9209FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98B8CD3E-9DC7-43E5-B789-8036B9209FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98B8CD3E-9DC7-43E5-B789-8036B9209FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98B8CD3E-9DC7-43E5-B789-8036B9209FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C92E6D0-EA64-4945-9713-8FB2E3896A73}
+	EndGlobalSection
+EndGlobal
