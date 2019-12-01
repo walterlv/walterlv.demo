@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.AsyncMethods", "Walterlv.AsyncMethods\Walterlv.AsyncMethods.csproj", "{B27CCA52-1483-406A-A4D7-39D8094DA278}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B27CCA52-1483-406A-A4D7-39D8094DA278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B27CCA52-1483-406A-A4D7-39D8094DA278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B27CCA52-1483-406A-A4D7-39D8094DA278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B27CCA52-1483-406A-A4D7-39D8094DA278}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F67596F-E035-453A-9DDA-4FFF3BA961E6}
+	EndGlobalSection
+EndGlobal
