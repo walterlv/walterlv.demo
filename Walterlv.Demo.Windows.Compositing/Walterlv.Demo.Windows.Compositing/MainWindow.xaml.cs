@@ -51,8 +51,8 @@ namespace Walterlv.Demo
             Grid.SetColumnSpan(wrapper, 3);
             RootPanel.Children.Add(wrapper);
 
-            var source = (HwndSource)PresentationSource.FromVisual(this);
-            source.AddHook(OnWndProc);
+            //var source = (HwndSource)PresentationSource.FromVisual(this);
+            //source.AddHook(OnWndProc);
 
             //const int CS_VREDRAW = 0x0001;
             //const int CS_HREDRAW = 0x0002;

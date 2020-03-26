@@ -124,6 +124,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    HTTRANSPARENT
     switch (message)
     {
     case WM_NCCALCSIZE:
