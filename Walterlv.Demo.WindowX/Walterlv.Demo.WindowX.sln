@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Demo.WindowX", "Walterlv.Demo.WindowX\Walterlv.Demo.WindowX.csproj", "{56EBFDE2-F1FB-453A-A6AF-86C8A4935C91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Walterlv.Demo.NAWindow", "Walterlv.Demo.NAWindow\Walterlv.Demo.NAWindow.csproj", "{F70A84F9-F5DA-461D-8EA8-DD5FC96E9EFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56EBFDE2-F1FB-453A-A6AF-86C8A4935C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56EBFDE2-F1FB-453A-A6AF-86C8A4935C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56EBFDE2-F1FB-453A-A6AF-86C8A4935C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56EBFDE2-F1FB-453A-A6AF-86C8A4935C91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F70A84F9-F5DA-461D-8EA8-DD5FC96E9EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F70A84F9-F5DA-461D-8EA8-DD5FC96E9EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F70A84F9-F5DA-461D-8EA8-DD5FC96E9EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F70A84F9-F5DA-461D-8EA8-DD5FC96E9EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8CF032D3-AA10-42E2-8BB5-CC4ABD69DD64}
+	EndGlobalSection
+EndGlobal
