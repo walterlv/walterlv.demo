@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- 将项目中的所有 txt 文件搜集起来，用 WalterlvDemoFile 集合存起来。-->
+  <ItemGroup>
+    <WalterlvDemoFile Include="**\*.txt" Generator="MSBuild:Compile" />
+  </ItemGroup>
+
+  <!-- 注册 WalterlvDemoFile 项为一个 Item，这样它的通用属性就能被识别了。 -->
+  <ItemGroup>
+    <AvailableItemName Include="WalterlvDemoFile" />
+  </ItemGroup>
+
+  <!-- 随便写一个 Target，在编译之前做些什么。 -->
+  <Target Name="WalterlvDemoTarget" BeforeTargets="BeforeCompile">
+    <Exec Command="winver" />
+  </Target>
+
+</Project>
